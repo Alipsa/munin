@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:include="snippets/header.html :: headerFragment">
+   <title id="pageTitle">Manage Renjin Web Reports</title>
+</head>
+<body>
+   <div class="container">
+      <h3>Add report</h3>
+      <form id="addReportForm" action="/manage/addReport" method="post">
+         <label for="displayName">Display Name</label>
+         <input id="displayName" type="text" name="displayName" />
+         <input type="submit" />
+      </form>
+   </div>
+</body>
+</html>

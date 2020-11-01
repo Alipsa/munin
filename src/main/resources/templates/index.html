@@ -1,19 +1,16 @@
-<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5" lang="en">
+
 <head th:include="snippets/header.html :: headerFragment">
    <title id="pageTitle">Renjin Web Reports</title>
 </head>
 <body>
    <div class="container">
       <h2>Renjin Web Reports</h2>
-      Content for unauthorized users
-      <div sec:authorize="isAuthenticated()">
-         This content is only shown to authenticated users.
-      </div>
-      <div sec:authorize="hasRole('ROLE_USER')">
-         This content is only shown to users.
-      </div>
+      Add list of reports here add and an "edit button" for each one if analyst
       <div sec:authorize="hasRole('ROLE_ANALYST')">
-         This content is only shown to analysts.
+         This content is only shown to analysts.<br />
+         <a href="/manage/addReport" class="btn btn-primary">Add Report</a>
       </div>
       <div sec:authorize="hasRole('ROLE_ADMIN')">
          This content is only shown to administrators.
