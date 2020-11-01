@@ -48,14 +48,37 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
   @Override
   protected void configure(HttpSecurity http) throws Exception {
     http
+        .authorizeRequests()
+          .antMatchers("/webjars/**", "/favicon.ico", "/actuator/health")
+            .permitAll()
+          .antMatchers("/reports/**")
+            .hasRole(ROLE_WEB)
+          .antMatchers("/manage/**")
+            .hasRole(ROLE_ANALYST)
+          .antMatchers( "/admin/**")
+            .hasRole(ROLE_ADMIN)
+          .anyRequest()
+            .authenticated()
+
+        .and()
+        .formLogin()
+        .loginPage("/login.html").permitAll()
+        .failureUrl("/login-error.html").permitAll()
+        .and()
+        .logout().permitAll()
+        .logoutSuccessUrl("/index.html")
+        .and()
+        .httpBasic();
+    /*
+        .and()
         .cors().and()
         .csrf()
-          .csrfTokenRepository(csrfTokenRepository())
-          .ignoringAntMatchers("/test/**")
+        .csrfTokenRepository(csrfTokenRepository())
+        .ignoringAntMatchers("/test/**")
         .and()
         .authorizeRequests()
         .antMatchers("/actuator/health", "/h2-console/**", "/webjars/**", "/test/**", "/", "/favicon.ico")
-          .permitAll()// disable security for resources and simulator endpoints
+          .permitAll()
         .antMatchers("/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs", "/configuration/ui", "/swagger-resources/**")
           .authenticated()
         .antMatchers("/reports/**")
@@ -74,6 +97,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         .and().requiresChannel().anyRequest().requiresInsecure()
 
         .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+
+     */
   }
 
   @Bean

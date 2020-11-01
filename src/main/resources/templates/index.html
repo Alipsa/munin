@@ -1,12 +1,23 @@
-<html xmlns:th="http://www.w3.org/1999/xhtml">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head th:include="snippets/header.html :: headerFragment">
    <title id="pageTitle">Renjin Web Reports</title>
 </head>
 <body>
    <div class="container">
       <h2>Renjin Web Reports</h2>
-
-      TODO: add stuff
+      Content for unauthorized users
+      <div sec:authorize="isAuthenticated()">
+         This content is only shown to authenticated users.
+      </div>
+      <div sec:authorize="hasRole('ROLE_USER')">
+         This content is only shown to users.
+      </div>
+      <div sec:authorize="hasRole('ROLE_ANALYST')">
+         This content is only shown to analysts.
+      </div>
+      <div sec:authorize="hasRole('ROLE_ADMIN')">
+         This content is only shown to administrators.
+      </div>
    </div>
 </body>
 </html>

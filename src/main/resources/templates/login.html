@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="snippets/header.html :: headerFragment">
+   <title id="pageTitle">Renjin Web Reports Login</title>
+</head>
+<body>
+<div class="container">
+   <h1>Login</h1>
+   <p th:if="${loginError}" class="error">Wrong user or password</p>
+   <form th:action="@{/login.html}" method="post">
+      <label for="username">Username</label>:
+      <input type="text" id="username" name="username" autofocus="autofocus" /> <br />
+      <label for="password">Password</label>:
+      <input type="password" id="password" name="password" /> <br />
+      <input type="submit" value="Log in" />
+   </form>
+</div>
+</body>
+</html>
