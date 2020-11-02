@@ -77,6 +77,11 @@
             <version>2.8.0</version>
         </dependency>
         <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-collections4</artifactId>
+            <version>4.4</version>
+        </dependency>
+        <dependency>
             <groupId>se.alipsa</groupId>
             <artifactId>renjin-htmlcontent</artifactId>
             <version>1.0-SNAPSHOT</version>

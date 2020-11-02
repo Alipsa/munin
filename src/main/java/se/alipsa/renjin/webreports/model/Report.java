@@ -11,6 +11,7 @@ public class Report {
   @GeneratedValue
   private Long id;
   private String reportName;
+  private String description;
   private String reportContent;
   private String inputContent;
 
@@ -20,6 +21,14 @@ public class Report {
 
   public void setReportName(String reportName) {
     this.reportName = reportName;
+  }
+
+  public String getDescription() {
+    return description;
+  }
+
+  public void setDescription(String description) {
+    this.description = description;
   }
 
   public String getReportContent() {

@@ -7,7 +7,21 @@
 <body>
    <div class="container">
       <h2>Renjin Web Reports</h2>
-      Add list of reports here add and an "edit button" for each one if analyst
+
+      <table class="table">
+         <thead>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Is parameterized</th>
+         </thead>
+         <tbody>
+            <tr th:each="report: ${reportList}">
+               <td th:text="${report.reportName}"/>
+               <td th:text="${report.description}" />
+               <td><input type="checkbox" th:value="${report.inputContent == null ? false : report.inputContent.length() > 0}"/></td>
+            </tr>
+         </tbody>
+      </table>
       <div sec:authorize="hasRole('ROLE_ANALYST')">
          This content is only shown to analysts.<br />
          <a href="/manage/addReport" class="btn btn-primary">Add Report</a>
