@@ -6,10 +6,23 @@
 <body>
    <div class="container">
       <h3>Add report</h3>
-      <form id="addReportForm" action="/manage/addReport" method="post">
-         <label for="displayName">Display Name</label>
-         <input id="displayName" type="text" name="displayName" />
-         <input type="submit" />
+      <form id="addReportForm" enctype="multipart/form-data" action="/manage/addReport" method="post">
+         <div class="form-group">
+            <label for="reportName">Report Name</label>
+            <input id="reportName" type="text" name="reportName" />
+         </div>
+
+         <div class="form-group">
+            <label for="reportFile">R report file:</label>
+            <input class="form-control-file" type="file" id="reportFile" accept=".R, .r" name="file"/>
+         </div>
+
+         <div class="form-group">
+            <label for="inputContent">Input form content</label>
+            <textarea class="form-control-file" id="inputContent" cols="40" rows="20" name="inputContent"></textarea>
+         </div>
+
+         <button type="submit" class="btn btn-primary">Add report</button>
       </form>
    </div>
 </body>
