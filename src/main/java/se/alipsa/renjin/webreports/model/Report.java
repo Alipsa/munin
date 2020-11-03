@@ -1,18 +1,22 @@
 package se.alipsa.renjin.webreports.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 public class Report {
 
   @Id
-  @GeneratedValue
-  private Long id;
   private String reportName;
+
+  @Column(length = 500)
   private String description;
-  private String reportContent;
+
+  @Lob
+  @Column(length = 15000)
+  private String definition;
+
+  @Lob
+  @Column(length = 9000)
   private String inputContent;
 
   public String getReportName() {
@@ -31,12 +35,12 @@ public class Report {
     this.description = description;
   }
 
-  public String getReportContent() {
-    return reportContent;
+  public String getDefinition() {
+    return definition;
   }
 
-  public void setReportContent(String reportContent) {
-    this.reportContent = reportContent;
+  public void setDefinition(String reportContent) {
+    this.definition = reportContent;
   }
 
   /**
@@ -54,11 +58,4 @@ public class Report {
     this.inputContent = inputContent;
   }
 
-  public void setId(Long id) {
-    this.id = id;
-  }
-
-  public Long getId() {
-    return id;
-  }
 }

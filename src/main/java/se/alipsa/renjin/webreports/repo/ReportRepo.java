@@ -5,6 +5,6 @@ import org.springframework.stereotype.Repository;
 import se.alipsa.renjin.webreports.model.Report;
 
 @Repository
-public interface ReportRepo extends CrudRepository<Report, Long> {
+public interface ReportRepo extends CrudRepository<Report, String> {
 
 }

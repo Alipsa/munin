@@ -5,6 +5,10 @@
 </head>
 <body>
 <div class="container">
+  <h2 th:text="${reportName}" />
+  <p th:text="${reportDescription}" />
+  <div th:remove="tag" th:utext="${reportContent}"><html><body></body></html></div>
+  <a href="/" class="btn btn-primary">Home</a>
 </div>
 </body>
 </html>
