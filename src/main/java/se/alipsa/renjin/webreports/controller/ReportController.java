@@ -1,6 +1,5 @@
 package se.alipsa.renjin.webreports.controller;
 
-import org.apache.commons.collections4.IterableUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,14 +9,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import se.alipsa.renjin.webreports.model.Report;
 import se.alipsa.renjin.webreports.repo.ReportRepo;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.util.List;
 
 @Controller
 public class ReportController {

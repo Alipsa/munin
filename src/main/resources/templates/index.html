@@ -13,12 +13,19 @@
             <th>Name</th>
             <th>Description</th>
             <th>Is parameterized</th>
+            <th>Action</th>
          </thead>
          <tbody>
             <tr th:each="report: ${reportList}">
                <td th:text="${report.reportName}"/>
                <td th:text="${report.description}" />
                <td><input type="checkbox" th:value="${report.inputContent == null ? false : report.inputContent.length() > 0}"/></td>
+               <td>
+                  <a th:href="@{/viewReport/{name}(name=${report.reportName})}" class="btn btn-primary">View</a>
+                  <div sec:authorize="hasRole('ROLE_ANALYST')">
+                     <a th:href="@{/manage/editReport/{name}(name=${report.reportName})}" class="btn btn-primary">Edit Report</a>
+                  </div>
+               </td>
             </tr>
          </tbody>
       </table>
