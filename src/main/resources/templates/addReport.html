@@ -21,11 +21,9 @@
          or or (maybe better) https://codemirror.net/ -->
          <div class="form-group">
             <label for="definition">R report code:</label>
-            <pre><code class="r">
-               <textarea class="form-control-file" id="definition" onchange="highlightCode()" cols="40" rows="20" name="definition"></textarea>
-               <label for="loadFile">Load file</label>
-               <input type="file" id="loadFile"/>
-            </code></pre>
+            <textarea class="form-control-file" id="definition" cols="40" rows="20" name="definition"></textarea>
+            <label for="loadFile">Load from file</label>
+            <input type="file" id="loadFile"/>
          </div>
 
          <div class="form-group">
@@ -42,14 +40,10 @@
 </body>
 <script type="text/javascript">
 
-   // This does not work, text area is not stylable
-   // see here for a workaround https://www.horuskol.net/blog/2020-03-05/live-code-highlighting-in-the-browser-with-vanilla-javascript/
-   // or (maybe better) https://codemirror.net/
-   function highlightCode() {
-      document.querySelectorAll('pre code').forEach((block) => {
-         hljs.highlightBlock(block);
-      });
-   }
+
+   let rCodeMirror = CodeMirror.fromTextArea(document.getElementById("definition"), {
+      mode: "text/x-rsrc"
+   });
 
 
    document.getElementById('loadFile')

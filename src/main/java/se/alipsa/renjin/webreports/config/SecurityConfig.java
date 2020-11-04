@@ -53,7 +53,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         //.csrfTokenRepository(csrfTokenRepository())
         //.and()
         .authorizeRequests()
-          .antMatchers("/webjars/**", "/favicon.ico", "/actuator/health")
+          .antMatchers("/webjars/**", "/css/**", "/favicon.ico", "/actuator/health")
             .permitAll()
           .antMatchers("/reports/**")
             .hasRole(ROLE_WEB)
