@@ -17,13 +17,14 @@
          </thead>
          <tbody>
             <tr th:each="report: ${reportList}">
-               <td th:text="${report.reportName}"/>
-               <td th:text="${report.description}" />
-               <td><input type="checkbox" th:value="${report.inputContent == null ? false : report.inputContent.length() > 0}"/></td>
+               <td th:text="${report.reportName}" disabled="disabled"/>
+               <td th:text="${report.description}" disabled="disabled" />
+               <td><input type="checkbox" th:value="${report.inputContent == null ? false : report.inputContent.length() > 0}" disabled="disabled"/></td>
                <td>
-                  <a th:href="@{/viewReport/{name}(name=${report.reportName})}" class="btn btn-primary">View</a>
+                  <a th:href="@{/viewReport/{name}(name=${report.reportName})}" class="btn btn-success">View</a>
                   <span sec:authorize="hasRole('ROLE_ANALYST')">
-                     <a th:href="@{/manage/editReport/{name}(name=${report.reportName})}" class="btn btn-primary">Edit Report</a>
+                     <a th:href="@{/manage/editReport/{name}(name=${report.reportName})}" class="btn btn-primary">Edit</a>
+                     <a th:href="@{/manage/deleteReport/{name}(name=${report.reportName})}" class="btn btn-danger">Delete</a>
                   </span>
                </td>
             </tr>
