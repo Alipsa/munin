@@ -14,17 +14,25 @@
 
          <div class="form-group">
             <label for="description">Description</label>
-            <textarea id="description" type="text" name="description" cols="20" rows="5"></textarea>
+            <textarea id="description" type="text" name="description" cols="40" rows="3"></textarea>
          </div>
 
+         <!-- TODO: https://www.horuskol.net/blog/2020-03-05/live-code-highlighting-in-the-browser-with-vanilla-javascript/
+         or or (maybe better) https://codemirror.net/ -->
          <div class="form-group">
-            <label for="reportFile">R report file:</label>
-            <input class="form-control-file" type="file" id="reportFile" accept=".R, .r" name="file"/>
+            <label for="definition">R report code:</label>
+            <pre><code class="r">
+               <textarea class="form-control-file" id="definition" onchange="highlightCode()" cols="40" rows="20" name="definition"></textarea>
+               <label for="loadFile">Load file</label>
+               <input type="file" id="loadFile"/>
+            </code></pre>
          </div>
 
          <div class="form-group">
             <label for="inputContent">Input form content</label>
-            <textarea class="form-control-file" id="inputContent" cols="40" rows="20" name="inputContent"></textarea>
+            <pre><code class="html">
+               <textarea onchange="highlightCode()" class="form-control-file" id="inputContent" cols="40" rows="20" name="inputContent"></textarea>
+            </code></pre>
          </div>
 
          <button type="submit" class="btn btn-primary">Add report</button>
@@ -32,4 +40,26 @@
       </form>
    </div>
 </body>
+<script type="text/javascript">
+
+   // This does not work, text area is not stylable
+   // see here for a workaround https://www.horuskol.net/blog/2020-03-05/live-code-highlighting-in-the-browser-with-vanilla-javascript/
+   // or (maybe better) https://codemirror.net/
+   function highlightCode() {
+      document.querySelectorAll('pre code').forEach((block) => {
+         hljs.highlightBlock(block);
+      });
+   }
+
+
+   document.getElementById('loadFile')
+      .addEventListener('change', function() {
+         let fr=new FileReader();
+         fr.onload=function(){
+            document.getElementById('definition')
+               .textContent=fr.result;
+         }
+         fr.readAsText(this.files[0]);
+      })
+</script>
 </html>

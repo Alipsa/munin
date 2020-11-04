@@ -120,6 +120,11 @@
             <artifactId>jquery</artifactId>
             <version>3.5.1</version>
         </dependency>
+        <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>highlightjs</artifactId>
+            <version>10.1.2</version>
+        </dependency>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
