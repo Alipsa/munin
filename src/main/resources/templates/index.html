@@ -32,11 +32,10 @@
          </tbody>
       </table>
       <div sec:authorize="hasRole('ROLE_ANALYST')">
-         This content is only shown to analysts.<br />
          <a href="/manage/addReport" class="btn btn-primary">Add Report</a>
       </div>
       <div sec:authorize="hasRole('ROLE_ADMIN')">
-         This content is only shown to administrators.
+         <a href="/admin/index" class="btn btn-primary">Administration</a>
       </div>
    </div>
 </body>
