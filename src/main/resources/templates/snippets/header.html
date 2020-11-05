@@ -1,10 +1,13 @@
 <head th:fragment="headerFragment" xmlns:th="http://www.w3.org/1999/xhtml">
    <title th:include=":: #pageTitle">Layout Generic Title</title>
    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
-   <link href="/webjars/bootstrap/css/bootstrap.min.css"
+   <link th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"
          rel="stylesheet">
    <link type="text/css" th:href="@{/css/main.css}" rel="stylesheet" />
-   <link href="/webjars/codemirror/lib/codemirror.css" rel="stylesheet" /-->
    <script src="/webjars/jquery/jquery.min.js"></script>
-   <script src="/webjars/codemirror/lib/codemirror.js"></script>
+   <link th:href="@{/webjars/codemirror/lib/codemirror.css}" rel="stylesheet" />
+   <script th:src="@{/webjars/codemirror/lib/codemirror.js}"></script>
+   <script th:src="@{/webjars/codemirror/mode/r/r.js}"></script>
+   <script th:src="@{/webjars/codemirror/mode/xml/xml.js}"></script>
+   <script th:src="@{/webjars/codemirror/mode/htmlmixed/htmlmixed.js}"></script>
 </head>

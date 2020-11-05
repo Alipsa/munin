@@ -17,20 +17,18 @@
             <textarea id="description" type="text" name="description" cols="40" rows="3"></textarea>
          </div>
 
-         <!-- TODO: https://www.horuskol.net/blog/2020-03-05/live-code-highlighting-in-the-browser-with-vanilla-javascript/
-         or or (maybe better) https://codemirror.net/ -->
          <div class="form-group">
             <label for="definition">R report code:</label>
             <textarea class="form-control-file" id="definition" cols="40" rows="20" name="definition"></textarea>
-            <label for="loadFile">Load from file</label>
-            <input type="file" id="loadFile"/>
+            <label for="loadRFile">Load from file</label>
+            <input type="file" id="loadRFile"/>
          </div>
 
          <div class="form-group">
             <label for="inputContent">Input form content</label>
-            <pre><code class="html">
-               <textarea onchange="highlightCode()" class="form-control-file" id="inputContent" cols="40" rows="20" name="inputContent"></textarea>
-            </code></pre>
+            <textarea class="form-control-file" id="inputContent" cols="40" rows="20" name="inputContent"></textarea>
+            <label for="loadInputFile">Load from file</label>
+            <input type="file" id="loadInputFile"/>
          </div>
 
          <button type="submit" class="btn btn-primary">Add report</button>
@@ -39,19 +37,29 @@
    </div>
 </body>
 <script type="text/javascript">
-
-
    let rCodeMirror = CodeMirror.fromTextArea(document.getElementById("definition"), {
       mode: "text/x-rsrc"
    });
 
+   let inputCodeMirror = CodeMirror.fromTextArea(document.getElementById("inputContent"), {
+      mode: "text/html"
+   });
 
-   document.getElementById('loadFile')
+
+   document.getElementById('loadRFile')
       .addEventListener('change', function() {
          let fr=new FileReader();
          fr.onload=function(){
-            document.getElementById('definition')
-               .textContent=fr.result;
+            rCodeMirror.setValue(fr.result);
+         }
+         fr.readAsText(this.files[0]);
+      })
+
+   document.getElementById('loadInputFile')
+      .addEventListener('change', function() {
+         let fr=new FileReader();
+         fr.onload=function(){
+            inputCodeMirror.setValue(fr.result);
          }
          fr.readAsText(this.files[0]);
       })
