@@ -14,4 +14,4 @@ html.add(mtcars)
 html.add("</div>")
 
 html.add("</html></body>")
-html$getContent()
+html.content()
