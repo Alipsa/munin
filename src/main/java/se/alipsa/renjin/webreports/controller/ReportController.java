@@ -1,14 +1,11 @@
 package se.alipsa.renjin.webreports.controller;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
@@ -18,8 +15,6 @@ import se.alipsa.renjin.webreports.service.ReportDefinitionException;
 import se.alipsa.renjin.webreports.service.ReportEngine;
 
 import javax.script.ScriptException;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,7 +23,7 @@ import java.util.Optional;
 @Controller
 public class ReportController {
 
-  private static final Logger LOG = LoggerFactory.getLogger(ReportController.class);
+  //private static final Logger LOG = LoggerFactory.getLogger(ReportController.class);
   private final ReportRepo reportRepo;
   private final ReportEngine reportEngine;
 
