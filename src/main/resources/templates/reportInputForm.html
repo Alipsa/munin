@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head th:include="snippets/header.html :: headerFragment">
+   <title id="pageTitle">Renjin Web Reports - Input</title>
+</head>
+<body>
+<div class="container">
+   <h2 th:text="${reportName}"/>
+   <h3>Report parameters</h3>
+   <form enctype="application/x-www-form-urlencoded" th:action="@{/viewReport/{name}(name=${reportName})}" method="post">
+      <input name="name" th:value="${reportName}" hidden="hidden" />
+      <div class="form-group" th:utext="${inputContent}"/>
+      <div class="form-group">
+         <button class="btn btn-success" type="submit">View Report</button>
+      </div>
+   </form>
+</div>
+</body>
+</html>

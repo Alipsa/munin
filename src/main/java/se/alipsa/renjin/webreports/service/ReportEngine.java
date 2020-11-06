@@ -24,7 +24,15 @@ public class ReportEngine {
   public String runReport(String script) throws ScriptException, ReportDefinitionException {
     SEXP sexp = runScript(script);
     if (!(sexp instanceof StringArrayVector)) {
-      throw new ReportDefinitionException("This report does not return a String (character), nothing to render!");
+      throw new ReportDefinitionException("This report does not return an html String (character), nothing to render!");
+    }
+    return sexp.asString();
+  }
+
+  public String runReport(String script, Map<String, Object> params) throws ScriptException, ReportDefinitionException {
+    SEXP sexp = runScript(script, params);
+    if (!(sexp instanceof StringArrayVector)) {
+      throw new ReportDefinitionException("This report does not return an html String (character), nothing to render!");
     }
     return sexp.asString();
   }
