@@ -6,6 +6,7 @@ import javax.persistence.*;
 public class Report {
 
   @Id
+  @Column(length = 50)
   private String reportName;
 
   @Column(length = 500)

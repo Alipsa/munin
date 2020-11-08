@@ -31,6 +31,11 @@ public class HomeController {
     return mav;
   }
 
+  @GetMapping(path = "/error")
+  public String error(Model model) {
+    return "error";
+  }
+
   // Login form
   @RequestMapping("/login.html")
   public String loginForm() {

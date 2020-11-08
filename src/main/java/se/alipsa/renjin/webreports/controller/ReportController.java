@@ -97,4 +97,14 @@ public class ReportController {
     redirectAttributes.addFlashAttribute("message",reportName + " added successfully!");
     return new RedirectView("/");
   }
+
+  @GetMapping(path = "/manage/editReport/{name}")
+  public String editReportForm(@PathVariable String name, Model model) throws ReportNotFoundException {
+    Report report = loadReport(name);
+    model.addAttribute("reportName", name);
+    model.addAttribute("reportDescription", report.getDescription());
+    model.addAttribute("definition", report.getDefinition());
+    model.addAttribute("inputContent", report.getInputContent());
+    return "editReport";
+  }
 }

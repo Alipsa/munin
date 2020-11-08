@@ -1,4 +1,14 @@
 library('se.alipsa:renjin-html')
+
+# set defaults
+if (!exists("dataSet")) {
+  dataSet <- "PlantGrowth"
+}
+if (!exists("firstName")) {
+  firstName <- "Per"
+}
+
+html.clear()
 html.add("<html><body>")
 html.add(paste("Hello", firstName))
 if (dataSet == "PlantGrowth") {
@@ -19,4 +29,7 @@ if (dataSet == "PlantGrowth") {
   html.add(paste("Unknown option", dataSet))
 }
 html.add("</body></html>")
+if(exists("inout")) {
+  inout$viewHtml(html.content(), "ParamReport")
+}
 html.content()

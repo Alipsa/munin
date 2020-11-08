@@ -1,0 +1,8 @@
+{
+  "properties": [
+    {
+      "name": "webreports.email.from",
+      "type": "java.lang.String",
+      "description": "From address for system emails e.g. when sending password when adding a new user."
+  }
+] }

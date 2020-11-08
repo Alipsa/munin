@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:include="snippets/header.html :: headerFragment">
+   <title id="pageTitle">Renjin Web Reports Error</title>
+</head>
+<body>
+   <div th:include="snippets/menu.html :: menu"/>
+   <div class="container pt-5">
+      <h1>An error occurred</h1>
+      <h4>Either something went wrong or the page doesn't exist anymore.</h4>
+      <br />
+      <div class="row pt-3">
+         <div class="col-md-2 ml-auto">
+            <span class="legend">Date</span>
+         </div>
+         <div class="col-md-10">
+            <span th:text="${timestamp}"></span>
+         </div>
+      </div>
+      <div class="row rowDesign">
+         <div class="col-md-2 ml-auto">
+            <span class="legend">Path</span>
+         </div>
+         <div class="col-md-10">
+            <span th:text="${path}"></span>
+         </div>
+      </div>
+      <div class="row rowDesign">
+         <div class="col-md-2 ml-auto">
+            <span class="legend">Error</span>
+         </div>
+         <div class="col-md-10">
+            <span th:text="${error}"></span>
+         </div>
+      </div>
+      <div class="row rowDesign">
+         <div class="col-md-2 ml-auto">
+            <span class="legend">Status</span>
+         </div>
+         <div class="col-md-10">
+            <span th:text="${status}"></span>
+         </div>
+      </div>
+      <div class="row rowDesign">
+         <div class="col-md-2 ml-auto">
+            <span class="legend">Message</span>
+         </div>
+         <div class="col-md-10">
+            <span class="font-weight-bold" th:text="${message}"></span>
+         </div>
+      </div>
+      <!--div class="row rowDesign">
+         <div class="col-md-2 ml-auto">
+            <span class="legend">Exception</span>
+         </div>
+         <div class="col-md-10">
+            <span th:text="${exception}"></span>
+         </div>
+      </div-->
+      <!--div class="row rowDesign">
+         <div class="col-md-2 ml-auto">
+            <span class="legend">Trace</span>
+         </div>
+         <div class="col-md-10">
+            <span th:text="${trace}"></span>
+         </div>
+      </div-->
+   </div>
+</body>
+</html>

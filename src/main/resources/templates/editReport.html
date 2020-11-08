@@ -6,45 +6,59 @@
 <body>
    <div th:include="snippets/menu.html :: menu"/>
    <div class="container">
-      <h3>Add report</h3>
+      <h3>Edit report</h3>
       <form id="addReportForm" enctype="application/x-www-form-urlencoded" action="/manage/addReport" method="post">
          <div class="form-group">
             <label for="reportName">Report Name</label>
-            <input id="reportName" type="text" name="reportName" />
+            <input id="reportName" type="text" name="reportName" th:value="${reportName}" disabled/>
          </div>
 
          <div class="form-group">
             <label for="description">Description</label>
-            <textarea id="description" type="text" name="description" cols="40" rows="3"></textarea>
+            <textarea id="description" type="text" name="description" cols="40" rows="3" th:value="${reportDescription}"></textarea>
          </div>
 
          <div class="form-group">
             <label for="definition">R report code:</label>
-            <textarea class="form-control-file" id="definition" cols="40" rows="20" name="definition"></textarea>
+            <textarea class="form-control-file" id="definition" cols="40" rows="20" name="definition" th:value="${definition}"></textarea>
             <label for="loadRFile">Load from file</label>
             <input type="file" id="loadRFile"/>
          </div>
 
          <div class="form-group">
             <label for="inputContent">Input form content</label>
-            <textarea class="form-control-file" id="inputContent" cols="40" rows="20" name="inputContent"></textarea>
+            <textarea class="form-control-file" id="inputContent" cols="40" rows="20" name="inputContent" th:value="${inputContent}"></textarea>
             <label for="loadInputFile">Load from file</label>
             <input type="file" id="loadInputFile"/>
          </div>
 
-         <button type="submit" class="btn btn-primary">Add report</button>
+         <button type="submit" class="btn btn-primary">Update report</button>
       </form>
    </div>
 </body>
 <script type="text/javascript">
    let rCodeMirror = CodeMirror.fromTextArea(document.getElementById("definition"), {
-      mode: "text/x-rsrc"
+      mode: "text/x-rsrc",
+      autoRefresh:true
    });
-
    let inputCodeMirror = CodeMirror.fromTextArea(document.getElementById("inputContent"), {
-      mode: "text/html"
+      mode: "text/html",
+      autoRefresh:true
    });
 
+   $(document).ready(function() {
+      setTimeout(function() {
+         let rCode = $("textarea#definition").val();
+         console.log("R code =", rCode);
+         rCodeMirror.setValue(rCode);
+         //inputCodeMirror
+
+         setTimeout(function () {
+            rCodeMirror.refresh();
+            inputCodeMirror.refresh();
+         }, 1);
+      });
+   });
 
    document.getElementById('loadRFile')
       .addEventListener('change', function() {

@@ -1,12 +1,94 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5" lang="en">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+      lang="en">
 
 <head th:include="snippets/header.html :: headerFragment">
-  <title id="pageTitle">Renjin Web Reports - Admin</title>
+   <title id="pageTitle">Renjin Web Reports - Admin</title>
 </head>
 <body>
-<div class="container">
-  <h2>Renjin Web Reports - Administration</h2>
-</div>
+   <div th:include="snippets/menu.html :: menu"/>
+   <div class="container">
+      <h2>Renjin Web Reports - Administration</h2>
+
+      <div class="col-md-12">
+         <h3>Users</h3>
+         <p th:if="${message}" th:text="${message}"/>
+         <form enctype="application/x-www-form-urlencoded" action="/admin/updateUsers" method="post" th:object="${users}">
+            <table class="table">
+               <thead>
+               <th>Username</th>
+               <th>Enabled</th>
+               <th>Failed logins</th>
+               <th>Is viewer</th>
+               <th>Is analyst</th>
+               <th>Is admin</th>
+               </thead>
+               <tr class="form-group"  th:each="user, itemStat: *{updateList}">
+                  <td><input class="form-control" type="text" th:field="*{updateList[__${itemStat.index}__].username}"
+                             th:value="${user.getUsername()}"></td>
+                  <td><input class="form-control" type="checkbox" th:field="*{updateList[__${itemStat.index}__].enabled}"
+                             th:checked="${user.isEnabled()}"></td>
+                  <td><input class="form-control" type="number" th:value="${user.getFailedAttempts()}" disabled></td>
+                  <td><input class="form-control" type="checkbox" th:field="*{updateList[__${itemStat.index}__].viewer}"
+                             th:checked='${user.isViewer()}'></td>
+                  <td><input class="form-control" type="checkbox" th:field="*{updateList[__${itemStat.index}__].analyst}"
+                             th:checked='${user.isAnalyst()}'></td>
+                  <td><input class="form-control" type="checkbox" th:field="*{updateList[__${itemStat.index}__].admin}"
+                             th:checked='${user.isAdmin()}'></td>
+               </tr>
+            </table>
+            <button type="submit" class="btn btn-success">Update</button>
+         </form>
+         <br/>
+         <div class="col-md-6 pt-3">
+            <fieldset class="border p-2">
+               <legend class="w-auto">New user</legend>
+               <form method="post" action="/admin/addUser">
+                  <div class="form-group row">
+                     <div class="col-md-2">
+                        <label for="username">Username</label>
+                     </div>
+                     <div class="col-md-6">
+                        <input class="form-control" type="text" id="username" name="username" />
+                     </div>
+                  </div>
+                  <div class="form-group row">
+                     <div class="col-md-2">
+                        <label for="email">Email</label>
+                     </div>
+                     <div class="col-md-6">
+                        <input class="form-control" type="text" id="email" name="email" />
+                     </div>
+                  </div>
+                  <div class="form-group">
+                     <div class="row">
+                        <div class="col-md-4 text-center">
+                           <label for="viewer">Is viewer</label>
+                        </div>
+                        <div class="col-md-4 text-center">
+                           <label for="analyst">Is analyst</label>
+                        </div>
+                        <div class="col-md-4 text-center">
+                           <label for="admin">Is admin</label>
+                        </div>
+                     </div>
+                     <div class="row">
+                        <div class="col-md-4 text-center">
+                           <input class="form-control" type="checkbox" id="viewer" name="viewer">
+                        </div>
+                        <div class="col-md-4 text-center">
+                           <input class="form-control" type="checkbox" id="analyst" name="analyst">
+                        </div>
+                        <div class="col-md-4 text-center">
+                           <input class="form-control" type="checkbox" id="admin" name="admin">
+                        </div>
+                     </div>
+                  </div>
+                  <button class="btn btn-success" type="submit">Add user</button>
+               </form>
+            </fieldset>
+         </div>
+      </div>
+   </div>
 </body>
 </html>

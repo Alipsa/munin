@@ -5,7 +5,9 @@
    <title id="pageTitle">Renjin Web Reports</title>
 </head>
 <body>
+   <div th:include="snippets/menu.html :: menu"/>
    <div class="container">
+
       <h2>Renjin Web Reports</h2>
 
       <p th:if="${message}" th:text="${message}" />
@@ -20,7 +22,7 @@
             <tr th:each="report: ${reportList}">
                <td th:text="${report.reportName}" disabled="disabled"/>
                <td th:text="${report.description}" disabled="disabled" />
-               <td><input type="checkbox" th:value="${report.inputContent == null ? false : report.inputContent.length() > 0}" disabled="disabled"/></td>
+               <td><input type="checkbox" th:checked="${report.inputContent == null ? false : report.inputContent.length() > 0}" disabled="disabled"/></td>
                <td>
                   <a th:href="@{/viewReport/{name}(name=${report.reportName})}" class="btn btn-success">View</a>
                   <span sec:authorize="hasRole('ROLE_ANALYST')">

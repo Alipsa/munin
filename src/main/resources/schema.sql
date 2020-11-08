@@ -1,8 +1,9 @@
 create table IF NOT EXISTS users(
     username varchar(50) not null primary key,
     password varchar(60) not null,
+    email varchar(50),
     enabled boolean not null default false,
-    failed_attempts int null
+    failed_attempts int not null default 0
 );
 
 create table IF NOT EXISTS authorities (
@@ -13,3 +14,10 @@ create table IF NOT EXISTS authorities (
 );
 create unique index IF NOT EXISTS ix_auth_username on authorities (username,authority);
 create index IF NOT EXISTS ix_username on authorities (username);
+
+create table if not exists report (
+    report_name varchar(50) not null primary key,
+    description varchar(500),
+    definition text,
+    input_content text
+)

@@ -8,8 +8,7 @@ merge into users(username, password, enabled) values ('admin', '$2a$10$g0dzD.RxT
 
 
 merge into authorities(username, authority) values
-('test', 'ROLE_USER'),
-('analyst', 'ROLE_USER'),
+('test', 'ROLE_VIEWER'),
 ('analyst', 'ROLE_ANALYST'),
 ('admin', 'ROLE_ADMIN');
 
