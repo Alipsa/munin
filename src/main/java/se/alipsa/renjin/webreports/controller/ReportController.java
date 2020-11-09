@@ -107,4 +107,17 @@ public class ReportController {
     model.addAttribute("inputContent", report.getInputContent());
     return "editReport";
   }
+
+  @PostMapping(path = "/manage/editReport")
+  public RedirectView modifyReport(@RequestParam String reportName, @RequestParam String description,
+                             @RequestParam String definition, @RequestParam String inputContent,
+                             RedirectAttributes redirectAttributes) throws ReportNotFoundException {
+    Report report = loadReport(reportName);
+    report.setDescription(description);
+    report.setDefinition(definition);
+    report.setInputContent(inputContent);
+    reportRepo.save(report);
+    redirectAttributes.addFlashAttribute("message",reportName + " modified successfully!");
+    return new RedirectView("/");
+  }
 }

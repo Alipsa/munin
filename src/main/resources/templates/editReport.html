@@ -1,33 +1,33 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head th:include="snippets/header.html :: headerFragment">
-   <title id="pageTitle">Manage Renjin Web Reports</title>
+   <title id="pageTitle">Edit Renjin Web Report</title>
 </head>
 <body>
    <div th:include="snippets/menu.html :: menu"/>
    <div class="container">
       <h3>Edit report</h3>
-      <form id="addReportForm" enctype="application/x-www-form-urlencoded" action="/manage/addReport" method="post">
+      <form id="editReportForm" enctype="application/x-www-form-urlencoded" action="/manage/editReport" method="post">
          <div class="form-group">
             <label for="reportName">Report Name</label>
-            <input id="reportName" type="text" name="reportName" th:value="${reportName}" disabled/>
+            <input id="reportName" type="text" name="reportName" th:value="${reportName}" readonly="readonly"/>
          </div>
 
          <div class="form-group">
             <label for="description">Description</label>
-            <textarea id="description" type="text" name="description" cols="40" rows="3" th:value="${reportDescription}"></textarea>
+            <textarea id="description" type="text" name="description" cols="40" rows="3" th:text="${reportDescription}"></textarea>
          </div>
 
          <div class="form-group">
             <label for="definition">R report code:</label>
-            <textarea class="form-control-file" id="definition" cols="40" rows="20" name="definition" th:value="${definition}"></textarea>
+            <textarea class="form-control-file" id="definition" cols="40" rows="20" name="definition" th:text="${definition}"></textarea>
             <label for="loadRFile">Load from file</label>
             <input type="file" id="loadRFile"/>
          </div>
 
          <div class="form-group">
             <label for="inputContent">Input form content</label>
-            <textarea class="form-control-file" id="inputContent" cols="40" rows="20" name="inputContent" th:value="${inputContent}"></textarea>
+            <textarea class="form-control-file" id="inputContent" cols="40" rows="20" name="inputContent" th:text="${inputContent}"></textarea>
             <label for="loadInputFile">Load from file</label>
             <input type="file" id="loadInputFile"/>
          </div>
@@ -37,6 +37,7 @@
    </div>
 </body>
 <script type="text/javascript">
+
    let rCodeMirror = CodeMirror.fromTextArea(document.getElementById("definition"), {
       mode: "text/x-rsrc",
       autoRefresh:true
@@ -44,20 +45,6 @@
    let inputCodeMirror = CodeMirror.fromTextArea(document.getElementById("inputContent"), {
       mode: "text/html",
       autoRefresh:true
-   });
-
-   $(document).ready(function() {
-      setTimeout(function() {
-         let rCode = $("textarea#definition").val();
-         console.log("R code =", rCode);
-         rCodeMirror.setValue(rCode);
-         //inputCodeMirror
-
-         setTimeout(function () {
-            rCodeMirror.refresh();
-            inputCodeMirror.refresh();
-         }, 1);
-      });
    });
 
    document.getElementById('loadRFile')
