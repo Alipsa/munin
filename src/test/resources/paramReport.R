@@ -1,6 +1,6 @@
 library('se.alipsa:renjin-html')
 
-# set defaults
+# set defaults, to allow us to view the report in a "normal" IDE
 if (!exists("dataSet")) {
   dataSet <- "PlantGrowth"
 }
@@ -29,6 +29,7 @@ if (dataSet == "PlantGrowth") {
   html.add(paste("Unknown option", dataSet))
 }
 html.add("</body></html>")
+# If we are using Ride (or another IDE that defines an inout object), display the report in the IDE
 if(exists("inout")) {
   inout$viewHtml(html.content(), "ParamReport")
 }

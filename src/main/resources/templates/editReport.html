@@ -8,26 +8,31 @@
    <div class="container">
       <h3>Edit report</h3>
       <form id="editReportForm" enctype="application/x-www-form-urlencoded" action="/manage/editReport" method="post">
-         <div class="form-group">
-            <label for="reportName">Report Name</label>
-            <input id="reportName" type="text" name="reportName" th:value="${reportName}" readonly="readonly"/>
+         <div class="form-group row">
+            <div class="col-md-4">
+               <label for="reportName">Report Name</label>
+               <input id="reportName" type="text"  name="reportName" th:value="${reportName}" readonly="readonly"/>
+            </div>
+            <div class="col-md-8">
+               <label for="description">Description</label>
+               <input id="description" type="text" name="description" size="80" maxlength="300" th:value="${reportDescription}"/>
+            </div>
          </div>
 
          <div class="form-group">
-            <label for="description">Description</label>
-            <textarea id="description" type="text" name="description" cols="40" rows="3" th:text="${reportDescription}"></textarea>
-         </div>
-
-         <div class="form-group">
-            <label for="definition">R report code:</label>
-            <textarea class="form-control-file" id="definition" cols="40" rows="20" name="definition" th:text="${definition}"></textarea>
+            <fieldset class="border">
+               <legend class="w-auto pb-0"><label for="definition">R report code:</label></legend>
+               <textarea class="form-control-file" id="definition" name="definition" th:text="${definition}"></textarea>
+            </fieldset>
             <label for="loadRFile">Load from file</label>
             <input type="file" id="loadRFile"/>
          </div>
 
          <div class="form-group">
-            <label for="inputContent">Input form content</label>
-            <textarea class="form-control-file" id="inputContent" cols="40" rows="20" name="inputContent" th:text="${inputContent}"></textarea>
+            <fieldset class="border">
+               <legend class="w-auto pb-0"><label for="inputContent">Parameters (Input form html content)</label></legend>
+               <textarea class="form-control-file" id="inputContent" name="inputContent" th:text="${inputContent}"></textarea>
+            </fieldset>
             <label for="loadInputFile">Load from file</label>
             <input type="file" id="loadInputFile"/>
          </div>
@@ -40,12 +45,17 @@
 
    let rCodeMirror = CodeMirror.fromTextArea(document.getElementById("definition"), {
       mode: "text/x-rsrc",
-      autoRefresh:true
+      autoRefresh:true,
+      lineNumbers: true
    });
+   rCodeMirror.setSize("100%", "100%");
+
    let inputCodeMirror = CodeMirror.fromTextArea(document.getElementById("inputContent"), {
       mode: "text/html",
-      autoRefresh:true
+      autoRefresh:true,
+      lineNumbers: true
    });
+   inputCodeMirror.setSize("100%", "100%");
 
    document.getElementById('loadRFile')
       .addEventListener('change', function() {

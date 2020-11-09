@@ -8,26 +8,32 @@
    <div class="container">
       <h3>Add report</h3>
       <form id="addReportForm" enctype="application/x-www-form-urlencoded" action="/manage/addReport" method="post">
-         <div class="form-group">
-            <label for="reportName">Report Name</label>
-            <input id="reportName" type="text" name="reportName" />
+         <div class="form-group row">
+            <div class="col-md-4">
+               <label for="reportName">Report Name</label>
+               <input id="reportName" type="text" name="reportName" />
+            </div>
+            <div class="col-md-8">
+               <label for="description">Description</label>
+               <input id="description" type="text" name="description" size="80" maxlength="300"/>
+            </div>
          </div>
 
          <div class="form-group">
-            <label for="description">Description</label>
-            <textarea id="description" type="text" name="description" cols="40" rows="3"></textarea>
-         </div>
-
-         <div class="form-group">
-            <label for="definition">R report code:</label>
-            <textarea class="form-control-file" id="definition" cols="40" rows="20" name="definition"></textarea>
+            <fieldset class="border">
+               <legend class="w-auto pb-0"><label for="definition">R report code:</label></legend>
+               <textarea class="form-control-file" id="definition" name="definition"></textarea>
+            </fieldset>
             <label for="loadRFile">Load from file</label>
             <input type="file" id="loadRFile"/>
          </div>
 
+
          <div class="form-group">
-            <label for="inputContent">Input form content</label>
-            <textarea class="form-control-file" id="inputContent" cols="40" rows="20" name="inputContent"></textarea>
+            <fieldset class="border">
+               <legend class="w-auto pb-0"><label for="inputContent">Parameters (Input form html content)</label></legend>
+               <textarea class="form-control-file" id="inputContent" name="inputContent"></textarea>
+            </fieldset>
             <label for="loadInputFile">Load from file</label>
             <input type="file" id="loadInputFile"/>
          </div>
@@ -35,16 +41,20 @@
          <button type="submit" class="btn btn-primary">Add report</button>
       </form>
    </div>
+   <br />
 </body>
 <script type="text/javascript">
    let rCodeMirror = CodeMirror.fromTextArea(document.getElementById("definition"), {
-      mode: "text/x-rsrc"
+      mode: "text/x-rsrc",
+      lineNumbers: true
    });
+   rCodeMirror.setSize("100%", "100%");
 
    let inputCodeMirror = CodeMirror.fromTextArea(document.getElementById("inputContent"), {
-      mode: "text/html"
+      mode: "text/html",
+      lineNumbers: true
    });
-
+   inputCodeMirror.setSize("100%", "100%");
 
    document.getElementById('loadRFile')
       .addEventListener('change', function() {
