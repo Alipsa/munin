@@ -120,4 +120,13 @@ public class ReportController {
     redirectAttributes.addFlashAttribute("message",reportName + " modified successfully!");
     return new RedirectView("/");
   }
+
+  @GetMapping(path = "/manage/deleteReport/{name}")
+  public RedirectView deleteReport(@PathVariable String name, RedirectAttributes redirectAttributes) throws ReportNotFoundException {
+    Report report = loadReport(name);
+    reportRepo.delete(report);
+    redirectAttributes.addFlashAttribute("message",name + " deleted successfully!");
+    return new RedirectView("/");
+  }
+
 }
