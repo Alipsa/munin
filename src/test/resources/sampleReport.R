@@ -1,4 +1,4 @@
-library('se.alipsa:renjin-html')
+library('se.alipsa:htmlcreator')
 
 html.clear()
 html.add("<html><body>")

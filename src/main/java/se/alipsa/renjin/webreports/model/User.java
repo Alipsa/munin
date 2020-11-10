@@ -1,12 +1,13 @@
 package se.alipsa.renjin.webreports.model;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 
 @Entity
 @Table(name = "users")
-public class User {
+public class User implements Serializable {
 
   @Id
   @Column(length = 50)

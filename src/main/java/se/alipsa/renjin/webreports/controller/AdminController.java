@@ -40,7 +40,6 @@ public class AdminController {
 
   @PostMapping("/admin/updateUsers")
   public String updateUsers(@ModelAttribute UserUpdates userUpdates, RedirectAttributes redirectAttributes) {
-    userUpdates.getUpdateList().forEach(System.out::println);
     userRoleService.updateUsers(userUpdates.getUpdateList());
     redirectAttributes.addFlashAttribute("message","users updated successfully!");
     return "redirect:/admin/index";

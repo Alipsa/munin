@@ -2,22 +2,17 @@ package se.alipsa.renjin.webreports.controller;
 
 import org.apache.commons.collections4.IterableUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import se.alipsa.renjin.webreports.model.Report;
 import se.alipsa.renjin.webreports.repo.ReportRepo;
-import se.alipsa.renjin.webreports.repo.UserRepo;
 import se.alipsa.renjin.webreports.service.UserRoleService;
-import se.alipsa.renjin.webreports.util.PasswordGenerator;
 
 import java.util.List;
 

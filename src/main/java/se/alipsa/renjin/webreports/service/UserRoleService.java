@@ -1,12 +1,11 @@
 package se.alipsa.renjin.webreports.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.server.ResponseStatusException;
 import se.alipsa.renjin.webreports.controller.AddUserException;
 import se.alipsa.renjin.webreports.controller.UserUpdate;
 import se.alipsa.renjin.webreports.model.Authorities;
@@ -32,6 +31,8 @@ public class UserRoleService {
   @Value("${webreports.password-length:10}")
   int passwordLength;
 
+  private static final Logger LOG = LoggerFactory.getLogger(UserRoleService.class);
+
   @Autowired
   public UserRoleService(UserRepo userRepo, AuthoritiesRepo authoritiesRepo, EmailService emailService) {
     this.userRepo = userRepo;
@@ -45,6 +46,7 @@ public class UserRoleService {
     userRepo.findAll().forEach(u -> {
       UserUpdate uu = new UserUpdate();
       uu.setUsername(u.getUsername());
+      uu.setEmail(u.getEmail());
       uu.setEnabled(u.isEnabled());
       uu.setFailedAttempts(u.getFailedAttempts());
       uu.setViewer(u.isViewer());
@@ -63,10 +65,9 @@ public class UserRoleService {
     updateList.forEach(update -> {
       User u = map.get(update.getUsername());
       if (u != null) {
-        System.out.println("Updating user " + update.getUsername());
+        LOG.debug("Updating user " + update.getUsername() + " with email " + update.getEmail());
         u.setEnabled(update.isEnabled());
         u.setEmail(update.getEmail());
-        userRepo.save(u); // Strange that this is needed, we are in a transaction
         authoritiesRepo.deleteByUser(u);
         addRoles(update, u);
       }
@@ -77,20 +78,17 @@ public class UserRoleService {
     List<Authorities> authToUpdate = new ArrayList<>();
     if (update.isAdmin()) {
       Authorities auth = new Authorities(new AuthoritiesPk(u, ROLE_ADMIN.name()));
-      System.out.println("Add ROLE_ADMIN role");
+      LOG.trace("Add ROLE_ADMIN to " + u.getUsername());
       authToUpdate.add(auth);
-      //authoritiesRepo.save(auth);
     }
     if (update.isAnalyst()) {
       Authorities auth = new Authorities(new AuthoritiesPk(u, ROLE_ANALYST.name()));
-      System.out.println("Add ROLE_ANALYST role");
-      //authoritiesRepo.save(auth);
+      LOG.trace("Add ROLE_ANALYST to " + u.getUsername());
       authToUpdate.add(auth);
     }
     if (update.isViewer()) {
       Authorities auth = new Authorities(new AuthoritiesPk(u, ROLE_VIEWER.name()));
-      System.out.println("Add ROLE_VIEWER role");
-      //authoritiesRepo.save(auth);
+      LOG.trace("Add ROLE_VIEWER to " + u.getUsername());
       authToUpdate.add(auth);
     }
     if (authToUpdate.size() > 0) {
@@ -131,7 +129,6 @@ public class UserRoleService {
   }
 
   @Transactional
-  @Modifying
   public void resetPassword(String username) {
     Optional<User> userOpt = userRepo.findById(username);
     if (!userOpt.isPresent()) {

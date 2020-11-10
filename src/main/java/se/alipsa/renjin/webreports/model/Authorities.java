@@ -1,10 +1,11 @@
 package se.alipsa.renjin.webreports.model;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "authorities")
-public class Authorities {
+public class Authorities implements Serializable {
 
   @EmbeddedId
   private AuthoritiesPk pk;

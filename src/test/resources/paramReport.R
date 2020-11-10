@@ -1,4 +1,4 @@
-library('se.alipsa:renjin-html')
+library('se.alipsa:htmlcreator')
 
 # set defaults, to allow us to view the report in a "normal" IDE
 if (!exists("dataSet")) {

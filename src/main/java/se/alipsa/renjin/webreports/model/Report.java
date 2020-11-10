@@ -1,9 +1,10 @@
 package se.alipsa.renjin.webreports.model;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
-public class Report {
+public class Report implements Serializable {
 
   @Id
   @Column(length = 50)
