@@ -5,9 +5,9 @@ This is a reports server for reports created in R based on Renjin and Spring Boo
 This is a reporting server that can run and display reports created in Renjin R on the web.
 
 Currrently, it support R reports where the R program returns html. 
-This can be done by using the renjin-html package, e.g:
+This can be done by using the htmlcreator package for Renjin, e.g:
 ```r
-library('se.alipsa:renjin-html')
+library('se.alipsa:htmlcreator')
 
 html.add("<html><body>")
 html.add("<h2>A Sample report with a table and an image<h2>")
@@ -27,7 +27,7 @@ html.content()
 ```
 
 ## Parameterized reports
-When publishing a report you can can optionally add report parameters in the form of
+When publishing a report you can optionally add report parameters in the form of
 html form content, e.g:
 ```html
 <div class="form-group">
