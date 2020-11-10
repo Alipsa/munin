@@ -8,6 +8,7 @@
 <div class="container">
    <div class="form-signin col-md-5">
       <h1 class="pb-3">Renjin Web Reports</h1>
+      <p th:if="${message}" th:text="${message}" />
       <h1 class="pt-5">Login</h1>
       <form th:action="@{/login.html}" method="post">
          <div class="row">
@@ -26,7 +27,7 @@
                <input type="password" id="password" name="password" />
             </div>
          </div>
-         <br />
+         <a href="/resetPassword"><small>Reset password</small></a>
          <div class="col-md-9 text-center">
             <input type="submit" value="Log in" />
          </div>

@@ -1,8 +1,12 @@
 package se.alipsa.renjin.webreports.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 import se.alipsa.renjin.webreports.controller.AddUserException;
 import se.alipsa.renjin.webreports.controller.UserUpdate;
 import se.alipsa.renjin.webreports.model.Authorities;
@@ -10,6 +14,7 @@ import se.alipsa.renjin.webreports.model.AuthoritiesPk;
 import se.alipsa.renjin.webreports.model.User;
 import se.alipsa.renjin.webreports.repo.AuthoritiesRepo;
 import se.alipsa.renjin.webreports.repo.UserRepo;
+import se.alipsa.renjin.webreports.util.PasswordGenerator;
 
 import java.util.*;
 
@@ -21,13 +26,17 @@ import static se.alipsa.renjin.webreports.config.Role.ROLE_VIEWER;
 public class UserRoleService {
 
   private final UserRepo userRepo;
-
   private final AuthoritiesRepo authoritiesRepo;
+  private final EmailService emailService;
+
+  @Value("${webreports.password-length:10}")
+  int passwordLength;
 
   @Autowired
-  public UserRoleService(UserRepo userRepo, AuthoritiesRepo authoritiesRepo) {
+  public UserRoleService(UserRepo userRepo, AuthoritiesRepo authoritiesRepo, EmailService emailService) {
     this.userRepo = userRepo;
     this.authoritiesRepo = authoritiesRepo;
+    this.emailService = emailService;
   }
 
   @Transactional
@@ -56,6 +65,8 @@ public class UserRoleService {
       if (u != null) {
         System.out.println("Updating user " + update.getUsername());
         u.setEnabled(update.isEnabled());
+        u.setEmail(update.getEmail());
+        userRepo.save(u); // Strange that this is needed, we are in a transaction
         authoritiesRepo.deleteByUser(u);
         addRoles(update, u);
       }
@@ -95,11 +106,44 @@ public class UserRoleService {
     }
     User user = new User();
     user.setUsername(userUpdate.getUsername());
+    user.setEmail(userUpdate.getEmail());
     user.setPassword(encodedPwd);
     user.setEnabled(true);
     user.setFailedAttempts(0);
 
     User dbUser = userRepo.save(user);
     addRoles(userUpdate, dbUser);
+  }
+
+  @Transactional
+  public boolean verify(String username, String email) {
+    Optional<User> userOpt = userRepo.findById(username);
+    if (userOpt.isPresent()) {
+      User user = userOpt.get();
+      return nullBlankLc(user.getEmail()).equals(nullBlankLc(email));
+    }
+    return false;
+  }
+
+  private String nullBlankLc(String str) {
+    String val = str == null ? "" : str;
+    return val.toLowerCase();
+  }
+
+  @Transactional
+  @Modifying
+  public void resetPassword(String username) {
+    Optional<User> userOpt = userRepo.findById(username);
+    if (!userOpt.isPresent()) {
+      throw new IllegalArgumentException("user " + username + " does not exist");
+    }
+    User user = userOpt.get();
+
+    String passwd = PasswordGenerator.generateRandomPassword(passwordLength);
+    String encodedPwd = PasswordGenerator.encrypt(passwd);
+    user.setPassword(encodedPwd);
+    //userRepo.save(user); // should not be needed, we are in a transaction
+    emailService.send(user.getEmail(), "New password for Renjin Web Reports",
+        "Welcome back to Renjin Web reports\n Your new password is password is " + passwd);
   }
 }

@@ -49,7 +49,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         //.csrfTokenRepository(csrfTokenRepository())
         //.and()
         .authorizeRequests()
-          .antMatchers("/webjars/**", "/css/**", "/favicon.ico", "/actuator/health")
+          .antMatchers("/resetPassword", "/webjars/**", "/css/**", "/favicon.ico", "/actuator/health")
             .permitAll()
           .antMatchers("/reports/**")
             .hasRole(ROLE_VIEWER.getShortName())

@@ -70,6 +70,7 @@ public class UserUpdate {
   public String toString() {
     return "UserUpdate{" +
         "username='" + username + '\'' +
+        ", email=" + email +
         ", enabled=" + enabled +
         ", viewer=" + viewer +
         ", analyst=" + analyst +
