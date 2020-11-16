@@ -1,14 +1,16 @@
 # To do (backlog)
 
-* Figure out a way/workflow to support adding of packages
-    - Add config for who can add packages (ADMIN, ANALYST)
-    - Currently, Renjin uses the spring boot classloader: this would need to change
-    
 * Add report scheduling
     - Cron like 
     - Support mail with either html inline or as attachment
-    - Handle default values for parameterized reports    
+    - Handle default values for parameterized reports  
     
+* Add support for additional remote repos when using AetherPackageLoader
+    
+* Figure out a way/workflow to support adding of packages when using ClasspathPackageLoader
+    - Add config for who can add packages (ADMIN, ANALYST)
+    - Currently, when set to ClasspathPackageLoader, we use the spring boot classloader: this would need to change
+         
 * Customization 
     - Document how and what can be customized, at least
         - styles

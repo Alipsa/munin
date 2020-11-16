@@ -63,9 +63,9 @@ public class AdminController {
     } catch (AddUserException e) {
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
     }
-    emailService.send(userUpdate.getEmail(), "User details for Renjin Web Reports",
+    emailService.sendText( "User details for Renjin Web Reports",
         "Welcome to Renjin Web reports\n Your username is " + userUpdate.getUsername()
-            + "\nand password is " + passwd);
+            + "\nand password is " + passwd, userUpdate.getEmail());
     redirectAttributes.addFlashAttribute("message","user " + userUpdate.getUsername() + " added successfully and email sent!");
     return "redirect:/admin/index";
   }

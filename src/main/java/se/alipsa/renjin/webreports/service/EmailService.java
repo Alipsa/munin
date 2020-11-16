@@ -6,7 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
+
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
 
 @Service
 public class EmailService {
@@ -27,7 +31,7 @@ public class EmailService {
 
 
 
-  public void send(String to, String subject, String message) {
+  public void sendText(String subject, String message, String... to) {
     if ("fakehost".equals(mailServerHost)) {
       LOG.info("email disabled, printing message instead of sending it");
       LOG.info("To: {}, Subject: {}, Message: {}", to, subject, message);
@@ -39,5 +43,14 @@ public class EmailService {
     msg.setSubject(subject);
     msg.setText(message);
     emailSender.send(msg);
+  }
+
+  public void sendHtml(String subject, String message, String... to) throws MessagingException {
+    MimeMessage mimeMsg = emailSender.createMimeMessage();
+    MimeMessageHelper helper = new MimeMessageHelper(mimeMsg, false);
+    helper.setSubject(subject);
+    helper.setText(message, true);
+    helper.setTo(to);
+    emailSender.send(mimeMsg);
   }
 }

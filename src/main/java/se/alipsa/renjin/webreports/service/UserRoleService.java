@@ -140,7 +140,7 @@ public class UserRoleService {
     String encodedPwd = PasswordGenerator.encrypt(passwd);
     user.setPassword(encodedPwd);
     //userRepo.save(user); // should not be needed, we are in a transaction
-    emailService.send(user.getEmail(), "New password for Renjin Web Reports",
-        "Welcome back to Renjin Web reports\n Your new password is password is " + passwd);
+    emailService.sendText("New password for Renjin Web Reports",
+        "Welcome back to Renjin Web reports\n Your new password is password is " + passwd, user.getEmail());
   }
 }
