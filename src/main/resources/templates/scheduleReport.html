@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:include="snippets/header.html :: headerFragment">
+   <title id="pageTitle">Schedule a Renjin Web Report</title>
+</head>
+<body>
+   <div th:include="snippets/menu.html :: menu"/>
+   <div class="container">
+      <h3>Schedule report</h3>
+      <label for="cronVal">Schedule</label>
+      <input id="cronVal" readonly/>&nbsp;<span id="cronSchedule"></span>
+
+   </div>
+
+   <script type="text/javascript" th:src="@{/js/cron/jquery-cron.js}"></script>
+
+   <link type="text/css" th:href="@{/js/cron/jquery-cron.css}" rel="stylesheet" />
+   <script type="text/javascript" th:src="@{/js/gentleSelect/jquery-gentleSelect.js}"></script>
+   <link type="text/css" th:href="@{/js/gentleSelect/jquery-gentleSelect.css}" rel="stylesheet" />
+
+   <script>
+      $(document).ready(function() {
+         $('#cronSchedule').cron({
+            initial: "30 9 * * 1",
+            onChange: function() {
+               $('#cronVal').val($(this).cron("value"));
+            },
+            useGentleSelect: true
+         });
+      });
+   </script>
+</body>
+</html>

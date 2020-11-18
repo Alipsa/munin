@@ -98,6 +98,11 @@ public class ReportController {
     return new RedirectView("/");
   }
 
+  @GetMapping("/manage/schedule")
+  public String scheduleReportForm() {
+    return "scheduleReport";
+  }
+
   @GetMapping(path = "/manage/editReport/{name}")
   public String editReportForm(@PathVariable String name, Model model) throws ReportNotFoundException {
     Report report = loadReport(name);

@@ -35,6 +35,7 @@
       </table>
       <div sec:authorize="hasRole('ROLE_ANALYST')">
          <a href="/manage/addReport" class="btn btn-primary">Add Report</a>
+         <a href="/manage/schedule" class="btn btn-primary">Schedule Report</a>
       </div>
       <div sec:authorize="hasRole('ROLE_ADMIN')">
          <a href="/admin/index" class="btn btn-primary">Administration</a>

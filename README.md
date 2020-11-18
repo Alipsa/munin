@@ -55,3 +55,11 @@ Bootstrap is available, so you can use bootstrap classes to style the form.
 - Later on maybe I'll attempt to support Shiny as well...
 At least 3 packages needs to fixed to be able to use the shiny package:
 HTTPUV 1.5.1, PROMISES 1.0.1, and LATER 0.8.0
+
+# 3:rd party dependencies
+
+# Jquery-cron
+- Used in the UI to schedule reports
+- version: shawnchin-jquery-cron-v0.1.4.1-0-g89922ea
+- https://shawnchin.github.io/jquery-cron/
+- License: MIT
