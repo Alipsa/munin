@@ -21,16 +21,17 @@
             <div class="form-group row">
                <div class="col-md-3">
                   <label for="cronVal">Schedule</label>
-                  <input id="cronVal" readonly class="form-control"/>&nbsp;
+                  <input id="cronVal" name="cronVal" readonly="readonly" class="form-control"/>
                </div>
-               <div class="col-md-3">
-                  <span id="cronSchedule"></span>
+               <div class="col-md-5 pt-3">
+                  <br/>
+                  <div id="cronSchedule"></div>
                </div>
             </div>
             <div class="form-group row">
-               <div class="col-md-6">
-                  <label for="emails" title="Semicolon separated list of report recepients">Emails</label>
-                  <input id="emails" class="form-control" title="Semicolon separated list of report recepients"/>&nbsp;
+               <div class="col-md-8">
+                  <label for="emails" title="Semicolon separated list of report recipients">Emails</label>
+                  <input id="emails" name="emails" class="form-control" title="Semicolon separated list of report recipients"/>&nbsp;
                </div>
             </div>
             <div class="form-group row">
@@ -52,7 +53,7 @@
          $('#cronSchedule').cron({
             initial: "30 9 * * 1",
             onChange: function() {
-               $('#cronVal').text($(this).cron("value"));
+               $('#cronVal').val($(this).cron("value"));
             },
             useGentleSelect: true
          });

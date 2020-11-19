@@ -32,11 +32,7 @@ public class EmailService {
 
 
   public void sendText(String subject, String message, String... to) {
-    if ("fakehost".equals(mailServerHost)) {
-      LOG.info("email disabled, printing message instead of sending it");
-      LOG.info("To: {}, Subject: {}, Message: {}", to, subject, message);
-      return;
-    }
+    if (checkAndHandleFakehost(subject, message, to)) return;
     SimpleMailMessage msg = new SimpleMailMessage();
     msg.setFrom(fromAddress);
     msg.setTo(to);
@@ -46,11 +42,22 @@ public class EmailService {
   }
 
   public void sendHtml(String subject, String message, String... to) throws MessagingException {
+    if (checkAndHandleFakehost(subject, message, to)) return;
     MimeMessage mimeMsg = emailSender.createMimeMessage();
     MimeMessageHelper helper = new MimeMessageHelper(mimeMsg, false);
     helper.setSubject(subject);
     helper.setText(message, true);
     helper.setTo(to);
+    helper.setFrom(fromAddress);
     emailSender.send(mimeMsg);
+  }
+
+  private boolean checkAndHandleFakehost(String subject, String message, String[] to) {
+    if ("fakehost".equals(mailServerHost)) {
+      LOG.info("email disabled, printing message instead of sending it");
+      LOG.info("To: {}, Subject: {}, Message: {}", to, subject, message);
+      return true;
+    }
+    return false;
   }
 }

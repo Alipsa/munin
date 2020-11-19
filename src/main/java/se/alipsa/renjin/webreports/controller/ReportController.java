@@ -1,12 +1,19 @@
 package se.alipsa.renjin.webreports.controller;
 
-import org.apache.commons.collections4.IterableUtils;
+import com.cronutils.mapper.CronMapper;
+import com.cronutils.model.Cron;
+import com.cronutils.model.CronType;
+import com.cronutils.model.definition.CronDefinitionBuilder;
+import com.cronutils.parser.CronParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
@@ -17,11 +24,7 @@ import se.alipsa.renjin.webreports.service.ReportEngine;
 import se.alipsa.renjin.webreports.service.ReportSchedulerService;
 
 import javax.script.ScriptException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Controller
 public class ReportController {
@@ -30,6 +33,8 @@ public class ReportController {
   private final ReportRepo reportRepo;
   private final ReportEngine reportEngine;
   private final ReportSchedulerService reportSchedulerService;
+
+  private final CronParser cronParser = new CronParser(CronDefinitionBuilder.instanceDefinitionFor(CronType.UNIX));
 
   @Autowired
   public ReportController(ReportRepo reportRepo, ReportEngine reportEngine, ReportSchedulerService reportSchedulerService) {
@@ -116,8 +121,11 @@ public class ReportController {
   @PostMapping(path = "/manage/schedule", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
   public RedirectView scheduleReport(@RequestParam String reportName, @RequestParam String cronVal,
                                      @RequestParam String emails, RedirectAttributes redirectAttributes) {
-    String[] reportRecepients = emails.replace(',', ';').split(";");
-    reportSchedulerService.scheduleReport(reportName, cronVal, reportRecepients);
+    String[] reportRecipients = emails.replace(',', ';').split(";");
+    Cron cron = cronParser.parse(cronVal);
+    Cron springCron = CronMapper.fromQuartzToSpring().map(CronMapper.fromUnixToQuartz().map(cron));
+
+    reportSchedulerService.scheduleReport(reportName, springCron.asString(), reportRecipients);
     redirectAttributes.addFlashAttribute("message",reportName + " scheduled successfully!");
     return new RedirectView("/");
   }
