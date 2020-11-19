@@ -7,9 +7,38 @@
    <div th:include="snippets/menu.html :: menu"/>
    <div class="container">
       <h3>Schedule report</h3>
-      <label for="cronVal">Schedule</label>
-      <input id="cronVal" readonly/>&nbsp;<span id="cronSchedule"></span>
 
+         <form action="/manage/schedule" method="post">
+            <div class="form-group row">
+               <div class="col-md-3">
+                  <label for="reportName">Report</label>
+                  <select id = "reportName" name="reportName" class="form-control">
+                     <option th:each="report: ${reportList}" th:value="${report}" th:text="${report}">
+                     </option>
+                  </select>
+               </div>
+            </div>
+            <div class="form-group row">
+               <div class="col-md-3">
+                  <label for="cronVal">Schedule</label>
+                  <input id="cronVal" readonly class="form-control"/>&nbsp;
+               </div>
+               <div class="col-md-3">
+                  <span id="cronSchedule"></span>
+               </div>
+            </div>
+            <div class="form-group row">
+               <div class="col-md-6">
+                  <label for="emails" title="Semicolon separated list of report recepients">Emails</label>
+                  <input id="emails" class="form-control" title="Semicolon separated list of report recepients"/>&nbsp;
+               </div>
+            </div>
+            <div class="form-group row">
+               <div class="col-md-2">
+                  <button type="submit" class="btn btn-primary">Schedule</button>
+               </div>
+            </div>
+         </form>
    </div>
 
    <script type="text/javascript" th:src="@{/js/cron/jquery-cron.js}"></script>
@@ -23,7 +52,7 @@
          $('#cronSchedule').cron({
             initial: "30 9 * * 1",
             onChange: function() {
-               $('#cronVal').val($(this).cron("value"));
+               $('#cronVal').text($(this).cron("value"));
             },
             useGentleSelect: true
          });

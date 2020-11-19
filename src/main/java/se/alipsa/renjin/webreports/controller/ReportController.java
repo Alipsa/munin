@@ -1,5 +1,6 @@
 package se.alipsa.renjin.webreports.controller;
 
+import org.apache.commons.collections4.IterableUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -13,8 +14,10 @@ import se.alipsa.renjin.webreports.model.Report;
 import se.alipsa.renjin.webreports.repo.ReportRepo;
 import se.alipsa.renjin.webreports.service.ReportDefinitionException;
 import se.alipsa.renjin.webreports.service.ReportEngine;
+import se.alipsa.renjin.webreports.service.ReportSchedulerService;
 
 import javax.script.ScriptException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,11 +29,13 @@ public class ReportController {
   //private static final Logger LOG = LoggerFactory.getLogger(ReportController.class);
   private final ReportRepo reportRepo;
   private final ReportEngine reportEngine;
+  private final ReportSchedulerService reportSchedulerService;
 
   @Autowired
-  public ReportController( ReportRepo reportRepo, ReportEngine reportEngine) {
+  public ReportController(ReportRepo reportRepo, ReportEngine reportEngine, ReportSchedulerService reportSchedulerService) {
     this.reportRepo = reportRepo;
     this.reportEngine = reportEngine;
+    this.reportSchedulerService = reportSchedulerService;
   }
 
   @GetMapping("/viewReport/{name}")
@@ -99,8 +104,22 @@ public class ReportController {
   }
 
   @GetMapping("/manage/schedule")
-  public String scheduleReportForm() {
-    return "scheduleReport";
+  public ModelAndView scheduleReportForm() {
+    ModelAndView mav = new ModelAndView();
+    List<String> reportNames = new ArrayList<>();
+    reportRepo.findAll().forEach(r -> reportNames.add(r.getReportName()));
+    mav.addObject("reportList", reportNames);
+    mav.setViewName("scheduleReport");
+    return mav;
+  }
+
+  @PostMapping(path = "/manage/schedule", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+  public RedirectView scheduleReport(@RequestParam String reportName, @RequestParam String cronVal,
+                                     @RequestParam String emails, RedirectAttributes redirectAttributes) {
+    String[] reportRecepients = emails.replace(',', ';').split(";");
+    reportSchedulerService.scheduleReport(reportName, cronVal, reportRecepients);
+    redirectAttributes.addFlashAttribute("message",reportName + " scheduled successfully!");
+    return new RedirectView("/");
   }
 
   @GetMapping(path = "/manage/editReport/{name}")
