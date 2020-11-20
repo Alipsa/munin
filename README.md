@@ -42,6 +42,23 @@ html form content, e.g:
 </select>
 </div>
 ```
+Note that, in order to be able to schedule a parameterized report, you must provide default parameters in the R code
+e.g. by using `exists()`. Lets say the parameter is the name of the dataset to use i.e.  
+```html
+<div class="form-group">
+<select name="dataSet">
+   <option value="mtcars">Motor Trend Car Road Tests</option>
+   <option value="iris">3 species of iris flowers</option>
+</select>
+</div>
+```
+The you can provide a default value for it as follows:
+```r
+if (!exists("dataSet")) {
+  dataSet <- "PlantGrowth"
+}
+```
+# Styling
 Bootstrap is available, so you can use bootstrap classes to style the form.
 
 # Production config 

@@ -1,6 +1,6 @@
 library('se.alipsa:htmlcreator')
 
-# set defaults, to allow us to view the report in a "normal" IDE
+# set defaults, to allow us to view the report in a "normal" IDE and to schedule it
 if (!exists("dataSet")) {
   dataSet <- "PlantGrowth"
 }
