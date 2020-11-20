@@ -6,6 +6,7 @@ import com.cronutils.model.CronType;
 import com.cronutils.model.definition.CronDefinitionBuilder;
 import com.cronutils.parser.CronParser;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
@@ -98,6 +100,15 @@ public class ReportController {
   public RedirectView addReport(@RequestParam String reportName, @RequestParam String description,
                                 @RequestParam String definition, @RequestParam String inputContent,
                                 RedirectAttributes redirectAttributes) {
+    if (reportName == null || "".equals(reportName.trim())) {
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Report name cannot be empty");
+    }
+    if (reportRepo.findById(reportName).isPresent()) {
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "There is already a report with that name");
+    }
+    if (definition == null || "".equals(definition.trim())) {
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Report definition (R code) cannot be empty");
+    }
     Report report = new Report();
     report.setReportName(reportName);
     report.setDescription(description);
@@ -144,6 +155,12 @@ public class ReportController {
   public RedirectView modifyReport(@RequestParam String reportName, @RequestParam String description,
                              @RequestParam String definition, @RequestParam String inputContent,
                              RedirectAttributes redirectAttributes) throws ReportNotFoundException {
+    if (reportName == null || "".equals(reportName.trim())) {
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Report name cannot be empty");
+    }
+    if (definition == null || "".equals(definition.trim())) {
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Report definition (R code) cannot be empty");
+    }
     Report report = loadReport(reportName);
     report.setDescription(description);
     report.setDefinition(definition);

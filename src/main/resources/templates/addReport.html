@@ -7,7 +7,7 @@
    <div th:include="snippets/menu.html :: menu"/>
    <div class="container">
       <h3>Add report</h3>
-      <form id="addReportForm" enctype="application/x-www-form-urlencoded" action="/manage/addReport" method="post">
+      <form id="addReportForm" enctype="application/x-www-form-urlencoded" action="/manage/addReport" method="post" onSubmit="return checkForm()">
          <div class="form-group row">
             <div class="col-md-4">
                <label for="reportName">Report Name</label>
@@ -73,5 +73,17 @@
          }
          fr.readAsText(this.files[0]);
       })
+
+   function checkForm() {
+      if ($("#reportName").val().length === 0) {
+         alert("Report name cannot be empty");
+         return false;
+      }
+      if (rCodeMirror.getValue().length === 0) {
+         alert("R code cannot be empty");
+         return false;
+      }
+      return true;
+   }
 </script>
 </html>
