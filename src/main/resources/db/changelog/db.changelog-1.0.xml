@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.2.xsd">
+    <changeSet author="pernyfelt"  id="changelog-1.0:1">
+        <createTable tableName="users">
+            <column name="username" type="varchar(50)">
+                <constraints nullable="false"  primaryKey="true"/>
+            </column>
+            <column name="password" type="varchar(60)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="email" type="varchar(50)" />
+            <column name="enabled" type="boolean" defaultValue="false">
+                <constraints nullable="false" />
+            </column>
+            <column name="failed_attempts" type="int" defaultValue="0">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+
+        <createTable tableName="authorities">
+            <column name="username" type="varchar(50)">
+                <constraints nullable="false"  primaryKey="true"  primaryKeyName="pk_authorities"/>
+            </column>
+            <column name="authority" type="varchar(50)">
+                <constraints nullable="false"  primaryKey="true"  primaryKeyName="pk_authorities"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint
+                constraintName="fk_authorities_users"
+                baseTableName="authorities"
+                baseColumnNames="username"
+                referencedTableName="users"
+                referencedColumnNames="username"/>
+
+        <createIndex indexName="ix_auth_username" tableName="authorities">
+            <column name="username"/>
+            <column name="authority"/>
+        </createIndex>
+
+        <createIndex indexName="ix_username" tableName="authorities">
+            <column name="username"/>
+        </createIndex>
+
+        <createTable tableName="report">
+            <column name="report_name" type="varchar(50)">
+                <constraints nullable="false"  primaryKey="true"/>
+            </column>
+            <column name="description" type="varchar(500)"/>
+            <column name="definition" type="text"/>
+            <column name="input_content" type="text"/>
+        </createTable>
+
+        <createTable tableName="report_schedule">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="report_name" type="varchar(50)"/>
+            <column name="cron" type="varchar(50)"/>
+            <column name="emails" type="varchar(500)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="pernyfelt"  id="changelog-1.0:2">
+        <insert tableName="users">
+            <column name="username" value="test"/>
+            <column name="password" value="$2a$10$d27ULWd8iGYywmtAmFc31ev25topU0qfe5bhy8/DTZvJ4y/uzdipO"/>
+            <column name="enabled" value="true"/>
+        </insert>
+        <insert tableName="users">
+            <column name="username" value="analyst"/>
+            <column name="password" value="$2a$10$kKOXumKtHWFKCGRCyZAPlezOjE13J5t/qTmVUxKYiSnBIXveDzT12"/>
+            <column name="enabled" value="true"/>
+        </insert>
+        <insert tableName="users">
+            <column name="username" value="admin"/>
+            <column name="password" value="$2a$10$g0dzD.RxTWxYlT4nbcl0jO5Co2.osKLPlvUOdgbxWqPMFUSobeN6S"/>
+            <column name="enabled" value="true"/>
+        </insert>
+        <insert tableName="authorities">
+            <column name="username" value="test"/>
+            <column name="authority" value="ROLE_VIEWER"/>
+        </insert>
+        <insert tableName="authorities">
+            <column name="username" value="analyst"/>
+            <column name="authority" value="ROLE_ANALYST"/>
+        </insert>
+        <insert tableName="authorities">
+            <column name="username" value="admin"/>
+            <column name="authority" value="ROLE_ADMIN"/>
+        </insert>
+    </changeSet>
+</databaseChangeLog>

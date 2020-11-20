@@ -1,8 +1,6 @@
 package se.alipsa.renjin.webreports.service;
 
-import org.renjin.eval.Context;
 import org.renjin.script.RenjinScriptEngine;
-import org.renjin.sexp.Environment;
 import org.renjin.sexp.SEXP;
 import org.renjin.sexp.StringArrayVector;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,20 +35,19 @@ public class ReportEngine {
     return sexp.asString();
   }
 
-  public SEXP runScript(String script) throws ScriptException {
-    return (SEXP)scriptEngine.eval(script);
+  private SEXP runScript(String script) throws ScriptException {
+    SEXP result = (SEXP)scriptEngine.eval(script);
+    clearEnvironment();
+    return result;
   }
 
-  public SEXP runScript(String script, Map<String, Object> params) throws ScriptException {
+  private SEXP runScript(String script, Map<String, Object> params) throws ScriptException {
     params.forEach(scriptEngine::put);
-    return (SEXP)scriptEngine.eval(script);
+    SEXP result = (SEXP)scriptEngine.eval(script);
+    clearEnvironment();
+    return result;
   }
 
-  public SEXP getVariable(String varName) {
-    Environment global = scriptEngine.getSession().getGlobalEnvironment();
-    Context topContext = scriptEngine.getSession().getTopLevelContext();
-    return global.getVariable(topContext, varName);
-  }
 
   /**
    * will clear all objects includes hidden objects in the environment.

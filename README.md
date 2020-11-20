@@ -44,7 +44,40 @@ html form content, e.g:
 ```
 Bootstrap is available, so you can use bootstrap classes to style the form.
 
+# Production config 
+you can do any customization by adding an application-prod.properties file next to the jar.
+The start the server with `-Dspring.profiles.active=prod` set e.g.
+`java -Dspring.profiles.active=prod -jar renjin-web-reports-1.0.0-SNAPSHOT.jar`
+This will override any default config with your specific config.
 
+### Web port
+Set the property `server.port` to something else e.g. `server.port=8080` to listen for
+web requests on port 8080 instead of the default 8088.
+
+### Monitoring
+Actuator is included with default settings which means that a network monitoring tool can
+check for availability by querying `http://localhost:8088/actuator/health` which will return the
+json string `{"status":"UP"}` if everything is normal.
+
+### Database
+The database stores the reports and user config. 
+Default config is a file based H2 database (`jdbc:h2:file:./renjinwebdb;DATABASE_TO_LOWER=TRUE`) 
+To change the underlying database config, set the spring.datasource.xxx parameters 
+as you see fit.
+
+Not that if you want another database other than H2, you need to make sure spring boot can access
+the jdbc driver jar. This can be done by setting the loader.path, e.g:
+
+1. create a lib folder where your spring boot jar resides
+2. copy the additional jar to the lib folder
+3. add path to the folder when starting spring boot:
+`java -Dloader.path=file:lib/ -Dspring.profiles.active=prod -jar renjin-web-reports-1.0.0-SNAPSHOT.jar`
+
+### Mail
+Mail is used to email passwords when users are created as well as mailing out scheduled reports.
+Set spring.mail.xxx properties as suitable for your mail server
+The "from" address is controlled by the property `webreports.email.from`
+ 
 
 #Todo: 
 
