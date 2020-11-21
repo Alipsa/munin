@@ -20,4 +20,11 @@ create table if not exists report (
     description varchar(500),
     definition text,
     input_content text
-)
+);
+
+create table if not exists report_schedule (
+    id bigint not null primary key,
+    report_name varchar(50),
+    cron varchar(50),
+    emails varchar(500)
+);

@@ -52,7 +52,7 @@ e.g. by using `exists()`. Lets say the parameter is the name of the dataset to u
 </select>
 </div>
 ```
-The you can provide a default value for it as follows:
+Then you can provide a default value for it as follows:
 ```r
 if (!exists("dataSet")) {
   dataSet <- "PlantGrowth"
