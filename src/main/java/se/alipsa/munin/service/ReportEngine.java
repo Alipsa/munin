@@ -6,7 +6,7 @@ import org.renjin.sexp.SEXP;
 import org.renjin.sexp.StringArrayVector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import se.alipsa.renjin.starter.RenjinSessionEnginePool;
 
@@ -25,15 +25,8 @@ public class ReportEngine {
     this.renjinSessionEnginePool = renjinSessionEnginePool;
   }
 
-  public String runReport(String script) throws ScriptException, ReportDefinitionException {
-    SEXP sexp = runScript(script);
-    if (!(sexp instanceof StringArrayVector)) {
-      throw new ReportDefinitionException("This report does not return an html String (character), nothing to render!");
-    }
-    return sexp.asString();
-  }
-
-  public String runReport(String script, Map<String, Object> params) throws ScriptException, ReportDefinitionException {
+  @SafeVarargs
+  public final String runReport(String script, Map<String, Object>... params) throws ScriptException, ReportDefinitionException {
     SEXP sexp = runScript(script, params);
     if (!(sexp instanceof StringArrayVector)) {
       throw new ReportDefinitionException("This report does not return an html String (character), nothing to render!");
