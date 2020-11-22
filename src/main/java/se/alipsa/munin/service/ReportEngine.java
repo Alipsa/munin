@@ -1,5 +1,6 @@
 package se.alipsa.munin.service;
 
+import org.renjin.eval.EvalException;
 import org.renjin.script.RenjinScriptEngine;
 import org.renjin.sexp.SEXP;
 import org.renjin.sexp.StringArrayVector;
@@ -45,7 +46,6 @@ public class ReportEngine {
     RenjinScriptEngine scriptEngine = null;
     try {
       scriptEngine = renjinSessionEnginePool.borrowObject();
-      System.out.println("scriptEngine = " + scriptEngine);
       if (paramOpt.length > 0) {
         Map<String, Object> params = paramOpt[0];
         params.forEach(scriptEngine::put);
@@ -54,6 +54,9 @@ public class ReportEngine {
     } catch (Exception e) {
       if (e instanceof ScriptException) {
         throw (ScriptException) e;
+      } else if (e instanceof EvalException) {
+        LOG.warn("A runtime evaluation error occurred when running the R script", e);
+        throw (EvalException)e;
       } else {
         LOG.error("Error using object pool", e);
         throw new ReportEngineRuntimeException("Error using object pool", e);
