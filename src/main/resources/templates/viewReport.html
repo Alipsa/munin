@@ -1,13 +1,11 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head th:include="snippets/header.html :: headerFragment">
-  <title id="pageTitle">Renjin Web Reports</title>
+  <title id="pageTitle" th:inline="text">[[${reportName}]]</title>
 </head>
 <body>
 <div th:include="snippets/menu.html :: menu"/>
 <div class="container">
-  <h2 th:text="${reportName}" />
-  <p th:text="${reportDescription}" />
   <div th:remove="tag" th:utext="${reportContent}"><html><body></body></html></div>
 </div>
 </body>

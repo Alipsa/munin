@@ -1,10 +1,12 @@
-# renjin-web-reports
-This is a reports server for reports created in R based on Renjin and Spring Boot
+# Munin
+This is a reports server for reports created in R based on Renjin and Spring Boot.
+The name comes from the one of Odins ravens who he sent out every day to scout the world and bring him
+back reports. 
 
 # Basic idea
 This is a reporting server that can run and display reports created in Renjin R on the web.
 
-Currrently, it support R reports where the R program returns html. 
+Currently, it support R reports where the R program returns html. 
 This can be done by using the htmlcreator package for Renjin, e.g:
 ```r
 library('se.alipsa:htmlcreator')
@@ -64,7 +66,7 @@ Bootstrap is available, so you can use bootstrap classes to style the form.
 # Production config 
 you can do any customization by adding an application-prod.properties file next to the jar.
 The start the server with `-Dspring.profiles.active=prod` set e.g.
-`java -Dspring.profiles.active=prod -jar renjin-web-reports-1.0.0-SNAPSHOT.jar`
+`java -Dspring.profiles.active=prod -jar munin-1.0.0-SNAPSHOT.jar`
 This will override any default config with your specific config.
 
 ### Web port
@@ -78,7 +80,7 @@ json string `{"status":"UP"}` if everything is normal.
 
 ### Database
 The database stores the reports and user config. 
-Default config is a file based H2 database (`jdbc:h2:file:./renjinwebdb;DATABASE_TO_LOWER=TRUE`) 
+Default config is a file based H2 database (`jdbc:h2:file:./munindb;DATABASE_TO_LOWER=TRUE`) 
 To change the underlying database config, set the spring.datasource.xxx parameters 
 as you see fit.
 
@@ -88,12 +90,12 @@ the jdbc driver jar. This can be done by setting the loader.path, e.g:
 1. create a lib folder where your spring boot jar resides
 2. copy the additional jar to the lib folder
 3. add path to the folder when starting spring boot:
-`java -Dloader.path=file:lib/ -Dspring.profiles.active=prod -jar renjin-web-reports-1.0.0-SNAPSHOT.jar`
+`java -Dloader.path=file:lib/ -Dspring.profiles.active=prod -jar munin-1.0.0-SNAPSHOT.jar`
 
 ### Mail
 Mail is used to email passwords when users are created as well as mailing out scheduled reports.
 Set spring.mail.xxx properties as suitable for your mail server
-The "from" address is controlled by the property `webreports.email.from`
+The "from" address is controlled by the property `munin.email.from`
  
 
 #Todo: 

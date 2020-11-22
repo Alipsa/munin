@@ -1,5 +1,29 @@
-h1, h2, h3, h4 {
+h1 {
+    color: black;
+    /*font-family: 'Harrington Regular', cursive;*/
+}
+
+h2, h3, h4 {
     color: slategray;
+}
+
+.navbar-brand {
+    height: auto;
+    padding: 0;
+    position: absolute;
+    right: 0;
+}
+
+.log-img {
+    max-height: 100%;
+    height: 20px;
+}
+
+@font-face {
+    font-family: 'Harrington Regular';
+    font-style: normal;
+    font-weight: normal;
+    src: local('Harrington Regular'), url('HARNGTON.woff') format('woff');
 }
 
 

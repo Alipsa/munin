@@ -5,24 +5,17 @@
 
     <modelVersion>4.0.0</modelVersion>
 
-    <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.4.0</version>
-        <relativePath/> <!-- lookup parent from repository -->
-    </parent>
-
-    <artifactId>renjin-web-reports</artifactId>
+    <artifactId>munin</artifactId>
     <groupId>se.alipsa</groupId>
     <version>1.0.0-SNAPSHOT</version>
 
-    <name>Renjin web reports server</name>
+    <name>Munin - a Renjin based web reporting server</name>
     <description>A reporting server based on Renjin and Spring Boot.</description>
-    <url>https://github.com/perNyfelt/renjin-web-reports</url>
+    <url>https://github.com/perNyfelt/munin</url>
     <licenses>
         <license>
             <name>MIT License</name>
-            <url>https://github.com/perNyfelt/renjin-web-reports/main/LICENSE</url>
+            <url>https://raw.githubusercontent.com/perNyfelt/munin/main/LICENSE</url>
         </license>
     </licenses>
     <developers>
@@ -34,9 +27,9 @@
         </developer>
     </developers>
     <scm>
-        <connection>scm:git:https://github.com/perNyfelt/renjin-web-reports.git</connection>
-        <developerConnection>scm:git:git@github.com:perNyfelt/renjin-web-reports.git</developerConnection>
-        <url>https://github.com/perNyfelt/renjin-web-reports/tree/main</url>
+        <connection>scm:git:https://github.com/perNyfelt/munin.git</connection>
+        <developerConnection>scm:git:git@github.com:perNyfelt/munin.git</developerConnection>
+        <url>https://github.com/perNyfelt/munin/tree/main</url>
     </scm>
 
     <properties>
@@ -45,7 +38,20 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <renjin.version>3.5-beta76</renjin.version>
+        <spring.boot.version>2.4.0</spring.boot.version>
     </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring.boot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <dependencies>
         <dependency>
@@ -79,7 +85,7 @@
         <dependency>
             <groupId>se.alipsa</groupId>
             <artifactId>htmlcreator</artifactId>
-            <version>1.0</version>
+            <version>1.1-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>commons-io</groupId>
@@ -253,10 +259,18 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>${spring.boot.version}</version>
                 <configuration>
                     <addResources>true</addResources>
                     <layout>ZIP</layout>
                 </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

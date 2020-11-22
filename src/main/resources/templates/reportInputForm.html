@@ -13,9 +13,14 @@
       <input name="name" th:value="${reportName}" hidden="hidden" />
       <div class="form-group" th:utext="${inputContent}"/>
       <div class="form-group">
-         <button class="btn btn-success" type="submit">View Report</button>
+         <button class="btn btn-success" type="submit" onclick="showWaitCursor()">View Report</button>
       </div>
    </form>
 </div>
+<script>
+   function showWaitCursor() {
+      document.body.style.cursor='wait';
+   }
+</script>
 </body>
 </html>
