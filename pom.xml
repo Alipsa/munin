@@ -81,13 +81,19 @@
         </dependency>
         <dependency>
             <groupId>org.renjin</groupId>
-            <artifactId>renjin-script-engine</artifactId>
+            <artifactId>renjin-aether-package-loader</artifactId>
             <version>3.5-beta76</version>
         </dependency>
         <dependency>
             <groupId>se.alipsa</groupId>
             <artifactId>renjin-spring-boot-starter</artifactId>
             <version>1.0.0-SNAPSHOT</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.renjin</groupId>
+                    <artifactId>renjin-aether-package-loader</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>se.alipsa</groupId>
@@ -195,6 +201,10 @@
                 <exclusion>
                     <groupId>org.junit.vintage</groupId>
                     <artifactId>junit-vintage-engine</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.vaadin.external.google</groupId>
+                    <artifactId>android-json</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>
