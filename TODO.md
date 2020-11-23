@@ -1,10 +1,6 @@
 # To do (backlog)
 
-* Add report scheduling
-    - Cron like 
-    - Support mail with either html inline or as attachment
-    - Handle default values for parameterized reports  
-    
+## Features    
 * Add support for additional remote repos when using AetherPackageLoader
     
 * Figure out a way/workflow to support adding of packages when using ClasspathPackageLoader
@@ -22,4 +18,10 @@
     - Do some load testing to check performance, concurrency and resource consumption
     - Run some security audit to ensure Security Config is good enough
     - Document how to set up as an autostarting service     
+    
+## Libraries used    
+### cron ui input
+- https://github.com/invigoro/Cron-Scheduler-Input is a fork of the original jquery-cron-quartz with support
+for i18n and initial cron expressions. Consider testing it and maybe change. The original has not been updated for
+several years...
     

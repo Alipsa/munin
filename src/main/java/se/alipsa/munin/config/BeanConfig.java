@@ -9,11 +9,6 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class BeanConfig {
 
-  @Bean("unixCronParser")
-  public CronParser unixCronParser() {
-    return new CronParser(CronDefinitionBuilder.instanceDefinitionFor(CronType.UNIX));
-  }
-
   @Bean("quartzCronParser")
   public CronParser quartzCronParser() {
     return new CronParser(CronDefinitionBuilder.instanceDefinitionFor(CronType.QUARTZ));

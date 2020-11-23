@@ -58,30 +58,12 @@
       </form>
    </div>
 
-   <!--script type="text/javascript" th:src="@{/js/cron/jquery-cron.js}"></script>
-   <link type="text/css" th:href="@{/js/cron/jquery-cron.css}" rel="stylesheet" />
-   <script type="text/javascript" th:src="@{/js/gentleSelect/jquery-gentleSelect.js}"></script>
-   <link type="text/css" th:href="@{/js/gentleSelect/jquery-gentleSelect.css}" rel="stylesheet" /-->
-
    <script type="text/javascript" th:src="@{/js/jquery-cron-quartz/jquery-cron-quartz.js}" ></script>
    <link rel="stylesheet" type="text/css" th:href="@{/js/jquery-cron-quartz/jquery-cron-quartz.css}">
 
    <script>
-      /*
-      $(document).ready(function() {
-         $('#cronSchedule').cron({
-            initial: "30 9 * * 1",
-            onChange: function() {
-               $('#cronVal').val($(this).cron("value"));
-            },
-            useGentleSelect: true
-         });
-      });
-      */
       $(function() {
-         // Initialize DOM with cron builder with options
          $('#cronSchedule').cronBuilder({
-            //selectorLabel: "Schedule",
             onChange: function(expression) {
                $('#cronVal').val(expression);
             }
