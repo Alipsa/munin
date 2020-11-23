@@ -2,8 +2,6 @@ package se.alipsa.munin.controller;
 
 import com.cronutils.mapper.CronMapper;
 import com.cronutils.model.Cron;
-import com.cronutils.model.CronType;
-import com.cronutils.model.definition.CronDefinitionBuilder;
 import com.cronutils.parser.CronParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -146,14 +144,33 @@ public class ReportController {
   }
 
   @PostMapping(path = "/manage/schedule", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-  public RedirectView scheduleReport(@RequestParam String reportName, @RequestParam String cronVal,
+  public RedirectView scheduleReport(@RequestParam(required = false) Long id,
+                                     @RequestParam String reportName, @RequestParam String cronVal,
                                      @RequestParam String emails, RedirectAttributes redirectAttributes) {
     emails = emails.replace(',', ';');
     Cron cron = cronParser.parse(cronVal);
     Cron springCron = CronMapper.fromQuartzToSpring().map(cron);
     ReportSchedule schedule = new ReportSchedule(reportName, springCron.asString(), emails);
-    reportSchedulerService.addReportSchedule(schedule);
+    if (id == null) {
+      reportSchedulerService.addReportSchedule(schedule);
+    } else {
+      reportSchedulerService.updateReportSchedule(id, schedule);
+    }
     redirectAttributes.addFlashAttribute("message",reportName + " scheduled successfully!");
+    return new RedirectView("/manage/schedule");
+  }
+
+  @GetMapping(path = "/manage/schedule/delete/{id}")
+  public RedirectView deleteSchedule(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+    Optional<ReportSchedule> reportScheduleOpt = reportScheduleRepo.findById(id);
+    if (!reportScheduleOpt.isPresent()) {
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "There is no Report Schedule with the id " + id);
+    }
+    ReportSchedule schedule = reportScheduleOpt.get();
+    String reportName = schedule.getReportName();
+    String cron = schedule.getCron();
+    reportScheduleRepo.delete(schedule);
+    redirectAttributes.addFlashAttribute("message","Schedule for report " + reportName + " with schedule " + cron + " deleted successfully!");
     return new RedirectView("/manage/schedule");
   }
 

@@ -20,6 +20,7 @@ public class ReportScheduleWebFactory {
 
   public ReportScheduleWeb create(ReportSchedule schedule) {
     return new ReportScheduleWeb(
+        schedule.getId(),
         schedule.getReportName(),
         schedule.getCron(),
         schedule.getEmails(),

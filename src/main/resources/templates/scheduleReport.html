@@ -7,6 +7,7 @@
    <div th:include="snippets/menu.html :: menu"/>
    <div class="container">
       <h2>Schedule report</h2>
+      <p th:if="${message}" th:text="${message}" />
       <div th:if="${schedules}">
          <h3>Existing Schedules</h3>
          <table class="table">
@@ -14,17 +15,24 @@
                <th>Report name</th>
                <th>Schedule</th>
                <th>Description</th>
+               <th>Emails</th>
                <th>Action</th>
             </thead>
-            <tr th:each="reportSchedule: ${schedules}">
-               <td th:text="${reportSchedule.getReportName()}"></td>
-               <td th:text="${reportSchedule.getCron()}"></td>
+            <tr th:id="'row'+ ${reportSchedule.getId()}" th:each="reportSchedule: ${schedules}">
+               <td data-name="reportName" th:text="${reportSchedule.getReportName()}"></td>
+               <td data-name="cron" th:text="${reportSchedule.getCron()}"></td>
                <td th:text="${reportSchedule.getReadableCron()}"></td>
+               <td data-name="emails" th:text="${reportSchedule.getEmails()}"></td>
+               <td>
+                  <button type="button" class="btn btn-primary" th:onclick="editSchedule([[${reportSchedule.getId()}]])">Edit</button>
+                  <a th:href="@{/manage/schedule/delete/{id}(id=${reportSchedule.getId()})}" class="btn btn-danger">Delete</a>
+               </td>
             </tr>
          </table>
       </div>
-      <h3>New Schedule</h3>
+      <h3 id="newEditSchedule">New Schedule</h3>
       <form action="/manage/schedule" method="post">
+         <input id="id" hidden="hidden" name="id" />
          <div class="form-group row">
             <div class="col-md-3">
                <label for="reportName">Report</label>
@@ -54,6 +62,9 @@
             <div class="col-md-2">
                <button type="submit" class="btn btn-primary">Schedule</button>
             </div>
+            <div class="col-md-2">
+               <button type="reset" class="btn btn-secondary">Reset</button>
+            </div>
          </div>
       </form>
    </div>
@@ -69,6 +80,15 @@
             }
          });
       });
+
+      function editSchedule(id) {
+         let row = $("#row" + id);
+         $("#id").val(id);
+         $("#reportName").val(row.find("td[data-name='reportName']").text());
+         $("#cronVal").val(row.find("td[data-name='cron']").text());
+         $("#emails").val(row.find("td[data-name='emails']").text());
+         document.getElementById("newEditSchedule").scrollIntoView();
+      }
    </script>
 </body>
 </html>

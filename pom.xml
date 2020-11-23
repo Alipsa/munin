@@ -355,12 +355,10 @@
                 </configuration>
             </plugin>
             <plugin>
+                <!-- Note: Wierd class not found errors are likely due to the schema.sql being out of sync with liquibase/entity definitions -->
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-failsafe-plugin</artifactId>
                 <version>3.0.0-M5</version>
-                <configuration>
-                    <forkCount>0</forkCount>
-                </configuration>
                 <executions>
                     <execution>
                         <goals>

@@ -28,3 +28,5 @@ create table if not exists report_schedule (
     cron varchar(50),
     emails varchar(500)
 );
+
+create sequence schedule_seq START WITH 1 INCREMENT BY 2;

@@ -2,6 +2,7 @@ package se.alipsa.munin.model.web;
 
 public class ReportScheduleWeb {
 
+  private Long id;
   private String reportName;
   private String cron;
   private String emails;
@@ -10,12 +11,21 @@ public class ReportScheduleWeb {
   public ReportScheduleWeb() {
     // empty
   }
-  public ReportScheduleWeb(String reportName, String cron, String emails, String readableCron) {
+  public ReportScheduleWeb(Long id, String reportName, String cron, String emails, String readableCron) {
+    this.id = id;
     this.reportName = reportName;
     this.cron = cron;
     this.emails = emails;
     this.readableCron = readableCron;
 
+  }
+
+  public Long getId() {
+    return id;
+  }
+
+  public void setId(Long id) {
+    this.id = id;
   }
 
   public String getReportName() {

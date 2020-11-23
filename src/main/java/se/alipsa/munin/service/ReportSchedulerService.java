@@ -8,6 +8,7 @@ import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.scheduling.support.CronTrigger;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import se.alipsa.munin.model.Report;
 import se.alipsa.munin.model.ReportSchedule;
 import se.alipsa.munin.repo.ReportRepo;
@@ -95,9 +96,24 @@ public class ReportSchedulerService implements
     reportScheduleRepo.save(schedule);
   }
 
+  @Transactional
+  public void updateReportSchedule(Long id, ReportSchedule schedule) {
+    Optional<ReportSchedule> reportScheduleOpt = reportScheduleRepo.findById(id);
+    if (!reportScheduleOpt.isPresent()) {
+      throw new IllegalArgumentException("There is no report schedule for id " + id);
+    }
+    ReportSchedule reportSchedule = reportScheduleOpt.get();
+    reportSchedule.setReportName(schedule.getReportName());
+    reportSchedule.setCron(schedule.getCron());
+    reportSchedule.setEmails(schedule.getEmails());
+    //reportScheduleRepo.save(reportSchedule); in a transaction so should not be needed
+  }
+
   @Override
   public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
     LOG.info("Activating stored schedules");
     reportScheduleRepo.findAll().forEach(this::scheduleReport);
   }
+
+
 }
