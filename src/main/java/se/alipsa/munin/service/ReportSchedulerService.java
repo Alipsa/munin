@@ -3,11 +3,15 @@ package se.alipsa.munin.service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationListener;
+import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.scheduling.support.CronTrigger;
 import org.springframework.stereotype.Service;
 import se.alipsa.munin.model.Report;
+import se.alipsa.munin.model.ReportSchedule;
 import se.alipsa.munin.repo.ReportRepo;
+import se.alipsa.munin.repo.ReportScheduleRepo;
 
 import javax.mail.MessagingException;
 import javax.script.ScriptException;
@@ -16,25 +20,28 @@ import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
 @Service
-public class ReportSchedulerService {
+public class ReportSchedulerService implements
+    ApplicationListener<ContextRefreshedEvent> {
 
   private final TaskScheduler executor;
   private final ReportRepo reportRepo;
+  private final ReportScheduleRepo reportScheduleRepo;
   private final ReportEngine reportEngine;
   private final EmailService emailService;
 
   private final static Logger LOG = LoggerFactory.getLogger(ReportSchedulerService.class);
 
   @Autowired
-  public ReportSchedulerService(TaskScheduler executor, ReportRepo reportRepo, ReportEngine reportEngine,
+  public ReportSchedulerService(TaskScheduler executor, ReportRepo reportRepo, ReportScheduleRepo reportScheduleRepo, ReportEngine reportEngine,
                                 EmailService emailService) {
     this.executor = executor;
     this.reportRepo = reportRepo;
+    this.reportScheduleRepo = reportScheduleRepo;
     this.reportEngine = reportEngine;
     this.emailService = emailService;
   }
 
-  public void scheduleReport(String reportName, String cronSchedule, String... emails) {
+  private void scheduleReport(String reportName, String cronSchedule, String... emails) {
     if (reportName == null) {
       throw new IllegalArgumentException("ReportName cannot be null");
     }
@@ -71,5 +78,26 @@ public class ReportSchedulerService {
       LOG.info("Report {}, executed on schedule and emailed successfully", reportName);
     };
     executor.schedule(reportTask, schedule);
+  }
+
+  private void scheduleReport(ReportSchedule schedule) {
+    String[] reportRecipients;
+    if (schedule.getEmails().indexOf(';') > 0){
+      reportRecipients = schedule.getEmails().split(";");
+    } else {
+      reportRecipients = new String[]{schedule.getEmails()};
+    }
+    scheduleReport(schedule.getReportName(), schedule.getCron(), reportRecipients);
+  }
+
+  public void addReportSchedule(ReportSchedule schedule) {
+    scheduleReport(schedule);
+    reportScheduleRepo.save(schedule);
+  }
+
+  @Override
+  public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
+    LOG.info("Activating stored schedules");
+    reportScheduleRepo.findAll().forEach(this::scheduleReport);
   }
 }

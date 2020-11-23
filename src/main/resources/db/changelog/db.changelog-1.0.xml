@@ -94,4 +94,8 @@
             <column name="authority" value="ROLE_ADMIN"/>
         </insert>
     </changeSet>
+
+    <changeSet author="pernyfelt"  id="changelog-1.0:3">
+        <createSequence cycle="false" incrementBy="2" maxValue="9223372036854775807" sequenceName="schedule_seq" startValue="1"/>
+    </changeSet>
 </databaseChangeLog>

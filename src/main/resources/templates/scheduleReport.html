@@ -6,40 +6,54 @@
 <body>
    <div th:include="snippets/menu.html :: menu"/>
    <div class="container">
-      <h3>Schedule report</h3>
-
-         <form action="/manage/schedule" method="post">
-            <div class="form-group row">
-               <div class="col-md-3">
-                  <label for="reportName">Report</label>
-                  <select id = "reportName" name="reportName" class="form-control">
-                     <option th:each="report: ${reportList}" th:value="${report}" th:text="${report}">
-                     </option>
-                  </select>
-               </div>
+      <h2>Schedule report</h2>
+      <div th:if="${schedules}">
+         <h3>Existing Schedules</h3>
+         <table class="table">
+            <thead class="thead-light">
+               <th>Report name</th>
+               <th>Schedule</th>
+               <th>Action</th>
+            </thead>
+            <tr th:each="reportSchedule: ${schedules}">
+               <td th:text="${reportSchedule.getReportName()}"></td>
+               <td th:text="${reportSchedule.getCron()}"></td>
+            </tr>
+         </table>
+      </div>
+      <h3>New Schedule</h3>
+      <form action="/manage/schedule" method="post">
+         <div class="form-group row">
+            <div class="col-md-3">
+               <label for="reportName">Report</label>
+               <select id = "reportName" name="reportName" class="form-control">
+                  <option th:each="report: ${reportList}" th:value="${report}" th:text="${report}">
+                  </option>
+               </select>
             </div>
-            <div class="form-group row">
-               <div class="col-md-3">
-                  <label for="cronVal">Schedule</label>
-                  <input id="cronVal" name="cronVal" readonly="readonly" class="form-control"/>
-               </div>
-               <div class="col-md-5 pt-3">
-                  <br/>
-                  <div id="cronSchedule"></div>
-               </div>
+         </div>
+         <div class="form-group row">
+            <div class="col-md-3">
+               <label for="cronVal">Schedule</label>
+               <input id="cronVal" name="cronVal" readonly="readonly" class="form-control"/>
             </div>
-            <div class="form-group row">
-               <div class="col-md-8">
-                  <label for="emails" title="Semicolon separated list of report recipients">Emails</label>
-                  <input id="emails" name="emails" class="form-control" title="Semicolon separated list of report recipients"/>&nbsp;
-               </div>
+            <div class="col-md-5 pt-3">
+               <br/>
+               <div id="cronSchedule"></div>
             </div>
-            <div class="form-group row">
-               <div class="col-md-2">
-                  <button type="submit" class="btn btn-primary">Schedule</button>
-               </div>
+         </div>
+         <div class="form-group row">
+            <div class="col-md-8">
+               <label for="emails" title="Semicolon separated list of report recipients">Emails</label>
+               <input id="emails" name="emails" class="form-control" title="Semicolon separated list of report recipients"/>&nbsp;
             </div>
-         </form>
+         </div>
+         <div class="form-group row">
+            <div class="col-md-2">
+               <button type="submit" class="btn btn-primary">Schedule</button>
+            </div>
+         </div>
+      </form>
    </div>
 
    <script type="text/javascript" th:src="@{/js/cron/jquery-cron.js}"></script>

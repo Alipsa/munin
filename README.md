@@ -169,5 +169,16 @@ HTTPUV 1.5.1, PROMISES 1.0.1, and LATER 0.8.0
 - https://shawnchin.github.io/jquery-cron/
 - License: MIT
 
+## cRonstrue
+- javascript lib used to resolve cron expressions into human format
+- version: v1.85.0
+- https://github.com/bradymholt/cRonstrue
+- License: MIT
+
+## cron-parser-spring
+- java lib used to resolve cron expressions into human format
+- version: 3.5
+- https://github.com/grahamar/cron-parser
+- License: MIT
 See pom.xml for more details...
 

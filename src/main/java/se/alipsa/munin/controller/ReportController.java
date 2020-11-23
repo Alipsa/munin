@@ -20,7 +20,9 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 import se.alipsa.munin.model.Report;
+import se.alipsa.munin.model.ReportSchedule;
 import se.alipsa.munin.repo.ReportRepo;
+import se.alipsa.munin.repo.ReportScheduleRepo;
 import se.alipsa.munin.service.ReportDefinitionException;
 import se.alipsa.munin.service.ReportEngine;
 import se.alipsa.munin.service.ReportSchedulerService;
@@ -33,14 +35,16 @@ public class ReportController {
 
   //private static final Logger LOG = LoggerFactory.getLogger(ReportController.class);
   private final ReportRepo reportRepo;
+  private final ReportScheduleRepo reportScheduleRepo;
   private final ReportEngine reportEngine;
   private final ReportSchedulerService reportSchedulerService;
 
   private final CronParser cronParser = new CronParser(CronDefinitionBuilder.instanceDefinitionFor(CronType.UNIX));
 
   @Autowired
-  public ReportController(ReportRepo reportRepo, ReportEngine reportEngine, ReportSchedulerService reportSchedulerService) {
+  public ReportController(ReportRepo reportRepo, ReportScheduleRepo reportScheduleRepo, ReportEngine reportEngine, ReportSchedulerService reportSchedulerService) {
     this.reportRepo = reportRepo;
+    this.reportScheduleRepo = reportScheduleRepo;
     this.reportEngine = reportEngine;
     this.reportSchedulerService = reportSchedulerService;
   }
@@ -125,6 +129,10 @@ public class ReportController {
     List<String> reportNames = new ArrayList<>();
     reportRepo.findAll().forEach(r -> reportNames.add(r.getReportName()));
     mav.addObject("reportList", reportNames);
+
+    List<ReportSchedule> schedules = new ArrayList<>();
+    reportScheduleRepo.findAll().forEach(schedules::add);
+    mav.addObject("schedules", schedules);
     mav.setViewName("scheduleReport");
     return mav;
   }
@@ -132,11 +140,11 @@ public class ReportController {
   @PostMapping(path = "/manage/schedule", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
   public RedirectView scheduleReport(@RequestParam String reportName, @RequestParam String cronVal,
                                      @RequestParam String emails, RedirectAttributes redirectAttributes) {
-    String[] reportRecipients = emails.replace(',', ';').split(";");
+    emails = emails.replace(',', ';');
     Cron cron = cronParser.parse(cronVal);
     Cron springCron = CronMapper.fromQuartzToSpring().map(CronMapper.fromUnixToQuartz().map(cron));
-
-    reportSchedulerService.scheduleReport(reportName, springCron.asString(), reportRecipients);
+    ReportSchedule schedule = new ReportSchedule(reportName, springCron.asString(), emails);
+    reportSchedulerService.addReportSchedule(schedule);
     redirectAttributes.addFlashAttribute("message",reportName + " scheduled successfully!");
     return new RedirectView("/");
   }
