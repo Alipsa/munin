@@ -6,6 +6,7 @@ import com.cronutils.model.CronType;
 import com.cronutils.model.definition.CronDefinitionBuilder;
 import com.cronutils.parser.CronParser;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -46,7 +47,8 @@ public class ReportController {
 
   @Autowired
   public ReportController(ReportRepo reportRepo, ReportScheduleRepo reportScheduleRepo, ReportEngine reportEngine,
-                          ReportSchedulerService reportSchedulerService, ReportScheduleWebFactory reportScheduleWebFactory, CronParser cronParser) {
+                          ReportSchedulerService reportSchedulerService, ReportScheduleWebFactory reportScheduleWebFactory,
+                          @Qualifier("quartzCronParser") CronParser cronParser) {
     this.reportRepo = reportRepo;
     this.reportScheduleRepo = reportScheduleRepo;
     this.reportEngine = reportEngine;
@@ -152,7 +154,7 @@ public class ReportController {
     ReportSchedule schedule = new ReportSchedule(reportName, springCron.asString(), emails);
     reportSchedulerService.addReportSchedule(schedule);
     redirectAttributes.addFlashAttribute("message",reportName + " scheduled successfully!");
-    return new RedirectView("/");
+    return new RedirectView("/manage/schedule");
   }
 
   @GetMapping(path = "/manage/editReport/{name}")

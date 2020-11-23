@@ -3,6 +3,7 @@ package se.alipsa.munin.model.web;
 import com.cronutils.descriptor.CronDescriptor;
 import com.cronutils.parser.CronParser;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import se.alipsa.munin.model.ReportSchedule;
 
@@ -13,7 +14,7 @@ public class ReportScheduleWebFactory {
   CronDescriptor descriptor = CronDescriptor.instance();
 
   @Autowired
-  public ReportScheduleWebFactory(CronParser cronParser) {
+  public ReportScheduleWebFactory(@Qualifier("springCronParser") CronParser cronParser) {
     this.cronParser = cronParser;
   }
 
