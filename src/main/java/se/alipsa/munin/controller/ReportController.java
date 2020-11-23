@@ -21,6 +21,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 import se.alipsa.munin.model.Report;
 import se.alipsa.munin.model.ReportSchedule;
+import se.alipsa.munin.model.web.ReportScheduleWeb;
+import se.alipsa.munin.model.web.ReportScheduleWebFactory;
 import se.alipsa.munin.repo.ReportRepo;
 import se.alipsa.munin.repo.ReportScheduleRepo;
 import se.alipsa.munin.service.ReportDefinitionException;
@@ -38,15 +40,19 @@ public class ReportController {
   private final ReportScheduleRepo reportScheduleRepo;
   private final ReportEngine reportEngine;
   private final ReportSchedulerService reportSchedulerService;
+  private final ReportScheduleWebFactory reportScheduleWebFactory;
 
-  private final CronParser cronParser = new CronParser(CronDefinitionBuilder.instanceDefinitionFor(CronType.UNIX));
+  private final CronParser cronParser;
 
   @Autowired
-  public ReportController(ReportRepo reportRepo, ReportScheduleRepo reportScheduleRepo, ReportEngine reportEngine, ReportSchedulerService reportSchedulerService) {
+  public ReportController(ReportRepo reportRepo, ReportScheduleRepo reportScheduleRepo, ReportEngine reportEngine,
+                          ReportSchedulerService reportSchedulerService, ReportScheduleWebFactory reportScheduleWebFactory, CronParser cronParser) {
     this.reportRepo = reportRepo;
     this.reportScheduleRepo = reportScheduleRepo;
     this.reportEngine = reportEngine;
     this.reportSchedulerService = reportSchedulerService;
+    this.reportScheduleWebFactory = reportScheduleWebFactory;
+    this.cronParser = cronParser;
   }
 
   @GetMapping("/viewReport/{name}")
@@ -130,8 +136,8 @@ public class ReportController {
     reportRepo.findAll().forEach(r -> reportNames.add(r.getReportName()));
     mav.addObject("reportList", reportNames);
 
-    List<ReportSchedule> schedules = new ArrayList<>();
-    reportScheduleRepo.findAll().forEach(schedules::add);
+    List<ReportScheduleWeb> schedules = new ArrayList<>();
+    reportScheduleRepo.findAll().forEach(s -> schedules.add(reportScheduleWebFactory.create(s)));
     mav.addObject("schedules", schedules);
     mav.setViewName("scheduleReport");
     return mav;

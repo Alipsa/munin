@@ -13,11 +13,13 @@
             <thead class="thead-light">
                <th>Report name</th>
                <th>Schedule</th>
+               <th>Description</th>
                <th>Action</th>
             </thead>
             <tr th:each="reportSchedule: ${schedules}">
                <td th:text="${reportSchedule.getReportName()}"></td>
                <td th:text="${reportSchedule.getCron()}"></td>
+               <td th:text="${reportSchedule.getReadableCron()}"></td>
             </tr>
          </table>
       </div>
