@@ -3,6 +3,8 @@ package se.alipsa.munin.controller;
 import com.cronutils.mapper.CronMapper;
 import com.cronutils.model.Cron;
 import com.cronutils.parser.CronParser;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
@@ -34,7 +36,7 @@ import java.util.*;
 @Controller
 public class ReportController {
 
-  //private static final Logger LOG = LoggerFactory.getLogger(ReportController.class);
+  private static final Logger LOG = LoggerFactory.getLogger(ReportController.class);
   private final ReportRepo reportRepo;
   private final ReportScheduleRepo reportScheduleRepo;
   private final ReportEngine reportEngine;
@@ -145,7 +147,7 @@ public class ReportController {
 
   @PostMapping(path = "/manage/schedule", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
   public RedirectView scheduleReport(@RequestParam(required = false) Long id,
-                                     @RequestParam String reportName, @RequestParam String cronVal,
+                                     @RequestParam(required = false) String reportName, @RequestParam String cronVal,
                                      @RequestParam String emails, RedirectAttributes redirectAttributes) {
     emails = emails.replace(',', ';');
     Cron cron = cronParser.parse(cronVal);
@@ -153,10 +155,11 @@ public class ReportController {
     ReportSchedule schedule = new ReportSchedule(reportName, springCron.asString(), emails);
     if (id == null) {
       reportSchedulerService.addReportSchedule(schedule);
+      redirectAttributes.addFlashAttribute("message",reportName + " scheduled successfully!");
     } else {
       reportSchedulerService.updateReportSchedule(id, schedule);
+      redirectAttributes.addFlashAttribute("message",reportName + " schedule updated successfully!");
     }
-    redirectAttributes.addFlashAttribute("message",reportName + " scheduled successfully!");
     return new RedirectView("/manage/schedule");
   }
 

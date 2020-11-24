@@ -63,7 +63,7 @@
                <button type="submit" class="btn btn-primary">Schedule</button>
             </div>
             <div class="col-md-2">
-               <button type="reset" class="btn btn-secondary">Reset</button>
+               <button type="reset" class="btn btn-secondary" onclick="enableForm()">Reset</button>
             </div>
          </div>
       </form>
@@ -82,12 +82,20 @@
       });
 
       function editSchedule(id) {
+         $("#newEditSchedule").text("Edit Schedule")
          let row = $("#row" + id);
          $("#id").val(id);
-         $("#reportName").val(row.find("td[data-name='reportName']").text());
+         let reportName = $("#reportName");
+         reportName.val(row.find("td[data-name='reportName']").text());
+         reportName.prop("disabled", true);
          $("#cronVal").val(row.find("td[data-name='cron']").text());
          $("#emails").val(row.find("td[data-name='emails']").text());
          document.getElementById("newEditSchedule").scrollIntoView();
+      }
+
+      function enableForm() {
+         $("#newEditSchedule").text("New Schedule")
+         $("#reportName").prop("disabled", false);
       }
    </script>
 </body>

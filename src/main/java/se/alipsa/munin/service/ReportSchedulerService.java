@@ -103,7 +103,7 @@ public class ReportSchedulerService implements
       throw new IllegalArgumentException("There is no report schedule for id " + id);
     }
     ReportSchedule reportSchedule = reportScheduleOpt.get();
-    reportSchedule.setReportName(schedule.getReportName());
+    // Report name will be null since we disable the combobox so we should not change it
     reportSchedule.setCron(schedule.getCron());
     reportSchedule.setEmails(schedule.getEmails());
     //reportScheduleRepo.save(reportSchedule); in a transaction so should not be needed
