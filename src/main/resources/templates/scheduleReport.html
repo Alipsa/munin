@@ -13,28 +13,30 @@
          <table class="table">
             <thead class="thead-light">
                <th>Report name</th>
-               <th>Schedule</th>
+               <th title="Cron format is Spring">Schedule</th>
                <th>Description</th>
                <th>Emails</th>
                <th>Action</th>
             </thead>
-            <tr th:id="'row'+ ${reportSchedule.getId()}" th:each="reportSchedule: ${schedules}">
-               <td data-name="reportName" th:text="${reportSchedule.getReportName()}"></td>
-               <td data-name="cron" th:text="${reportSchedule.getCron()}"></td>
-               <td th:text="${reportSchedule.getReadableCron()}"></td>
-               <td data-name="emails" th:text="${reportSchedule.getEmails()}"></td>
-               <td>
-                  <button type="button" class="btn btn-primary" th:onclick="editSchedule([[${reportSchedule.getId()}]])">Edit</button>
-                  <a th:href="@{/manage/schedule/delete/{id}(id=${reportSchedule.getId()})}" class="btn btn-danger">Delete</a>
-               </td>
-            </tr>
+            <tbody>
+               <tr th:id="'row'+ ${reportSchedule.getId()}" th:each="reportSchedule: ${schedules}">
+                  <td data-name="reportName" th:text="${reportSchedule.getReportName()}"></td>
+                  <td data-name="cron" th:text="${reportSchedule.getCron()}"></td>
+                  <td th:text="${reportSchedule.getReadableCron()}"></td>
+                  <td data-name="emails" th:text="${reportSchedule.getEmails()}"></td>
+                  <td>
+                     <button type="button" class="btn btn-primary" th:onclick="editSchedule([[${reportSchedule.getId()}]])">Edit</button>
+                     <a th:href="@{/manage/schedule/delete/{id}(id=${reportSchedule.getId()})}" class="btn btn-danger">Delete</a>
+                  </td>
+               </tr>
+            </tbody>
          </table>
       </div>
       <h3 id="newEditSchedule">New Schedule</h3>
       <form action="/manage/schedule" method="post">
          <input id="id" hidden="hidden" name="id" />
          <div class="form-group row">
-            <div class="col-md-3">
+            <div class="col-md-5">
                <label for="reportName">Report</label>
                <select id = "reportName" name="reportName" class="form-control">
                   <option th:each="report: ${reportList}" th:value="${report}" th:text="${report}">
@@ -43,17 +45,17 @@
             </div>
          </div>
          <div class="form-group row">
-            <div class="col-md-3">
-               <label for="cronVal">Schedule</label>
-               <input id="cronVal" name="cronVal" readonly="readonly" class="form-control"/>
+            <div class="col-md-5">
+               <label for="cronVal" title="cron format is quartz">Schedule</label>
+               <input id="cronVal" name="cronVal" readonly="readonly" title="cron format is quartz" class="form-control"/>
             </div>
-            <div class="col-md-5 pt-3">
+            <div class="col-md-6 pt-3">
                <!--br/-->
                <div id="cronSchedule"></div>
             </div>
          </div>
          <div class="form-group row">
-            <div class="col-md-8">
+            <div class="col-md-11">
                <label for="emails" title="Semicolon separated list of report recipients">Emails</label>
                <input id="emails" name="emails" class="form-control" title="Semicolon separated list of report recipients"/>&nbsp;
             </div>
@@ -69,7 +71,7 @@
       </form>
    </div>
 
-   <script type="text/javascript" th:src="@{/js/jquery-cron-quartz/jquery-cron-quartz.js}" ></script>
+   <script type="module" th:src="@{/js/jquery-cron-quartz/jquery-cron-quartz.js}" ></script>
    <link rel="stylesheet" type="text/css" th:href="@{/js/jquery-cron-quartz/jquery-cron-quartz.css}">
 
    <script>
@@ -85,10 +87,17 @@
          $("#newEditSchedule").text("Edit Schedule")
          let row = $("#row" + id);
          $("#id").val(id);
+
          let reportName = $("#reportName");
          reportName.val(row.find("td[data-name='reportName']").text());
          reportName.prop("disabled", true);
-         $("#cronVal").val(row.find("td[data-name='cron']").text());
+
+         let cron = row.find("td[data-name='cron']").text();
+         let cronVal = $("#cronVal");
+         cronVal.val(cron);
+         cronVal.prop("readonly", false);
+         // TODO set the value of cronBuilder!
+
          $("#emails").val(row.find("td[data-name='emails']").text());
          document.getElementById("newEditSchedule").scrollIntoView();
       }
