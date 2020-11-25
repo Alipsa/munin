@@ -7,29 +7,119 @@ const periods = {
     MONTHLY: "monthly",
     YEARLY: "yearly"
 }
-class Cronwidget {
+
+class CronWidget {
+    #renderElement;
+    #cron;
+    #label;
+    #periodSelect;
+
     constructor(renderElement, initial = "0 0 9 * * ?", label="Select period") {
-        this.renderElement = renderElement;
-        this.cron = initial;
-        this.label = label;
-        this.periodSelect = document.createElement("select");
+        this.#renderElement = renderElement;
+        this.#cron = initial;
+        this.#label = label;
+        this.#periodSelect = document.createElement("select");
     }
 
     render() {
+        this.#clear();
         console.log("Rendering cronwidget");
         let lbl = document.createElement("label");
-        lbl.appendChild(document.createTextNode(this.label + " "));
-        this.renderElement.appendChild(lbl);
-        this.periodSelect.appendChild(createOption(periods.MINUTES, "Minutes"));
-        this.periodSelect.appendChild(createOption(periods.HOURLY, "Hourly"));
-        this.periodSelect.appendChild(createOption(periods.DAILY, "Daily"));
-        this.periodSelect.appendChild(createOption(periods.WEEKLY, "Weekly"));
-        this.periodSelect.appendChild(createOption(periods.MONTHLY, "Monthly"));
-        this.periodSelect.appendChild(createOption(periods.YEARLY, "Yearly"));
-        this.renderElement.appendChild(this.periodSelect);
+        lbl.appendChild(document.createTextNode(this.#label + " "));
+        this.#renderElement.appendChild(lbl);
+        this.#periodSelect.appendChild(createOption(periods.MINUTES, "Minutes"));
+        this.#periodSelect.appendChild(createOption(periods.HOURLY, "Hourly"));
+        this.#periodSelect.appendChild(createOption(periods.DAILY, "Daily"));
+        this.#periodSelect.appendChild(createOption(periods.WEEKLY, "Weekly"));
+        this.#periodSelect.appendChild(createOption(periods.MONTHLY, "Monthly"));
+        this.#periodSelect.appendChild(createOption(periods.YEARLY, "Yearly"));
+        this.#renderElement.appendChild(this.#periodSelect);
         let instance = this;
-        this.periodSelect.onchange = function() {renderPeriod(this.value, instance);};
+        this.#periodSelect.onchange = function() {instance.renderPeriod(this.value, instance);};
         // Todo: select based on initial and populate values as appropriate
+    }
+
+    renderPeriod(period) {
+        switch (period) {
+            case periods.MINUTES:
+                this.#renderMinutes();
+                break;
+            case periods.HOURLY:
+                this.#renderHourly();
+                break;
+            case periods.DAILY:
+                this.#renderDaily();
+                break;
+            case periods.WEEKLY:
+                this.#renderWeekly();
+                break;
+            case periods.MONTHLY:
+                this.#renderMonthly();
+                break;
+            case periods.YEARLY:
+                this.#renderYearly();
+        }
+    }
+
+    getValue() {
+        return this.#cron;
+    }
+
+    setValue(cronExpression) {
+        this.#cron = cronExpression;
+        this.render();
+    }
+
+    #clear() {
+        while (this.#renderElement.firstChild) {
+            if (this.#renderElement.lastChild === this.#periodSelect) {
+                break;
+            } else {
+                this.#renderElement.removeChild(this.#renderElement.lastChild);
+            }
+        }
+    }
+
+    #renderMinutes() {
+        this.#clear();
+        let p = document.createElement("p");
+        p.appendChild(document.createTextNode("Every "));
+        let select = document.createElement("select");
+        for (let i = 1; i < 60; i++) {
+            select.appendChild(createOption(i, i));
+        }
+        p.appendChild(select);
+        p.appendChild(document.createTextNode(" minutes(s)"));
+        this.#renderElement.appendChild(p);
+    }
+
+    #renderHourly() {
+        this.#clear();
+        let p = document.createElement("p");
+        p.appendChild(document.createTextNode("render Hourly"));
+        this.#renderElement.appendChild(p);
+    }
+
+    #renderDaily() {
+        this.#clear();
+        let p = document.createElement("p");
+        p.appendChild(document.createTextNode("render daily"));
+        this.#renderElement.appendChild(p);
+    }
+
+    #renderWeekly() {
+        this.#clear();
+        console.log("renderWeekly not yet implemented");
+    }
+
+    #renderMonthly() {
+        this.#clear();
+        console.log("renderMonthly not yet implemented");
+    }
+
+    #renderYearly() {
+        this.#clear();
+        console.log("renderYearly not yet implemented");
     }
 }
 
@@ -40,50 +130,16 @@ function createOption(name, textValue) {
     return option;
 }
 
-function renderPeriod(period, cronWidget) {
-    switch (period) {
-        case periods.MINUTES:
-            renderMinutes(cronWidget);
-            break;
-        case periods.HOURLY:
-            renderHourly(cronWidget);
-            break;
-        case periods.DAILY:
-            renderDaily(cronWidget);
-            break;
-        case periods.WEEKLY:
-            renderWeekly(cronWidget);
-            break;
-        case periods.MONTHLY:
-            renderMonthly(cronWidget);
-            break;
-        case periods.YEARLY:
-            renderYearly(cronWidget);
-    }
+function htmlToElement(html) {
+    let template = document.createElement('template');
+    html = html.trim(); // Never return a text node of whitespace as the result
+    template.innerHTML = html;
+    return template.content.firstChild;
 }
 
-function renderMinutes(cronWidget) {
-    let p = document.createElement("p");
-    p.appendChild(document.createTextNode("render minutes"));
-    cronWidget.periodSelect.parentElement.appendChild(p);
+function htmlToElements(html) {
+    let template = document.createElement('template');
+    template.innerHTML = html;
+    return template.content.childNodes;
 }
 
-function renderHourly(cronWidget) {
-    console.log("renderHourly not yet implemented");
-}
-
-function renderDaily(cronWidget) {
-    console.log("renderDaily not yet implemented");
-}
-
-function renderWeekly(cronWidget) {
-    console.log("renderWeekly not yet implemented");
-}
-
-function renderMonthly(cronWidget) {
-    console.log("renderMonthly not yet implemented");
-}
-
-function renderYearly(cronWidget) {
-    console.log("renderYearly not yet implemented");
-}

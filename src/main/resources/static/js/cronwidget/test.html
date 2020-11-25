@@ -10,9 +10,7 @@
 <input id="cronVal"/>
 <div id="cronwidget" style="padding-top: 10px"></div>
 <script>
-    let cronTarget = document.getElementById("cronwidget");
-    console.log("cronTarget =", cronTarget);
-    let cronWidget = new Cronwidget(cronTarget);
+    let cronWidget = new CronWidget(document.getElementById("cronwidget"));
     cronWidget.render();
 </script>
 </body>
