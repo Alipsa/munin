@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script type="text/javascript" src="cronwidget.js"></script>
+  <link rel="stylesheet" type="text/css" href="cronwidget.css">
+  <title>Test cronwidget</title>
+</head>
+<body>
+<label for="cronVal">Cron Schedule</label>
+<input id="cronVal"/>
+<div id="cronwidget" style="padding-top: 10px"></div>
+<script>
+    let cronTarget = document.getElementById("cronwidget");
+    console.log("cronTarget =", cronTarget);
+    let cronWidget = new Cronwidget(cronTarget);
+    cronWidget.render();
+</script>
+</body>
+</html>
