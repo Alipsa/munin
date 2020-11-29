@@ -4,7 +4,7 @@
 ;(function($) {
     "use strict";
     
-    var cronInputs={
+    let cronInputs={
         period: '<div class="cron-select-period"><label></label><select class="cron-period-select"></select></div>',
         startTime: '<div class="cron-input cron-start-time">Start time <select class="cron-clock-hour"></select>:<select class="cron-clock-minute"></select></div>',
         container: '<div class="cron-input"></div>',
@@ -43,25 +43,25 @@
         }
     };
 
-    var periodOpts=arrayToOptions(["Minutes", "Hourly", "Daily", "Weekly", "Monthly", "Yearly"]);
-    var minuteOpts=rangeToOptions(1, 60);
-    var hourOpts=rangeToOptions(1, 24);
-    var dayOpts=rangeToOptions(1, 100);
-    var minuteClockOpts=rangeToOptions(0, 59, true);
-    var hourClockOpts=rangeToOptions(0, 23, true);
-    var dayInMonthOpts=rangeToOptions(1, 31);
-    var monthOpts=arrayToOptions(["January","February","March","April","May","June","July","August","September","October","November","December"],
+    const periodOpts=arrayToOptions(["Minutes", "Hourly", "Daily", "Weekly", "Monthly", "Yearly"]);
+    const minuteOpts=rangeToOptions(1, 60);
+    const hourOpts=rangeToOptions(1, 24);
+    const dayOpts=rangeToOptions(1, 100);
+    const minuteClockOpts=rangeToOptions(0, 59, true);
+    const hourClockOpts=rangeToOptions(0, 23, true);
+    const dayInMonthOpts=rangeToOptions(1, 31);
+    const monthOpts=arrayToOptions(["January","February","March","April","May","June","July","August","September","October","November","December"],
                                     [1,2,3,4,5,6,7,8,9,10,11,12]);
-    var monthNumOpts=rangeToOptions(1, 12);
-    var nthWeekOpts=arrayToOptions(["First", "Second", "Third", "Forth"], [1,2,3,4]);
-    var dayOfWeekOpts=arrayToOptions(["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday", "Sunday"], ["MON","TUE","WED","THU","FRI","SAT", "SUN"]);
+    const monthNumOpts=rangeToOptions(1, 12);
+    const nthWeekOpts=arrayToOptions(["First", "Second", "Third", "Forth"], [1,2,3,4]);
+    const dayOfWeekOpts=arrayToOptions(["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday", "Sunday"], ["MON","TUE","WED","THU","FRI","SAT", "SUN"]);
     
     
     // Convert an array of values to options to append to select input
     function arrayToOptions(opts, values) {
-        var inputOpts='';
-        for (var i = 0; i < opts.length; i++) {
-            var value=opts[i];
+        let inputOpts='';
+        for (let i = 0; i < opts.length; i++) {
+            let value=opts[i];
             if(values!=null) value=values[i];
             inputOpts += "<option value='"+value+"'>" + opts[i] + "</option>\n";
             
@@ -71,8 +71,8 @@
     
     // Convert an integer range to options to append to select input
     function rangeToOptions(start, end, isClock) {
-        var inputOpts='', label;
-        for (var i = start; i <= end; i++) {
+        let inputOpts='', label;
+        for (let i = start; i <= end; i++) {
             if(isClock && i < 10) label = "0" + i;
             else label = i;
             inputOpts += "<option value='"+i+"'>" + label + "</option>\n";
@@ -87,10 +87,10 @@
         if(typeof onFinish === "function") onFinish();
     }
     
-    var eventHandlers={
+    let eventHandlers={
         periodSelect: function() {
-            var period=($(this).val());
-            var $selector=$(this).parent();
+            let period=($(this).val());
+            let $selector=$(this).parent();
             $selector.siblings('div.cron-input').hide();
             $selector.siblings().find("select option").removeAttr("selected");
             $selector.siblings().find("select option:first").attr("selected", "selected");
@@ -104,14 +104,14 @@
                     $selector.siblings('div.cron-start-time').hide();
                     break;
                 case 'Hourly':
-                    var $hourlyEl=$selector.siblings('div.cron-hourly');
+                    let $hourlyEl=$selector.siblings('div.cron-hourly');
                     $hourlyEl.show()
                         .find("input[name=hourlyType][value=every]").prop('checked', true);
                     $hourlyEl.find("select.cron-hourly-hour").val('12');
                     $selector.siblings('div.cron-start-time').hide();
                     break;
                 case 'Daily':
-                    var $dailyEl=$selector.siblings('div.cron-daily');
+                    let $dailyEl=$selector.siblings('div.cron-daily');
                     $dailyEl.show()
                         .find("input[name=dailyType][value=every]").prop('checked', true);
                     break;
@@ -121,12 +121,12 @@
                         .find("input[type=checkbox]").prop('checked', false);
                     break;
                 case 'Monthly':
-                    var $monthlyEl=$selector.siblings('div.cron-monthly');
+                    let $monthlyEl=$selector.siblings('div.cron-monthly');
                     $monthlyEl.show()
                         .find("input[name=monthlyType][value=byDay]").prop('checked', true);
                     break;
                 case 'Yearly':
-                    var $yearlyEl=$selector.siblings('div.cron-yearly');
+                    let $yearlyEl=$selector.siblings('div.cron-yearly');
                     $yearlyEl.show()
                         .find("input[name=yearlyType][value=byDay]").prop('checked', true);
                     break;                    
@@ -136,7 +136,7 @@
     
     // Public functions
     $.cronBuilder = function(el, options) {
-        var base = this;
+        let base = this;
         
         // Access to jQuery and DOM versions of element
         base.$el=$(el);
@@ -205,29 +205,30 @@
         }
         
         base.getExpression = function() {
-            //var b = c.data("block");
-            var sec = 0; // ignoring seconds by default
-            var year = "*"; // every year by default
-            var dow = "?";
-            var month ="*", dom = "*";
-            var min=base.$el.find("select.cron-clock-minute").val();
-            var hour=base.$el.find("select.cron-clock-hour").val();
-            var period = base.$el.find("select.cron-period-select").val();
+            //let b = c.data("block");
+            let sec = 0; // ignoring seconds by default
+            let year = "*"; // every year by default
+            let dow = "?";
+            let month ="*", dom = "*";
+            let min=base.$el.find("select.cron-clock-minute").val();
+            let hour=base.$el.find("select.cron-clock-hour").val();
+            let period = base.$el.find("select.cron-period-select").val();
+            let $selector;
             switch (period) {
                 case 'Minutes':
-                    var $selector=base.$el.find("div.cron-minutes");
-                    var nmin=$selector.find("select.cron-minutes-select").val();
+                    $selector=base.$el.find("div.cron-minutes");
+                    let nmin=$selector.find("select.cron-minutes-select").val();
                 	if(nmin > 1) min ="0/"+nmin;
                 	else min="*";
                 	hour="*";
                     break;
                     
                 case 'Hourly':
-                    var $selector=base.$el.find("div.cron-hourly");
+                    $selector=base.$el.find("div.cron-hourly");
                     if($selector.find("input[name=hourlyType][value=every]").is(":checked")){
                         min=0;
                         hour="*";
-                        var nhour=$selector.find("select.cron-hourly-select").val();
+                        let nhour=$selector.find("select.cron-hourly-select").val();
                     	if(nhour > 1) hour ="0/"+nhour;
                     } else {
                         min=$selector.find("select.cron-hourly-minute").val();
@@ -236,9 +237,9 @@
                     break;
     
                 case 'Daily':
-                    var $selector=base.$el.find("div.cron-daily");
+                    $selector=base.$el.find("div.cron-daily");
                     if($selector.find("input[name=dailyType][value=every]").is(":checked")){
-                        var ndom=$selector.find("select.cron-daily-select").val();
+                        let ndom=$selector.find("select.cron-daily-select").val();
                         if(ndom > 1) dom ="1/"+ndom;
                     } else {
                         dom="?";
@@ -247,8 +248,8 @@
                     break;
     
                 case 'Weekly':
-                    var $selector=base.$el.find("div.cron-weekly");
-                    var ndow=[];
+                    $selector=base.$el.find("div.cron-weekly");
+                    let ndow=[];
                     if($selector.find("input[name=dayOfWeekMon]").is(":checked"))
                         ndow.push("MON");
                     if($selector.find("input[name=dayOfWeekTue]").is(":checked"))
@@ -269,8 +270,8 @@
                     break;
     
                 case 'Monthly':
-                    var $selector=base.$el.find("div.cron-monthly");
-                    var nmonth;
+                    $selector=base.$el.find("div.cron-monthly");
+                    let nmonth;
                     if($selector.find("input[name=monthlyType][value=byDay]").is(":checked")){
                         month="*";
                         nmonth=$selector.find("select.cron-monthly-month").val();
@@ -286,7 +287,7 @@
                     break;
     
                 case 'Yearly':
-                    var $selector=base.$el.find("div.cron-yearly");
+                    $selector=base.$el.find("div.cron-yearly");
                     if($selector.find("input[name=yearlyType][value=byDay]").is(":checked")){
                         dom=$selector.find("select.cron-yearly-day").val();
                         month=$selector.find("select.cron-yearly-month").val();
