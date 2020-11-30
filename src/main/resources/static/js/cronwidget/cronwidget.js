@@ -101,7 +101,7 @@ class CronWidget {
     #periodSelect;
     #onchange;
 
-    constructor(renderElement, onchangeAction, initial = "0 0 9 * * ?", label="Select period") {
+    constructor(renderElement, onchangeAction, initial = "0 0 9 * * ?", label="Select period:") {
         this.#renderElement = renderElement;
         this.#cron = new Cron();
         this.#cron.setValue(initial);
@@ -114,8 +114,9 @@ class CronWidget {
         this.#clear();
         console.log("Rendering cronwidget");
         const lbl = document.createElement("label");
-        lbl.appendChild(document.createTextNode(this.#label + " "));
+        lbl.appendChild(document.createTextNode(this.#label));
         this.#renderElement.appendChild(lbl);
+        this.#renderElement.appendChild(blank());
         this.#periodSelect.appendChild(createOption(periods.MINUTES, "Minutes"));
         this.#periodSelect.appendChild(createOption(periods.HOURLY, "Hourly"));
         this.#periodSelect.appendChild(createOption(periods.DAILY, "Daily"));
@@ -125,6 +126,7 @@ class CronWidget {
         this.#renderElement.appendChild(this.#periodSelect);
         const instance = this;
         this.#periodSelect.onchange = function() {instance.renderPeriod(this.value, instance);};
+        this.#renderMinutes();
         // Todo: select based on initial and populate values as appropriate
     }
 
@@ -162,7 +164,12 @@ class CronWidget {
 
     loadValue(cronExpression) {
         this.#cron.setValue(cronExpression);
-        // Todo fire selectors as appropriate
+        const c = this.#cron;
+        if (c.getHour() === "*" && c.getDayOfMonth() === "*" && c.getDaysOfWeek() && c.getMonth() === "*" && c.getDaysOfWeek() === "?") {
+            this.#renderMinutes(c.getValue());
+        } else {
+            console.warn("Unknown cron pattern:", cronExpression);
+        }
     }
 
     #clear() {
@@ -178,6 +185,7 @@ class CronWidget {
     #renderMinutes(initial ="0 * * * * ?") {
         this.#clear();
         this.#setValue(initial);
+        this.#onchange(this.#cron.getValue());
         const p = document.createElement("p");
         p.appendChild(document.createTextNode("Every "));
         const select = document.createElement("select");
@@ -185,7 +193,7 @@ class CronWidget {
             select.appendChild(createOption(i, i));
         }
         p.appendChild(select);
-        select.value = this.#cron.getMinute();
+        select.value = starToOne(this.#cron.getMinute());
 
         p.appendChild(document.createTextNode(" minutes(s)"));
         this.#renderElement.appendChild(p);
@@ -630,5 +638,13 @@ function createMonthSelect() {
 
 function oneToStar(val, divider = "1") {
     return val === "1" ? "*" : divider + "/" + val;
+}
+
+function starToOne(val) {
+    return val === "*" ? "1" : val.split("/")[1];
+}
+
+function blank() {
+    return document.createTextNode(" ");
 }
 
