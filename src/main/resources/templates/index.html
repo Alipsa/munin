@@ -25,7 +25,7 @@
                <td th:text="${report.description}" disabled="disabled" />
                <td><input type="checkbox" th:checked="${report.inputContent == null ? false : report.inputContent.length() > 0}" disabled="disabled"/></td>
                <td>
-                  <a th:href="@{/viewReport/{name}(name=${report.reportName})}" class="btn btn-success" onclick="showWaitCursor()">View</a>
+                  <a th:href="@{/viewReport/{name}(name=${report.reportName})}" class="btn btn-success" onclick="setBusy(true)">View</a>
                   <span sec:authorize="hasRole('ROLE_ANALYST')">
                      <a th:href="@{/manage/editReport/{name}(name=${report.reportName})}" class="btn btn-primary">Edit</a>
                      <a th:href="@{/manage/deleteReport/{name}(name=${report.reportName})}" class="btn btn-danger">Delete</a>
@@ -36,16 +36,11 @@
       </table>
       <div sec:authorize="hasRole('ROLE_ANALYST')">
          <a href="/manage/addReport" class="btn btn-primary">Add Report</a>
-         <a href="/manage/schedule" class="btn btn-primary">Schedule Report</a>
+         <a href="/manage/schedule" class="btn btn-secondary">Schedule Report</a>
       </div>
       <div sec:authorize="hasRole('ROLE_ADMIN')">
          <a href="/admin/index" class="btn btn-primary">Administration</a>
       </div>
    </div>
-<script>
-   function showWaitCursor() {
-      document.body.style.cursor='wait';
-   }
-</script>
 </body>
 </html>

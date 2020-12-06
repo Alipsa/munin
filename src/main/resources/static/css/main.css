@@ -26,4 +26,12 @@ h1, h2, h3, h4 {
     src: local('Harrington Regular'), url('HARNGTON.woff') format('woff');
 }
 
+body.busy, .busy * {
+    cursor: wait !important;
+}
+
+.not-busy {
+    cursor: default !important;
+}
+
 

@@ -155,9 +155,11 @@ public class ReportController {
     ReportSchedule schedule = new ReportSchedule(reportName, springCron.asString(), emails);
     if (id == null) {
       reportSchedulerService.addReportSchedule(schedule);
+      LOG.info("{} scheduled successfully!", reportName);
       redirectAttributes.addFlashAttribute("message",reportName + " scheduled successfully!");
     } else {
-      reportSchedulerService.updateReportSchedule(id, schedule);
+      reportName = reportSchedulerService.updateReportSchedule(id, schedule);
+      LOG.info("{} schedule updated successfully!", reportName);
       redirectAttributes.addFlashAttribute("message",reportName + " schedule updated successfully!");
     }
     return new RedirectView("/manage/schedule");

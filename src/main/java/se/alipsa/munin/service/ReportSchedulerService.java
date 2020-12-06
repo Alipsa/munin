@@ -97,7 +97,7 @@ public class ReportSchedulerService implements
   }
 
   @Transactional
-  public void updateReportSchedule(Long id, ReportSchedule schedule) {
+  public String updateReportSchedule(Long id, ReportSchedule schedule) {
     Optional<ReportSchedule> reportScheduleOpt = reportScheduleRepo.findById(id);
     if (!reportScheduleOpt.isPresent()) {
       throw new IllegalArgumentException("There is no report schedule for id " + id);
@@ -107,6 +107,7 @@ public class ReportSchedulerService implements
     reportSchedule.setCron(schedule.getCron());
     reportSchedule.setEmails(schedule.getEmails());
     //reportScheduleRepo.save(reportSchedule); in a transaction so should not be needed
+    return reportSchedule.getReportName();
   }
 
   @Override

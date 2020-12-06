@@ -4,6 +4,9 @@
   <title id="pageTitle" th:inline="text">[[${reportName}]]</title>
 </head>
 <body>
+<script>
+  $( document ).ready( setBusy(false) );
+</script>
 <div th:include="snippets/menu.html :: menu"/>
 <div class="container">
   <div th:remove="tag" th:utext="${reportContent}"><html><body></body></html></div>

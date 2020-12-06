@@ -71,17 +71,19 @@
       </form>
    </div>
 
-   <script type="module" th:src="@{/js/jquery-cron-quartz/jquery-cron-quartz.js}" ></script>
-   <link rel="stylesheet" type="text/css" th:href="@{/js/jquery-cron-quartz/jquery-cron-quartz.css}">
+   <!--script type="module" th:src="@{/js/jquery-cron-quartz/jquery-cron-quartz.js}" ></script-->
+   <!--link rel="stylesheet" type="text/css" th:href="@{/js/jquery-cron-quartz/jquery-cron-quartz.css}"-->
+   <script type="text/javascript" src="/js/cronwidget/cronwidget.js"></script>
 
    <script>
-      $(function() {
-         $('#cronSchedule').cronBuilder({
-            onChange: function(expression) {
-               $('#cronVal').val(expression);
-            }
-         });
-      });
+
+      let cronWidget = new CronWidget(
+         document.getElementById("cronSchedule"),
+         function(expression) {
+            $('#cronVal').val(expression);
+         }
+      );
+      cronWidget.render();
 
       function editSchedule(id) {
          $("#newEditSchedule").text("Edit Schedule")
@@ -96,7 +98,7 @@
          let cronVal = $("#cronVal");
          cronVal.val(cron);
          cronVal.prop("readonly", false);
-         // TODO set the value of cronBuilder!
+         cronWidget.loadValue(cron);
 
          $("#emails").val(row.find("td[data-name='emails']").text());
          document.getElementById("newEditSchedule").scrollIntoView();

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<body>
+<label for="cronVal">Cron Schedule</label>
+<input id="cronVal"/>
+<div id="cronwidget"></div>
+
+<script>
+   let cronWidget = new CronWidget(
+      document.getElementById("cronwidget"),
+      function(expression) {
+         $('#cronVal').val(expression);
+      }
+   );
+   cronWidget.render();
+
+   // TODO: write assertions here
+
+</script>
+</body>
+</html>
