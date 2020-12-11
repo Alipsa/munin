@@ -107,6 +107,7 @@ class CronWidget {
         this.#cron.setValue(initial);
         this.#label = label;
         this.#periodSelect = document.createElement("select");
+        this.#periodSelect.setAttribute("name", "period");
         this.#onchange = onchangeAction;
     }
 
