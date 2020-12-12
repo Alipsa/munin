@@ -8,9 +8,12 @@
 <body>
 <label for="cronVal">Cron Schedule</label>
 <input id="cronVal"/>
-<div id="cronwidget" style="padding-top: 10px"></div>
+<div id="cronWidget" style="padding-top: 10px"></div>
 <script>
-    let cronWidget = new CronWidget(document.getElementById("cronwidget"));
+    let cronWidget = new CronWidget(document.getElementById("cronWidget"),
+          function(expression) {
+            document.getElementById("cronVal").value = expression;
+          });
     cronWidget.render();
 </script>
 </body>

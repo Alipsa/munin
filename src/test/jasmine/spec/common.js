@@ -33,6 +33,10 @@ function fireChange(elem) {
    elem.dispatchEvent(new Event('change'));
 }
 
+function fireClick(elem) {
+   elem.dispatchEvent(new Event('click'));
+}
+
 function selectValue(selectElem, value) {
    selectElem.value = value;
    fireChange(selectElem);
