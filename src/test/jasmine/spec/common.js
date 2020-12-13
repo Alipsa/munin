@@ -37,6 +37,11 @@ function fireClick(elem) {
    elem.dispatchEvent(new Event('click'));
 }
 
+function clickRadioButton(button) {
+   button.checked = true;
+   fireClick(button);
+}
+
 function selectValue(selectElem, value) {
    selectElem.value = value;
    fireChange(selectElem);

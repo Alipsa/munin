@@ -103,6 +103,9 @@ class CronWidget {
 
     constructor(renderElement, onchangeAction, initial = "0 0 9 * * ?", label="Select period:") {
         this.#renderElement = renderElement;
+        if (this.#renderElement === null || this.#renderElement === undefined) {
+            throw "The element to render the cronWidget under does not exist or was not supplied: value is " + renderElement;
+        }
         this.#cron = new Cron();
         this.#cron.setValue(initial);
         this.#label = label;
@@ -497,11 +500,13 @@ class CronWidget {
         this.#clear();
         this.#setValue(initial);
         const p = document.createElement("p");
+        p.setAttribute("data-name", "dayOfEveryNthMonth");
         const byDay = createRadio("radioType", "byDay");
         byDay.checked = true;
         p.appendChild(byDay);
         p.appendChild(document.createTextNode(" Day "));
         const daySelect = document.createElement("select");
+        daySelect.setAttribute("name", "dayNum");
         for (let i = 1; i <= 31; i++) {
             daySelect.appendChild(createOption(i, i));
         }
@@ -515,6 +520,7 @@ class CronWidget {
         p.appendChild(document.createTextNode(" of every "));
 
         const everyMonthSelect = this.#appendMonth(p);
+        everyMonthSelect.setAttribute("name","monthNum");
         everyMonthSelect.onchange = function() {
             if (byDay.checked) {
                 instance.#cron.setMonth(oneToStar(everyMonthSelect.value));
@@ -531,10 +537,12 @@ class CronWidget {
 
         // 0 0 0 ? * 1#1
         const p2 = document.createElement("p");
+        p2.setAttribute("data-name", "NthWeekDayOfEveryNthMonth");
         const dayOfWeekRadio = createRadio("radioType", "dayOfWeek");
         p2.appendChild(dayOfWeekRadio);
         p2.appendChild(document.createTextNode(" The "));
         const weekNumSelect = createNthDaySelect();
+        weekNumSelect.setAttribute("name", "ordinal")
         function daysOfWeekFromSelect() {
             if (instance.#cron.getDaysOfWeek() === "?") {
                 instance.#cron.setDaysOfWeek("1#1");
@@ -552,6 +560,7 @@ class CronWidget {
         p2.appendChild(weekNumSelect);
         p2.appendChild(document.createTextNode(" "));
         const weekDaySelect  = createDaySelect();
+        weekDaySelect.setAttribute("name", "weekDay");
         function weekDayFromSelect() {
             if (instance.#cron.getDaysOfWeek() === "?") {
                 instance.#cron.setDaysOfWeek("1#1");
@@ -570,6 +579,7 @@ class CronWidget {
         p2.appendChild(document.createTextNode(" of every "));
 
         const monthSelect = this.#appendMonth(p2);
+        monthSelect.setAttribute("name", "month")
         monthSelect.onchange = function() {
             if (dayOfWeekRadio.checked) {
                 instance.#cron.setMonth(oneToStar(monthSelect.value));
@@ -586,7 +596,7 @@ class CronWidget {
         this.#renderElement.appendChild(p2);
 
         const p3 = document.createElement("p");
-        this.#appendTimeOfDay("Start time ", p3, dayOfWeekRadio);
+        this.#appendTimeOfDay("Start time ", p3);
         this.#renderElement.appendChild(p3);
 
         if (this.#cron.getDaysOfWeek() === "?") {
@@ -607,10 +617,12 @@ class CronWidget {
         this.#clear();
         this.#setValue(initial);
         const p = document.createElement("p");
+        p.setAttribute("data-name", "byDay");
         const byDay = createRadio("radioType", "byDay");
         p.appendChild(byDay);
         p.appendChild(document.createTextNode(" Every "));
         const monthSelect = createMonthSelect();
+        monthSelect.setAttribute("name", "month");
         const instance = this;
         monthSelect.onchange = function() {
             if (byDay.checked) {
@@ -622,6 +634,7 @@ class CronWidget {
         p.appendChild(document.createTextNode(" "));
 
         const daySelect = document.createElement("select");
+        daySelect.setAttribute("name", "dayNum");
         for (let i = 1; i <= 31; i++) {
             daySelect.appendChild(createOption(i, i));
         }
@@ -641,10 +654,12 @@ class CronWidget {
         this.#renderElement.appendChild(p);
 
         const p2 = document.createElement("p");
+        p2.setAttribute("data-name", "byWeek");
         const byWeek = createRadio("radioType", "byWeek");
         p2.appendChild(byWeek);
         p2.appendChild(document.createTextNode(" The "));
         const monthDaySelect = createNthDaySelect();
+        monthDaySelect.setAttribute("name", "ordinal");
         function daysOfWeekFromSelect() {
             if (instance.#cron.getDaysOfWeek() === "?") {
                 instance.#cron.setDaysOfWeek("1#1");
@@ -663,6 +678,7 @@ class CronWidget {
         p2.appendChild(document.createTextNode(" "));
 
         const weekDaySelect  = createDaySelect();
+        weekDaySelect.setAttribute("name", "weekDay");
         function weekDayFromSelect() {
             if (instance.#cron.getDaysOfWeek() === "?") {
                 instance.#cron.setDaysOfWeek("1#1");
@@ -680,6 +696,7 @@ class CronWidget {
         p2.appendChild(weekDaySelect);
         p2.appendChild(document.createTextNode(" of "));
         const monthSelect2 = createMonthSelect();
+        monthSelect2.setAttribute("name", "month")
         monthSelect2.onchange = function() {
             if (byWeek.checked) {
                 instance.#cron.setMonth(monthSelect2.value);
@@ -697,7 +714,7 @@ class CronWidget {
         }
 
         const p3 = document.createElement("p");
-        this.#appendTimeOfDay("Start time ", p3, byWeek);
+        this.#appendTimeOfDay("Start time ", p3);
         this.#renderElement.appendChild(p3);
         // byDay, byWeek
         if (this.#cron.getDaysOfWeek() === "?") {
@@ -721,11 +738,11 @@ function createOption(value, text) {
     return option;
 }
 
-function createRadio(name, textValue) {
+function createRadio(name, value) {
     const radio = document.createElement("input");
     radio.setAttribute("type", "radio");
     radio.setAttribute("name", name);
-    radio.setAttribute("value", textValue);
+    radio.setAttribute("value", value);
     return radio;
 }
 
@@ -804,6 +821,7 @@ function starToOne(val) {
     return val === "*" ? "1" : val.split("/")[1];
 }
 
+// Return a &nbsp;
 function blank() {
     return document.createTextNode("\u00A0");
 }
