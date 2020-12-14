@@ -345,6 +345,64 @@ class CronWidget {
         return everyMonthSelect;
     }
 
+    #daysOfWeekFromSelect(weekNumSelect) {
+        if (this.#cron.getDaysOfWeek() === "?") {
+            this.#cron.setDaysOfWeek("1#1");
+        }
+        const dow = this.#cron.getDaysOfWeek().split("#");
+        dow[1] = weekNumSelect.value;
+        return dow[0] + "#" + dow[1];
+    }
+
+    #weekDayFromSelect(weekDaySelect) {
+        if (this.#cron.getDaysOfWeek() === "?") {
+            this.#cron.setDaysOfWeek("1#1");
+        }
+        const dow = this.#cron.getDaysOfWeek().split("#");
+        dow[0] = weekDaySelect.value;
+        return dow[0] + "#" + dow[1];
+    }
+
+    #createNthDaySelect(radio) {
+        const nthDaySelect = document.createElement("select");
+        nthDaySelect.appendChild(createOption("1", "1st"));
+        nthDaySelect.appendChild(createOption("2", "2nd"));
+        nthDaySelect.appendChild(createOption("3", "3rd"));
+        nthDaySelect.appendChild(createOption("4", "4th"));
+
+        nthDaySelect.setAttribute("name", "ordinal")
+        const instance = this;
+        nthDaySelect.onchange = function() {
+            if (radio.checked) {
+                instance.#cron.setDaysOfWeek(instance.#daysOfWeekFromSelect(nthDaySelect));
+                instance.#onchange(instance.#cron.getValue());
+            }
+        }
+        return nthDaySelect;
+    }
+
+    #createDaySelect(radio) {
+        const daySelect = document.createElement("select");
+        daySelect.appendChild(createOption("1", "Mon"));
+        daySelect.appendChild(createOption("2", "Tue"));
+        daySelect.appendChild(createOption("3", "Wed"));
+        daySelect.appendChild(createOption("4", "Thu"));
+        daySelect.appendChild(createOption("5", "Fri"));
+        daySelect.appendChild(createOption("6", "Sat"));
+        daySelect.appendChild(createOption("0", "Sun"));
+
+        daySelect.setAttribute("name", "weekDay");
+        const instance = this;
+        daySelect.onchange = function() {
+            if (radio.checked) {
+                instance.#cron.setDaysOfWeek(instance.#weekDayFromSelect(daySelect));
+                instance.#onchange(instance.#cron.getValue());
+            }
+        }
+
+        return daySelect;
+    }
+
     #renderDaily(initial = "0 0 0 * * ?") {
         this.#clear();
         this.#setValue(initial);
@@ -472,7 +530,7 @@ class CronWidget {
                     tueCheck.checked = true;
                     break;
                 case "3":
-                    wedChceck.checked = true;
+                    wedCheck.checked = true;
                     break;
                 case "4":
                     thuCheck.checked = true;
@@ -541,40 +599,10 @@ class CronWidget {
         const dayOfWeekRadio = createRadio("radioType", "dayOfWeek");
         p2.appendChild(dayOfWeekRadio);
         p2.appendChild(document.createTextNode(" The "));
-        const weekNumSelect = createNthDaySelect();
-        weekNumSelect.setAttribute("name", "ordinal")
-        function daysOfWeekFromSelect() {
-            if (instance.#cron.getDaysOfWeek() === "?") {
-                instance.#cron.setDaysOfWeek("1#1");
-            }
-            const dow = instance.#cron.getDaysOfWeek().split("#");
-            dow[1] = weekNumSelect.value;
-            return dow[0] + "#" + dow[1];
-        }
-        weekNumSelect.onchange = function() {
-            if (dayOfWeekRadio.checked) {
-                instance.#cron.setDaysOfWeek(daysOfWeekFromSelect());
-                instance.#onchange(instance.#cron.getValue());
-            }
-        }
+        const weekNumSelect = this.#createNthDaySelect(dayOfWeekRadio);
         p2.appendChild(weekNumSelect);
         p2.appendChild(document.createTextNode(" "));
-        const weekDaySelect  = createDaySelect();
-        weekDaySelect.setAttribute("name", "weekDay");
-        function weekDayFromSelect() {
-            if (instance.#cron.getDaysOfWeek() === "?") {
-                instance.#cron.setDaysOfWeek("1#1");
-            }
-            const dow = instance.#cron.getDaysOfWeek().split("#");
-            dow[0] = weekDaySelect.value;
-            return dow[0] + "#" + dow[1];
-        }
-        weekDaySelect.onchange = function() {
-            if (dayOfWeekRadio.checked) {
-                instance.#cron.setDaysOfWeek(weekDayFromSelect());
-                instance.#onchange(instance.#cron.getValue());
-            }
-        }
+        const weekDaySelect  = this.#createDaySelect(dayOfWeekRadio);
         p2.appendChild(weekDaySelect);
         p2.appendChild(document.createTextNode(" of every "));
 
@@ -588,8 +616,8 @@ class CronWidget {
         }
         dayOfWeekRadio.onclick = function() {
             instance.#cron.setDayOfMonth("?");
-            instance.#cron.setDaysOfWeek(weekDayFromSelect());
-            instance.#cron.setDaysOfWeek(daysOfWeekFromSelect());
+            instance.#cron.setDaysOfWeek(instance.#weekDayFromSelect(weekDaySelect));
+            instance.#cron.setDaysOfWeek(instance.#daysOfWeekFromSelect(weekNumSelect));
             instance.#cron.setMonth(oneToStar(monthSelect.value));
             instance.#onchange(instance.#cron.getValue());
         }
@@ -658,41 +686,12 @@ class CronWidget {
         const byWeek = createRadio("radioType", "byWeek");
         p2.appendChild(byWeek);
         p2.appendChild(document.createTextNode(" The "));
-        const monthDaySelect = createNthDaySelect();
-        monthDaySelect.setAttribute("name", "ordinal");
-        function daysOfWeekFromSelect() {
-            if (instance.#cron.getDaysOfWeek() === "?") {
-                instance.#cron.setDaysOfWeek("1#1");
-            }
-            const dow = instance.#cron.getDaysOfWeek().split("#");
-            dow[1] = monthDaySelect.value;
-            return dow[0] + "#" + dow[1];
-        }
-        monthDaySelect.onchange = function() {
-            if (byWeek.checked) {
-                instance.#cron.setDaysOfWeek(daysOfWeekFromSelect());
-                instance.#onchange(instance.#cron.getValue());
-            }
-        }
+        const monthDaySelect = this.#createNthDaySelect(byWeek);
         p2.appendChild(monthDaySelect);
         p2.appendChild(document.createTextNode(" "));
 
-        const weekDaySelect  = createDaySelect();
-        weekDaySelect.setAttribute("name", "weekDay");
-        function weekDayFromSelect() {
-            if (instance.#cron.getDaysOfWeek() === "?") {
-                instance.#cron.setDaysOfWeek("1#1");
-            }
-            const dow = instance.#cron.getDaysOfWeek().split("#");
-            dow[0] = weekDaySelect.value;
-            return dow[0] + "#" + dow[1];
-        }
-        weekDaySelect.onchange = function() {
-            if (byWeek.checked) {
-                instance.#cron.setDaysOfWeek(weekDayFromSelect());
-                instance.#onchange(instance.#cron.getValue());
-            }
-        }
+        const weekDaySelect  = this.#createDaySelect(byWeek);
+
         p2.appendChild(weekDaySelect);
         p2.appendChild(document.createTextNode(" of "));
         const monthSelect2 = createMonthSelect();
@@ -707,9 +706,9 @@ class CronWidget {
         this.#renderElement.appendChild(p2);
         byWeek.onclick = function() {
             instance.#cron.setDayOfMonth("?");
-            instance.#cron.setDaysOfWeek(daysOfWeekFromSelect());
+            instance.#cron.setDaysOfWeek(instance.#daysOfWeekFromSelect(monthDaySelect));
             instance.#cron.setMonth(monthSelect2.value);
-            instance.#cron.setDaysOfWeek(weekDayFromSelect());
+            instance.#cron.setDaysOfWeek(instance.#weekDayFromSelect(weekDaySelect));
             instance.#onchange(instance.#cron.getValue());
         }
 
@@ -773,27 +772,6 @@ function createMinuteSelect() {
         minuteSelect.appendChild(createOption(i, i));
     }
     return minuteSelect;
-}
-
-function createNthDaySelect() {
-    const nthDaySelect = document.createElement("select");
-    nthDaySelect.appendChild(createOption("1", "1st"));
-    nthDaySelect.appendChild(createOption("2", "2nd"));
-    nthDaySelect.appendChild(createOption("3", "3rd"));
-    nthDaySelect.appendChild(createOption("4", "4th"));
-    return nthDaySelect;
-}
-
-function createDaySelect() {
-    const daySelect = document.createElement("select");
-    daySelect.appendChild(createOption("1", "Mon"));
-    daySelect.appendChild(createOption("2", "Tue"));
-    daySelect.appendChild(createOption("3", "Wed"));
-    daySelect.appendChild(createOption("4", "Thu"));
-    daySelect.appendChild(createOption("5", "Fri"));
-    daySelect.appendChild(createOption("6", "Sat"));
-    daySelect.appendChild(createOption("0", "Sun"));
-    return daySelect;
 }
 
 function createMonthSelect() {
