@@ -5,10 +5,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.http.HttpStatus;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.scheduling.support.CronTrigger;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 import se.alipsa.munin.model.Report;
 import se.alipsa.munin.model.ReportSchedule;
 import se.alipsa.munin.repo.ReportRepo;
@@ -18,7 +20,10 @@ import javax.mail.MessagingException;
 import javax.script.ScriptException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.ScheduledFuture;
 
 @Service
 public class ReportSchedulerService implements
@@ -29,6 +34,7 @@ public class ReportSchedulerService implements
   private final ReportScheduleRepo reportScheduleRepo;
   private final ReportEngine reportEngine;
   private final EmailService emailService;
+  private final Map<Long, ScheduledFuture<?>> currentSchedules = new HashMap<>();
 
   private final static Logger LOG = LoggerFactory.getLogger(ReportSchedulerService.class);
 
@@ -42,7 +48,16 @@ public class ReportSchedulerService implements
     this.emailService = emailService;
   }
 
-  private void scheduleReport(String reportName, String cronSchedule, String... emails) {
+  private void scheduleReport(ReportSchedule reportSchedule) {
+    String[] reportRecipients;
+    if (reportSchedule.getEmails().indexOf(';') > 0){
+      reportRecipients = reportSchedule.getEmails().split(";");
+    } else {
+      reportRecipients = new String[]{reportSchedule.getEmails()};
+    }
+    String reportName = reportSchedule.getReportName();
+    String cronSchedule = reportSchedule.getCron();
+    String[] emails = reportRecipients;
     if (reportName == null) {
       throw new IllegalArgumentException("ReportName cannot be null");
     }
@@ -50,9 +65,9 @@ public class ReportSchedulerService implements
       throw new IllegalArgumentException("Cron schedule cannot be null");
     }
     if (emails.length == 0) {
-      throw new IllegalArgumentException("Report recepient emails are missing");
+      throw new IllegalArgumentException("Report recipient emails are missing");
     }
-    CronTrigger schedule = new CronTrigger(cronSchedule);
+    CronTrigger cronTrigger = new CronTrigger(cronSchedule);
 
     Runnable reportTask = () -> {
       Optional<Report> reportOpt = reportRepo.findById(reportName);
@@ -78,22 +93,13 @@ public class ReportSchedulerService implements
       }
       LOG.info("Report {}, executed on schedule and emailed successfully", reportName);
     };
-    executor.schedule(reportTask, schedule);
+    ScheduledFuture<?> future = executor.schedule(reportTask, cronTrigger);
+    currentSchedules.put(reportSchedule.getId(), future);
   }
 
-  private void scheduleReport(ReportSchedule schedule) {
-    String[] reportRecipients;
-    if (schedule.getEmails().indexOf(';') > 0){
-      reportRecipients = schedule.getEmails().split(";");
-    } else {
-      reportRecipients = new String[]{schedule.getEmails()};
-    }
-    scheduleReport(schedule.getReportName(), schedule.getCron(), reportRecipients);
-  }
-
-  public void addReportSchedule(ReportSchedule schedule) {
-    scheduleReport(schedule);
-    reportScheduleRepo.save(schedule);
+  public void addReportSchedule(ReportSchedule reportSchedule) {
+    ReportSchedule dbSchedule = reportScheduleRepo.save(reportSchedule);
+    scheduleReport(dbSchedule);
   }
 
   @Transactional
@@ -103,11 +109,21 @@ public class ReportSchedulerService implements
       throw new IllegalArgumentException("There is no report schedule for id " + id);
     }
     ReportSchedule reportSchedule = reportScheduleOpt.get();
+
+    // remove the current schedule
+    stopAndRemove(id);
+
     // Report name will be null since we disable the combobox so we should not change it
     reportSchedule.setCron(schedule.getCron());
     reportSchedule.setEmails(schedule.getEmails());
-    //reportScheduleRepo.save(reportSchedule); in a transaction so should not be needed
+
+    scheduleReport(reportSchedule);
+    //reportScheduleRepo.save(reportSchedule); we are in a transaction so should not be needed
     return reportSchedule.getReportName();
+  }
+
+  private void stopAndRemove(Long id) {
+    currentSchedules.remove(id).cancel(true);
   }
 
   @Override
@@ -117,4 +133,14 @@ public class ReportSchedulerService implements
   }
 
 
+  public ReportSchedule deleteReportSchedule(Long id) {
+    Optional<ReportSchedule> reportScheduleOpt = reportScheduleRepo.findById(id);
+    if (!reportScheduleOpt.isPresent()) {
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "There is no Report Schedule with the id " + id);
+    }
+    ReportSchedule schedule = reportScheduleOpt.get();
+    stopAndRemove(id);
+    reportScheduleRepo.delete(schedule);
+    return schedule;
+  }
 }

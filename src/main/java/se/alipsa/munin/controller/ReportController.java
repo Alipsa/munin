@@ -1,6 +1,6 @@
 package se.alipsa.munin.controller;
 
-import com.cronutils.mapper.CronMapper;
+import com.cronutils.descriptor.CronDescriptor;
 import com.cronutils.model.Cron;
 import com.cronutils.parser.CronParser;
 import org.slf4j.Logger;
@@ -43,12 +43,13 @@ public class ReportController {
   private final ReportSchedulerService reportSchedulerService;
   private final ReportScheduleWebFactory reportScheduleWebFactory;
 
+  private final CronDescriptor descriptor = CronDescriptor.instance();
   private final CronParser cronParser;
 
   @Autowired
   public ReportController(ReportRepo reportRepo, ReportScheduleRepo reportScheduleRepo, ReportEngine reportEngine,
                           ReportSchedulerService reportSchedulerService, ReportScheduleWebFactory reportScheduleWebFactory,
-                          @Qualifier("quartzCronParser") CronParser cronParser) {
+                          @Qualifier("springCronParser") CronParser cronParser) {
     this.reportRepo = reportRepo;
     this.reportScheduleRepo = reportScheduleRepo;
     this.reportEngine = reportEngine;
@@ -151,15 +152,15 @@ public class ReportController {
                                      @RequestParam String emails, RedirectAttributes redirectAttributes) {
     emails = emails.replace(',', ';');
     Cron cron = cronParser.parse(cronVal);
-    Cron springCron = CronMapper.fromQuartzToSpring().map(cron);
-    ReportSchedule schedule = new ReportSchedule(reportName, springCron.asString(), emails);
+    //Cron springCron = CronMapper.fromQuartzToSpring().map(cron);
+    ReportSchedule schedule = new ReportSchedule(reportName, cron.asString(), emails);
     if (id == null) {
       reportSchedulerService.addReportSchedule(schedule);
-      LOG.info("{} scheduled successfully!", reportName);
+      LOG.info("{} scheduled successfully to run {}", reportName, descriptor.describe(cron));
       redirectAttributes.addFlashAttribute("message",reportName + " scheduled successfully!");
     } else {
       reportName = reportSchedulerService.updateReportSchedule(id, schedule);
-      LOG.info("{} schedule updated successfully!", reportName);
+      LOG.info("{} schedule updated successfully to run {}", reportName, descriptor.describe(cron));
       redirectAttributes.addFlashAttribute("message",reportName + " schedule updated successfully!");
     }
     return new RedirectView("/manage/schedule");
@@ -167,14 +168,10 @@ public class ReportController {
 
   @GetMapping(path = "/manage/schedule/delete/{id}")
   public RedirectView deleteSchedule(@PathVariable Long id, RedirectAttributes redirectAttributes) {
-    Optional<ReportSchedule> reportScheduleOpt = reportScheduleRepo.findById(id);
-    if (!reportScheduleOpt.isPresent()) {
-      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "There is no Report Schedule with the id " + id);
-    }
-    ReportSchedule schedule = reportScheduleOpt.get();
+    ReportSchedule schedule = reportSchedulerService.deleteReportSchedule(id);
     String reportName = schedule.getReportName();
     String cron = schedule.getCron();
-    reportScheduleRepo.delete(schedule);
+    LOG.info("Schedule for {} with schedule {} deleted", reportName, descriptor.describe(cronParser.parse(cron)));
     redirectAttributes.addFlashAttribute("message","Schedule for report " + reportName + " with schedule " + cron + " deleted successfully!");
     return new RedirectView("/manage/schedule");
   }
