@@ -152,7 +152,6 @@ public class ReportController {
                                      @RequestParam String emails, RedirectAttributes redirectAttributes) {
     emails = emails.replace(',', ';');
     Cron cron = cronParser.parse(cronVal);
-    //Cron springCron = CronMapper.fromQuartzToSpring().map(cron);
     ReportSchedule schedule = new ReportSchedule(reportName, cron.asString(), emails);
     if (id == null) {
       reportSchedulerService.addReportSchedule(schedule);

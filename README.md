@@ -163,11 +163,5 @@ HTTPUV 1.5.1, PROMISES 1.0.1, and LATER 0.8.0
 - http://webjars.org
 - License: MIT
 
-## Jquery-cron
-- Used in the UI to schedule reports
-- version: dev version as of 2020-11-23, commit 5303c2f on Mar 25, 2016                                               
-- https://sotux.github.io/jquery-cron-quartz/, https://github.com/juliacscai/jquery-cron-quartz
-- License: MIT
-
 See pom.xml for more details...
 
