@@ -85,7 +85,7 @@ html.add(mtcars, htmlattr=list(class="table table-striped table-font-size"))
 ```
 
 # Installing
-There are a few different ways yto install Munin.
+There are a few different ways to install Munin.
 
 1. Simple:
     - Download the munin-[version].jar file from https://github.com/perNyfelt/munin/releases/latest
