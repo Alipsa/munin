@@ -1,6 +1,11 @@
 # To do (backlog)
+* additional R report formats
+    1. Support rmd (R markdown) scripts. This depends on fixing the markdown package so that knitr will work
 
-## Features    
+* Later on maybe I'll attempt to support Shiny as well...
+  At least 3 packages needs to fixed to be able to use the shiny package:
+  HTTPUV 1.5.1, PROMISES 1.0.1, and LATER 0.8.0
+  
 * Add support for additional remote repos when using AetherPackageLoader
     
 * Figure out a way/workflow to support adding of packages when using ClasspathPackageLoader
@@ -12,16 +17,9 @@
         - styles
         - database
         - logging
-    - Customize enough so that you don't have to fork the project and build your own (should be simple with an external application.properties in the same dir as the jar) 
-        
+       
 * Production readiness
     - Do some load testing to check performance, concurrency and resource consumption
-    - Run some security audit to ensure Security Config is good enough
-    - Document how to set up as an autostarting service     
-    
-## Libraries used    
-### cron ui input
-- https://github.com/invigoro/Cron-Scheduler-Input is a fork of the original jquery-cron-quartz with support
-for i18n and initial cron expressions. Consider testing it and maybe change. The original has not been updated for
-several years...
+    - Run some 3:rd party security audit to ensure Security Config is good enough
+    - Document how to set up as an autostarting service
     

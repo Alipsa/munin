@@ -95,7 +95,11 @@
         </insert>
     </changeSet>
 
-    <changeSet author="pernyfelt"  id="changelog-1.0:3">
-        <createSequence cycle="false" incrementBy="2" maxValue="9223372036854775807" sequenceName="schedule_seq" startValue="1"/>
+    <changeSet author="pernyfelt"  id="changelog-1.0:3a" dbms="asany, db2, db2z, derby, h2, informix, mssql, oracle, postgresql">
+        <createSequence cycle="false" incrementBy="1" cacheSize="2" maxValue="9223372036854775807" sequenceName="schedule_seq" startValue="1"/>
+    </changeSet>
+
+    <changeSet author="pernyfelt"  id="changelog-1.0:3b" dbms="!asany, !db2, !db2z, !derby, !h2, !informix, !mssql, !oracle, !postgresql">
+        <createSequence cycle="false" sequenceName="schedule_seq" cacheSize="2" />
     </changeSet>
 </databaseChangeLog>

@@ -143,4 +143,14 @@ public class UserRoleService {
     emailService.sendText("New password for Munin Web Reports",
         "Welcome back to Munin Web reports\n Your new password is password is " + passwd, user.getEmail());
   }
+
+  @Transactional
+  public void deleteUser(String userName) {
+    Optional<User> userOpt = userRepo.findById(userName);
+    if (!userOpt.isPresent()) {
+      throw new IllegalArgumentException("user " + userName + " does not exist");
+    }
+    authoritiesRepo.deleteByUser(userOpt.get());
+    userRepo.deleteById(userName);
+  }
 }

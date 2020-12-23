@@ -1,12 +1,12 @@
 # Munin
-This is a reports server for reports created in R based on Renjin and Spring Boot.
-The name comes from the one of Odins ravens who he sent out every day to scout the world and bring him
+This is a report server for reports created in R based on Renjin and Spring Boot.
+The name comes from the one of Odin's ravens who he sent out every day to scout the world and bring him
 back reports. 
 
 # Basic idea
 This is a reporting server that can run and display reports created in Renjin R on the web.
 
-Currently, it support R reports where the R program returns html. 
+Currently, it supports R reports where the R program returns html. 
 This can be done by using the htmlcreator package for Renjin, e.g:
 ```r
 library('se.alipsa:htmlcreator')
@@ -45,7 +45,7 @@ html form content, e.g:
 </div>
 ```
 Note that, in order to be able to schedule a parameterized report, you must provide default parameters in the R code
-e.g. by using `exists()`. Lets say the parameter is the name of the dataset to use i.e.  
+e.g. by using `exists()`. Let's say the parameter is the name of the dataset to use i.e.  
 ```html
 <div class="form-group">
 <select name="dataSet">
@@ -62,21 +62,49 @@ if (!exists("dataSet")) {
 ```
 # Styling
 Bootstrap is available, so you can use bootstrap classes to style the form.
+If you are using the htmlcreator package, the html.add() functions takes a list of attributes as 
+an optional parameter. This way you can add attributes such as id and class like this:
+```r
+html.add(mtcars, htmlattr=list(id = "mtcars-table", class="table table-striped"))
+```
+# Installing
+There are a few different ways yto install Munin.
+
+1. Simple:
+    - Download the munin-[version].jar file from https://github.com/perNyfelt/munin/releases/latest
+    - Copy the jar to a directory of your choice
+    - create a application-prod.properties file and override whatever default config you need
+    - run the application with `java -Dspring.profiles.active=prod -jar munin-[version].jar`
+      or create a bash starter script and make it run as a [service](https://linuxconfig.org/how-to-create-systemd-service-unit-in-linux)    
+
+2. Customized:
+   This is appropriate if you want to do more involved customization.
+   - Create a new maven (of Gradle or whatever) project and set munin as the parent project:
+   
+   ```xml
+   <parent>
+       <artifactId>munin</artifactId>
+       <groupId>se.alipsa</groupId>
+       <version>1.0.0</version>
+   </parent>
+   ```
+3. Customized alternative:
+Fork the project on [github](https://github.com/perNyfelt/munin) and make any changes you want.
+Create the executable jar with `mvn clean package` and copy it from your target dir.   
+
 
 # Production config 
-you can do any customization by adding an application-prod.properties file next to the jar.
-The start the server with `-Dspring.profiles.active=prod` set e.g.
+You can do any customization by adding an application-prod.properties file next to the jar.
+Then start the server with `-Dspring.profiles.active=prod` set e.g.
 `java -Dspring.profiles.active=prod -jar munin-1.0.0-SNAPSHOT.jar`
 This will override any default config with your specific config.
+
+## application-prod.properties variables
+See application.properties for settings to override. Typically, you will change the following 
 
 ### Web port
 Set the property `server.port` to something else e.g. `server.port=8080` to listen for
 web requests on port 8080 instead of the default 8088.
-
-### Monitoring
-Actuator is included with default settings which means that a network monitoring tool can
-check for availability by querying `http://localhost:8088/actuator/health` which will return the
-json string `{"status":"UP"}` if everything is normal.
 
 ### Database
 The database stores the reports and user config. 
@@ -96,17 +124,14 @@ the jdbc driver jar. This can be done by setting the loader.path, e.g:
 Mail is used to email passwords when users are created as well as mailing out scheduled reports.
 Set spring.mail.xxx properties as suitable for your mail server
 The "from" address is controlled by the property `munin.email.from`
- 
 
-#Todo: 
+### Monitoring
+Perhaps not something you would typically override, but you likely want to set up some kind of integration
+with whatever health monitoring tool you are using at your business.
 
-- additional R report formats
-    1. Support rmd (R markdown) scripts. This depends on fixing the markdown package so that knitr will work
-
-
-- Later on maybe I'll attempt to support Shiny as well...
-At least 3 packages needs to fixed to be able to use the shiny package:
-HTTPUV 1.5.1, PROMISES 1.0.1, and LATER 0.8.0
+Actuator is included with default settings which means that a network monitoring tool can
+check for availability by querying `http://localhost:8088/actuator/health` which will return the
+json string `{"status":"UP"}` if everything is normal.
 
 # 3:rd party dependencies
 

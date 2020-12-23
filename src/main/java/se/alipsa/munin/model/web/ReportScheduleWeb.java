@@ -1,6 +1,8 @@
 package se.alipsa.munin.model.web;
 
-public class ReportScheduleWeb {
+import java.util.Objects;
+
+public class ReportScheduleWeb implements Comparable<ReportScheduleWeb> {
 
   private Long id;
   private String reportName;
@@ -11,6 +13,7 @@ public class ReportScheduleWeb {
   public ReportScheduleWeb() {
     // empty
   }
+
   public ReportScheduleWeb(Long id, String reportName, String cron, String emails, String readableCron) {
     this.id = id;
     this.reportName = reportName;
@@ -58,5 +61,23 @@ public class ReportScheduleWeb {
 
   public void setReadableCron(String readableCron) {
     this.readableCron = readableCron;
+  }
+
+  @Override
+  public int compareTo(ReportScheduleWeb other) {
+    return (reportName + cron).compareTo(other.getReportName() + other.getCron());
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj) return true;
+    if (obj == null || getClass() != obj.getClass()) return false;
+    ReportScheduleWeb that = (ReportScheduleWeb) obj;
+    return Objects.equals(id, that.id) && Objects.equals(reportName, that.reportName) && Objects.equals(cron, that.cron) && Objects.equals(emails, that.emails) && Objects.equals(readableCron, that.readableCron);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(id, reportName, cron, emails, readableCron);
   }
 }

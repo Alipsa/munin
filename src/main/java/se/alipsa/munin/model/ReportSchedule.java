@@ -11,7 +11,7 @@ public class ReportSchedule {
 
   @Id
   @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="schedule_seq")
-  @SequenceGenerator(name="schedule_seq", sequenceName="schedule_seq", allocationSize=2)
+  @SequenceGenerator(name="schedule_seq", sequenceName="schedule_seq", allocationSize=1)
   private Long id;
 
   private String reportName;

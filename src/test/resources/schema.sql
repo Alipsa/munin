@@ -29,4 +29,4 @@ create table if not exists report_schedule (
     emails varchar(500)
 );
 
-create sequence schedule_seq START WITH 1 INCREMENT BY 2;
+create sequence schedule_seq START WITH 1 INCREMENT BY 1;

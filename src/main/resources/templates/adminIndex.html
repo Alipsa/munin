@@ -24,6 +24,7 @@
                   <th>Is viewer</th>
                   <th>Is analyst</th>
                   <th>Is admin</th>
+                  <th>Action</th>
                   </thead>
                   <tr class="form-group"  th:each="user, itemStat: *{updateList}">
                      <td><input class="form-control" type="text" th:field="*{updateList[__${itemStat.index}__].username}"
@@ -39,6 +40,9 @@
                                 th:checked='${user.isAnalyst()}'></td>
                      <td><input class="form-control" type="checkbox" th:field="*{updateList[__${itemStat.index}__].admin}"
                                 th:checked='${user.isAdmin()}'></td>
+                     <td><a th:href="@{/admin/deleteUser/{username}(username=*{updateList[__${itemStat.index}__].username})}"
+                            class="btn btn-danger btn-sm">Delete</a>
+                     </td>
                   </tr>
                </table>
                <button type="submit" class="btn btn-success">Update</button>

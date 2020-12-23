@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -67,6 +68,13 @@ public class AdminController {
         "Welcome to Munin Web Reports\n Your username is " + userUpdate.getUsername()
             + "\nand password is " + passwd, userUpdate.getEmail());
     redirectAttributes.addFlashAttribute("message","user " + userUpdate.getUsername() + " added successfully and email sent!");
+    return "redirect:/admin/index";
+  }
+
+  @GetMapping("/admin/deleteUser/{username}")
+  public String deleteUser(@PathVariable("username") String userName, RedirectAttributes redirectAttributes) {
+    userRoleService.deleteUser(userName);
+    redirectAttributes.addFlashAttribute("message","user " + userName + " deleted successfully!");
     return "redirect:/admin/index";
   }
 

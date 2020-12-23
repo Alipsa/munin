@@ -141,6 +141,7 @@ public class ReportController {
 
     List<ReportScheduleWeb> schedules = new ArrayList<>();
     reportScheduleRepo.findAll().forEach(s -> schedules.add(reportScheduleWebFactory.create(s)));
+    Collections.sort(schedules);
     mav.addObject("schedules", schedules);
     mav.setViewName("scheduleReport");
     return mav;

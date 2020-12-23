@@ -25,8 +25,10 @@
                   <td th:text="${reportSchedule.getReadableCron()}"></td>
                   <td data-name="emails" th:text="${reportSchedule.getEmails()}"></td>
                   <td>
-                     <button type="button" class="btn btn-primary" th:onclick="editSchedule([[${reportSchedule.getId()}]])">Edit</button>
-                     <a th:href="@{/manage/schedule/delete/{id}(id=${reportSchedule.getId()})}" class="btn btn-danger">Delete</a>
+                     <button type="button" class="btn btn-primary btn-sm" th:onclick="editSchedule([[${reportSchedule.getId()}]])">Edit</button>
+                     <div class="pt-1">
+                        <a th:href="@{/manage/schedule/delete/{id}(id=${reportSchedule.getId()})}" class="btn btn-danger btn-sm">Delete</a>
+                     </div>
                   </td>
                </tr>
             </tbody>
