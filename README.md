@@ -57,7 +57,7 @@ e.g. by using `exists()`. Let's say the parameter is the name of the dataset to 
 Then you can provide a default value for it as follows:
 ```r
 if (!exists("dataSet")) {
-  dataSet <- "PlantGrowth"
+  dataSet <- "iris"
 }
 ```
 # Styling
@@ -67,6 +67,23 @@ an optional parameter. This way you can add attributes such as id and class like
 ```r
 html.add(mtcars, htmlattr=list(id = "mtcars-table", class="table table-striped"))
 ```
+
+There is currently no way to add generic stylesheets that can be referenced in the reports but you can 
+of course add stylesheets inline, e.g.
+```r
+# add a style class to adjust the font size of table text:
+html.add("
+<style>
+  .table-font-size {
+    font-size: 14px;
+  }
+</style>
+")
+
+# reference the class together with some bootstrap classes when rendering a table:
+html.add(mtcars, htmlattr=list(class="table table-striped table-font-size"))
+```
+
 # Installing
 There are a few different ways yto install Munin.
 
