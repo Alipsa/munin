@@ -1,0 +1,31 @@
+[Unit]
+Description=Munin, a reporting server based on Spring Boot and Renjin
+After=network.target syslog.target
+
+[Service]
+# Make sure the user below exists or change to an existing user, e.g:
+# sudo useradd munin
+# sudo chown munin:munin  munin-1.0.0.jar
+# sudo chmod 500 munin-1.0.0.jar
+User=munin
+Restart=always
+RestartSec=5
+
+# The jar file must be made executable (chmod +x munin-1.0.0.jar) for this to work
+# ExecStart=/path/to/munin-1.0.0.jar -Dspring.profiles.active=prod
+# Or we can skip that and do it the "full" way:
+ExecStart=/usr/bin/java -jar /path/to/munin-1.0.0.jar -Dspring.profiles.active=prod
+SuccessExitStatus=143
+
+[Install]
+WantedBy=multi-user.target
+
+# Enable the service with 'systemctl enable munin.service'
+# Now you should be able to do:
+# sudo systemctl status munin.service
+# sudo systemctl start munin.service
+# sudo systemctl stop munin.service
+# sudo systemctl restart munin.service
+
+# Check the logfile with
+# sudo journalctl -u munin.service

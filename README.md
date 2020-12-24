@@ -83,6 +83,13 @@ html.add("
 # reference the class together with some bootstrap classes when rendering a table:
 html.add(mtcars, htmlattr=list(class="table table-striped table-font-size"))
 ```
+# Admin
+The default admin user name / password is admin / adminpwd.
+If you log in as admin you will see an "Administration" button on the main page (http://localhost:8088).
+There are three predefined roles:
+- Viewer: someone who can only view reports. There is one predefined: test / testpwd
+- Analyst: someone who can view / add / edit and schedule reports. There is one predefined: analyst /analystpwd
+- Admin: someone who can do user/role administration. There is one predefined: admin / adminpwd
 
 # Installing
 There are a few different ways to install Munin.
@@ -92,8 +99,11 @@ There are a few different ways to install Munin.
     - Copy the jar to a directory of your choice
     - create a application-prod.properties file and override whatever default config you need
     - run the application with `java -Dspring.profiles.active=prod -jar munin-[version].jar`
-      or create a bash starter script and make it run as a [service](https://linuxconfig.org/how-to-create-systemd-service-unit-in-linux)    
-
+      or create a bash starter script and make it run as a [Linux service](https://linuxconfig.org/how-to-create-systemd-service-unit-in-linux)
+      or [Windows service](https://github.com/winsw/winsw).
+      See the [Spring documentation](https://docs.spring.io/spring-boot/docs/current/reference/html/deployment.html#deployment-service)
+      for more info.
+      
 2. Customized:
    This is appropriate if you want to do more involved customization.
    - Create a new maven (of Gradle or whatever) project and set munin as the parent project:
@@ -149,6 +159,10 @@ with whatever health monitoring tool you are using at your business.
 Actuator is included with default settings which means that a network monitoring tool can
 check for availability by querying `http://localhost:8088/actuator/health` which will return the
 json string `{"status":"UP"}` if everything is normal.
+
+
+The first thing you should probably do after setting up a database and providing the necessary config overrides 
+is to change / remove the three predefined users using the admin interface mentioned above.
 
 # 3:rd party dependencies
 
