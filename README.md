@@ -181,58 +181,48 @@ is to change / remove the three predefined users using the admin interface menti
 
 # 3:rd party dependencies
 
-## Renjin
+## [Renjin](https://renjin.org/)
 - R interpreter for the JVM; used to execute reports
-- https://renjin.org/
 - License: GNU General Public License v2.0
 
-## Spring boot
+## [Spring boot](https://spring.io/projects/spring-boot)
 - The application server framework providing most of the functionality
-- https://spring.io/projects/spring-boot
 - License: Apache License 2.0
 
-## se.alipsa:renjin-spring-boot-starter
+## [renjin-spring-boot-starter](https://github.com/perNyfelt/renjin-spring-boot-starter)
 - Integration of Renjin with Spring boot
-- https://github.com/perNyfelt/renjin-spring-boot-starter
 - License: MIT
 
-## se.alipsa:htmlcreator
+## [htmlcreator](https://github.com/perNyfelt/htmlcreator)
 - renjin extension (package) to create html from R objects (data.frames, images etc)
 
-## commons-io
+## [commons-io](https://commons.apache.org/proper/commons-io/)
 - Various IO stuff
-- https://commons.apache.org/proper/commons-io/
 - License: Apache License 2.0
 
-## org.apache.commons:commons-collections4
+## [commons-collections4](https://commons.apache.org/proper/commons-collections/)
 - Used to handle various collection transformations
-- https://commons.apache.org/proper/commons-collections/
 - License: Apache License 2.0
 
-## cron-utils
+## [cron-utils](https://github.com/jmrozanec/cron-utils)
 - Used to convert Unix cron expressions to Spring boot equivalent
-- https://github.com/jmrozanec/cron-utils
 - License: Apache License 2.0
 
-## org.webjars:webjars-locator
+## [webjars-locator](http://webjars.org)
 - Simplifies web resource locations
-- http://webjars.org
 - License: MIT
 
-## org.webjars:bootstrap
+## [webjars bootstrap](http://webjars.org)
 - Pretty web pages
-- http://webjars.org
 - License: Apache License 2.0
 
-## org.webjars:jquery
+## [webjars jquery](http://webjars.org)
 - More convenient javascripts
-- http://webjars.org
 - License: MIT
 
-## org.webjars:codemirror
+## [webjars codemirror](http://webjars.org)
 - Syntax highlighting for R and html code
-- http://webjars.org
 - License: MIT
 
-See pom.xml for more details...
+See the [pom.xml](https://github.com/perNyfelt/munin/blob/main/pom.xml) for more details...
 
