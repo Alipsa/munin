@@ -83,13 +83,6 @@ html.add("
 # reference the class together with some bootstrap classes when rendering a table:
 html.add(mtcars, htmlattr=list(class="table table-striped table-font-size"))
 ```
-# Admin
-The default admin user name / password is admin / adminpwd.
-If you log in as admin you will see an "Administration" button on the main page (http://localhost:8088).
-There are three predefined roles:
-- Viewer: someone who can only view reports. There is one predefined: test / testpwd
-- Analyst: someone who can view / add / edit and schedule reports. There is one predefined: analyst /analystpwd
-- Admin: someone who can do user/role administration. There is one predefined: admin / adminpwd
 
 # Installing
 There are a few different ways to install Munin.
@@ -119,7 +112,29 @@ There are a few different ways to install Munin.
 Fork the project on [github](https://github.com/perNyfelt/munin) and make any changes you want.
 Create the executable jar with `mvn clean package` and copy it from your target dir.   
 
+# Demo
+The release jar is in "demo" mode meaning it comes with a few user accounts preinstalled, and uses 
+a file base h2 database for persistence. 
+You start it by simply doing `java -jar munin-1.0.0-SNAPSHOT.jar`.
+The application will be available on http://localhost:8088
 
+## Admin
+The default admin user name / password is admin / adminpwd.
+If you log in as admin you will see an "Administration" button on the main page (http://localhost:8088).
+There are three predefined roles:
+- Viewer: someone who can only view reports. There is one predefined: test / testpwd
+- Analyst: someone who can view / add / edit and schedule reports. There is one predefined: analyst /analystpwd
+- Admin: someone who can do user/role administration. There is one predefined: admin / adminpwd
+
+## Sample reports
+There a few example reports that might help you get going which you can download/copy and publish to the Munin server:
+- [Simple](https://github.com/perNyfelt/munin/blob/main/src/test/resources/sampleReport.R): This is a Simple report with a
+barplot and a table with some styling.
+
+- [Parameterized](https://github.com/perNyfelt/munin/blob/main/src/test/resources/paramReport.R): This is report 
+that show how to do parameterized reports. The [parameters form](https://github.com/perNyfelt/munin/blob/main/src/test/resources/paramReportInput.html)
+  provides the input variables used in the report. 
+  
 # Production config 
 You can do any customization by adding an application-prod.properties file next to the jar.
 Then start the server with `-Dspring.profiles.active=prod` set e.g.
@@ -144,7 +159,7 @@ the jdbc driver jar. This can be done by setting the loader.path, e.g:
 
 1. create a lib folder where your spring boot jar resides
 2. copy the additional jar to the lib folder
-3. add path to the folder when starting spring boot:
+3. add the path to the folder when starting spring boot:
 `java -Dloader.path=file:lib/ -Dspring.profiles.active=prod -jar munin-1.0.0-SNAPSHOT.jar`
 
 ### Mail
