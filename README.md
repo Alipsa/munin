@@ -205,7 +205,7 @@ is to change / remove the three predefined users using the admin interface menti
 - License: Apache License 2.0
 
 ## [cron-utils](https://github.com/jmrozanec/cron-utils)
-- Used to convert Unix cron expressions to Spring boot equivalent
+- Used to parse cron expressions to provide "plain english" descriptions for them.
 - License: Apache License 2.0
 
 ## [webjars-locator](http://webjars.org)
