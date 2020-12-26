@@ -187,14 +187,6 @@ Mail is used to email passwords when users are created as well as mailing out sc
 Set spring.mail.xxx properties as suitable for your mail server
 The "from" address is controlled by the property `munin.email.from`
 
-### Run Munin as a service
-To run munin as a service, create a [bash starter script](https://github.com/perNyfelt/munin/blob/main/src/bin/munin.service) 
-and make it run as a [Linux service](https://linuxconfig.org/how-to-create-systemd-service-unit-in-linux).
-
-For a [Windows service](https://github.com/perNyfelt/munin/blob/main/src/bin/munin-windows.xml) see [winsw](https://github.com/winsw/winsw).
-See the [Spring documentation](https://docs.spring.io/spring-boot/docs/current/reference/html/deployment.html#deployment-service)
-for more info.
-
 ### Monitoring
 Perhaps not something you would typically override, but you likely want to set up some kind of integration
 with whatever health monitoring tool you are using at your business.
@@ -204,8 +196,31 @@ check for availability by querying `http://your-host-name:8088/actuator/health` 
 json string `{"status":"UP"}` if everything is normal.
 
 
+## Run Munin as a service
+To run munin as a service, create a [service starter script](https://github.com/perNyfelt/munin/blob/main/src/bin/munin.service)
+and make it run as a [Linux service](https://linuxconfig.org/how-to-create-systemd-service-unit-in-linux).
+Essentially:
+1. Edit the [service starter script](https://github.com/perNyfelt/munin/blob/main/src/bin/munin.service)
+1. Copy the script to /etc/systemd/system
+1. start the service `sudo systemctl start munin.service`
+1. Make sure the service is running `systemctl is-active munin.service`
+
+For a [Windows service](https://github.com/perNyfelt/munin/blob/main/src/bin/munin-windows.xml) see [winsw](https://github.com/winsw/winsw).
+Essentially you do:
+1. Take WinSW.NET4.exe (or WinSW.NETCore31.x64.exe if you do not have .NET installed) from the [distribution](https://github.com/winsw/winsw/releases/latest), and rename it to munin-windows.exe.
+1. Edit [munin-windows.xml](https://github.com/perNyfelt/munin/blob/main/src/bin/munin-windows.xml) to match your file locations.
+1. Place those two files side by side.
+1. Run `munin-windows.exe install` to install the service.
+1. Run `munin-windows.exe start` to start the service.
+
+See the [Spring documentation](https://docs.spring.io/spring-boot/docs/current/reference/html/deployment.html#deployment-service)
+for more info.
+
+## Other configuration tasks
 The first thing you should probably do after setting up a database and providing the necessary config overrides 
-is to change / remove the three predefined users using the admin interface mentioned above.
+is to change / remove the three predefined users using the admin interface mentioned in the demo section above.
+If you want to keep the admin user, begin by assigning your email to it and then log out and reset the password -
+ a new password will then be emailed to you.
 
 # Version history
 
