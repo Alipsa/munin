@@ -150,6 +150,14 @@ This reports requires you to upload an external image first (this is to show the
   Then you can upload the [pieChartWithExternalImage.R](https://github.com/perNyfelt/munin/blob/main/src/test/resources/pieChartWithExternalImage.R)
   script and publish the report. 
   
+- [Table with external CSS](https://github.com/perNyfelt/munin/blob/main/src/test/resources/tableWithExternalCss.R):
+This report requires you to upload an external css (another typical us of common content).
+  Download the [mystyle.css]((https://github.com/perNyfelt/munin/raw/main/src/test/resources/mystyle.css)
+  and upload the content using the "common resources" as described above. You can then create the report
+  based on the [tableWithExternalCss.R](https://github.com/perNyfelt/munin/blob/main/src/test/resources/tableWithExternalCss.R)
+  script.
+  
+
 # Production config 
 You can do any customization by adding an application-prod.properties file next to the jar.
 Then start the server with `-Dspring.profiles.active=prod` set e.g.
@@ -193,6 +201,15 @@ json string `{"status":"UP"}` if everything is normal.
 
 The first thing you should probably do after setting up a database and providing the necessary config overrides 
 is to change / remove the three predefined users using the admin interface mentioned above.
+
+# Version history
+
+### 1.0.1
+Add support for adding/removing external content (e.g. images and css) which can be referenced from 
+the reports.
+
+### 1.0.0
+Basic functionality for admin and view/add/edit/delete/schedule reports.
 
 # 3:rd party dependencies
 

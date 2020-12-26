@@ -29,5 +29,10 @@
       <artifactId>htmlcreator</artifactId>
       <version>1.2-SNAPSHOT</version>
     </dependency>
+    <dependency>
+      <groupId>se.alipsa</groupId>
+      <artifactId>xmlr</artifactId>
+      <version>0.2.1</version>
+    </dependency>
   </dependencies>
 </project>
