@@ -192,6 +192,8 @@ public class FileUtils {
 
   /**
    * recursive delete on exit.
+   * @param dir the folder to delete
+   * @throws IOException if some problem occurred when deleting the content
    */
   public static void deleteOnExit(File dir) throws IOException {
     if (dir == null) {
@@ -220,6 +222,7 @@ public class FileUtils {
    * @throws FileNotFoundException If the given file object does not denote an existing, writable regular file
    *                               and a new regular file of that name cannot be created,
    *                               or if some other error occurs while opening or creating the file
+   * @throws UnsupportedEncodingException If the JVM does not support UTF-8
    */
   public static void writeToFile(File file, String content) throws FileNotFoundException, UnsupportedEncodingException {
     try (PrintStream out = new PrintStream(file, StandardCharsets.UTF_8.name())) {
@@ -242,6 +245,8 @@ public class FileUtils {
   /**
    * @param file    the file to write to
    * @param lines the content to write
+   * @param lineEnding the character to use at the end of each line.
+   * @param charset the charset to use when writing the file
    * @throws IOException If the given file object does not denote an existing, writable regular file
    *                               and a new regular file of that name cannot be created,
    *                               or if some other error occurs while opening, creating or writing to the file
