@@ -98,12 +98,9 @@ There are a few different ways to install Munin.
 1. Simple:
     - Download the munin-[version].jar file from https://github.com/perNyfelt/munin/releases/latest
     - Copy the jar to a directory of your choice
-    - create a application-prod.properties file and override whatever default config you need
+    - create an application-prod.properties file and override whatever default config you need
     - run the application with `java -Dspring.profiles.active=prod -jar munin-[version]-exec.jar`
-      or create a bash starter script and make it run as a [Linux service](https://linuxconfig.org/how-to-create-systemd-service-unit-in-linux)
-      or [Windows service](https://github.com/winsw/winsw).
-      See the [Spring documentation](https://docs.spring.io/spring-boot/docs/current/reference/html/deployment.html#deployment-service)
-      for more info.
+      See production config for info on how to make it a service.
       
 2. Customized:
    This is appropriate if you want to do more involved customization.
@@ -190,12 +187,20 @@ Mail is used to email passwords when users are created as well as mailing out sc
 Set spring.mail.xxx properties as suitable for your mail server
 The "from" address is controlled by the property `munin.email.from`
 
+### Run Munin as a service
+To run munin as a service, create a [bash starter script](https://github.com/perNyfelt/munin/blob/main/src/bin/munin.service) 
+and make it run as a [Linux service](https://linuxconfig.org/how-to-create-systemd-service-unit-in-linux).
+
+For a [Windows service](https://github.com/perNyfelt/munin/blob/main/src/bin/munin-windows.xml) see [winsw](https://github.com/winsw/winsw).
+See the [Spring documentation](https://docs.spring.io/spring-boot/docs/current/reference/html/deployment.html#deployment-service)
+for more info.
+
 ### Monitoring
 Perhaps not something you would typically override, but you likely want to set up some kind of integration
 with whatever health monitoring tool you are using at your business.
 
 Actuator is included with default settings which means that a network monitoring tool can
-check for availability by querying `http://localhost:8088/actuator/health` which will return the
+check for availability by querying `http://your-host-name:8088/actuator/health` which will return the
 json string `{"status":"UP"}` if everything is normal.
 
 
@@ -203,6 +208,10 @@ The first thing you should probably do after setting up a database and providing
 is to change / remove the three predefined users using the admin interface mentioned above.
 
 # Version history
+
+### 1.0.2
+- Change to deploy the original jar to central instead of the repackaged one.
+- Improve documentation
 
 ### 1.0.1
 Add support for adding/removing external content (e.g. images and css) which can be referenced from 

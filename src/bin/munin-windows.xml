@@ -1,0 +1,10 @@
+<!-- Example config file for winsw (https://github.com/winsw/winsw) -->
+<service>
+    <id>munin</id>
+    <name>Munin</name>
+    <description>This service runs the Munin report server.</description>
+    <executable>java</executable>
+    <arguments>-Dloader.path=file:lib/ -Dspring.profiles.active=prod -jar "path\to\munin-1.0.2-exec.jar"</arguments>
+    <log mode="roll" />
+    <onfailure action="restart" />
+</service>
