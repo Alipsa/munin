@@ -32,7 +32,7 @@ public class FileStorageService {
     this.rootLocation = Paths.get(properties.getLocation());
   }
 
-  public void store(MultipartFile file, Class<?> type) throws FileStorageException {
+  public void store(MultipartFile file) throws FileStorageException {
     if (file == null) {
       LOG.warn("File is null, nothing to store");
       return;
@@ -54,8 +54,8 @@ public class FileStorageService {
             + filename);
       }
       try (InputStream inputStream = file.getInputStream()) {
-        Path destPath = load(filename, type);
-        LOG.trace("Copy content of {} to {}, type is {}", file, destPath.toAbsolutePath(), type.getSimpleName());
+        Path destPath = getPath(filename);
+        LOG.trace("Copy content of {} to {}", file, destPath.toAbsolutePath());
         Files.copy(inputStream, destPath,
             StandardCopyOption.REPLACE_EXISTING);
       }
@@ -64,7 +64,24 @@ public class FileStorageService {
     }
   }
 
-  public OutputStream getOutputStream(String name, Class<?> type) throws FileStorageException {
+  /*
+  public void save(MultipartFile file) throws FileStorageException {
+    if (file == null) {
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "File cannot be null");
+    }
+    String fileName = file.getOriginalFilename();
+    if (fileName == null) {
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Original file name cannot be null");
+    }
+    try {
+      Files.copy(file.getInputStream(), rootLocation.resolve(fileName), StandardCopyOption.REPLACE_EXISTING);
+    } catch (Exception e) {
+      throw new FileStorageException("Could not store the file. Error: " + e.getMessage());
+    }
+  }
+   */
+
+  public OutputStream getOutputStream(String name) throws FileStorageException {
     try {
       if (name.isEmpty()) {
         throw new FileStorageException("Failed to create store for empty file name " + name);
@@ -75,59 +92,62 @@ public class FileStorageService {
             "Cannot store file with relative path outside current directory "
             + name);
       }
-      return Files.newOutputStream(load(name, type));
+      return Files.newOutputStream(getPath(name));
     } catch (IOException e) {
       throw new FileStorageException("Failed to create store for file " + name, e);
     }
   }
 
-  public Stream<Path> loadAll(Class<?> type) throws FileStorageException {
+  public Stream<Path> loadAll() throws FileStorageException {
     try {
-      ensureDir(type);
-      Path dir = rootLocation.resolve(toPath(type));
-      LOG.debug("Listing files in {}", dir.toAbsolutePath());
-      return Files.walk(dir, 1)
-          .filter(path -> !path.equals(dir))
-          .map(dir::relativize);
+      LOG.debug("Listing files in {}", rootLocation.toAbsolutePath());
+      return Files.walk(rootLocation, 1)
+          .filter(path -> !path.equals(rootLocation))
+          .map(rootLocation::relativize);
     } catch (IOException e) {
       throw new FileStorageException("Failed to read stored files", e);
     }
   }
 
-  public Path load(String filename,  Class<?> type) throws FileStorageException {
-    ensureDir(type);
-    Path path = rootLocation.resolve(toPath(type)).resolve(filename);
+  public Path getPath(String filename) {
+    Path path = rootLocation.resolve(filename);
     LOG.debug("File resolved to path {}",  path.toAbsolutePath());
     return path;
   }
 
-  public InputStream getInputStream(String name,  Class<?> type) throws FileStorageException {
+  public Resource load(String filename) {
     try {
-      return Files.newInputStream(load(name, type));
+      Path file = rootLocation.resolve(filename);
+      Resource resource = new UrlResource(file.toUri());
+
+      if (resource.exists() || resource.isReadable()) {
+        return resource;
+      } else {
+        throw new RuntimeException("Could not read the file!");
+      }
+    } catch (MalformedURLException e) {
+      throw new RuntimeException("Error: " + e.getMessage());
+    }
+  }
+
+  public InputStream getInputStream(String name) throws FileStorageException {
+    try {
+      return Files.newInputStream(getPath(name));
     } catch (IOException e) {
       throw new FileStorageException("Failed to read stored files", e);
     }
   }
 
-  public Resource loadAsResource(String filename, Class<?> type) throws FileStorageException {
-    try {
-      Path file = load(filename, type);
-      LOG.debug("resource is {}", file.toAbsolutePath());
-      Resource resource = new UrlResource(file.toUri());
-      if (resource.exists() || resource.isReadable()) {
-        return resource;
-      } else {
-        throw new FileStorageException(
-            "Could not read file: " + filename);
-
-      }
-    } catch (MalformedURLException | FileStorageException e) {
-      throw new FileStorageException("Could not read file: " + filename, e);
-    }
+  public void deleteAll() {
+    FileSystemUtils.deleteRecursively(rootLocation.toFile());
   }
 
-  public void deleteAll( Class<?> type) {
-    FileSystemUtils.deleteRecursively(rootLocation.resolve(toPath(type)).toFile());
+  public void delete(String fileName) throws FileStorageException {
+    try {
+      Files.delete(rootLocation.resolve(fileName));
+    } catch (IOException e) {
+      throw new FileStorageException("Failed to delete " + fileName, e);
+    }
   }
 
   public void delete(String fileName,  Class<?> type) throws FileStorageException {
@@ -138,22 +158,7 @@ public class FileStorageService {
     }
   }
 
-  private void ensureDir(Class<?> type) throws FileStorageException {
-    Path path = rootLocation.toAbsolutePath();
-    Path subdir = path.resolve(toPath(type));
-    if (!Files.exists(subdir)) {
-      try {
-        LOG.debug("Creating subdir {}", subdir);
-        Files.createDirectories(subdir);
-      } catch (IOException e) {
-        throw new FileStorageException("Failed to create storage directory " + subdir, e);
-      }
-    } else {
-      LOG.trace("dir {} already exists", subdir);
-    }
-  }
-
-  private String toPath(Class clazz) {
+  private String toPath(Class<?> clazz) {
     return clazz.getSimpleName() + "/";
   }
 

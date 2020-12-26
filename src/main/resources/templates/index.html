@@ -38,6 +38,9 @@
          <a href="/manage/addReport" class="btn btn-primary">Add Report</a>
          <a href="/manage/schedule" class="btn btn-secondary">Report Schedules</a>
       </div>
+      <div sec:authorize="hasAnyRole('ROLE_ANALYST', 'ROLE_ADMIN')" class="pt-2">
+         <a href="/common" class="btn btn-primary">Common resources</a>
+      </div>
       <div sec:authorize="hasRole('ROLE_ADMIN')" class="pt-2">
          <a href="/admin/index" class="btn btn-secondary">Administration</a>
       </div>

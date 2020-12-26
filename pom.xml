@@ -47,7 +47,7 @@
         <renjin.version>3.5-beta76</renjin.version>
         <spring.boot.version>2.4.1</spring.boot.version>
         <renjin-spring-boot-starter.version>1.0.0</renjin-spring-boot-starter.version>
-        <htmlcreator.version>1.1</htmlcreator.version>
+        <htmlcreator.version>1.2-SNAPSHOT</htmlcreator.version>
         <commons-io.version>2.8.0</commons-io.version>
         <commons-collections4.version>4.4</commons-collections4.version>
         <liquibase-core.version>4.2.2</liquibase-core.version>

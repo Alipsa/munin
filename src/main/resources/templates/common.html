@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5" lang="en">
+
+<head th:include="snippets/header.html :: headerFragment">
+   <title id="pageTitle">Renjin Web Reports</title>
+</head>
+<body>
+<div th:include="snippets/menu.html :: menu"/>
+<div class="container">
+
+   <!--h1><img class="pb-3" src="/img/logo-combined-long.png" alt="Munin Web Reports" width="600" title="Munin Web Reports"/></h1-->
+   <h1>Web Reports</h1>
+
+   <p id="message" th:if="${message}" th:text="${message}" />
+   <table class="table">
+      <thead class="thead-light">
+      <th>File name</th>
+      <th>URL</th>
+      <th>Action</th>
+      </thead>
+      <tbody>
+      <tr th:each="file: ${files}">
+         <td th:text="${file}" disabled="disabled"/>
+         <td>
+            <a th:href="@{'/common/' + ${file}}" th:text="@{'/common/' + ${file}}"/>
+         </td>
+         <td>
+            <span sec:authorize="hasAnyRole('ROLE_ANALYST', 'ROLE_ADMIN')">
+               <button th:onclick="deleteFile([[${file}]])" class="btn btn-danger btn-sm">Delete</button>
+            </span>
+         </td>
+      </tr>
+      </tbody>
+   </table>
+   <div sec:authorize="hasAnyRole('ROLE_ANALYST', 'ROLE_ADMIN')" class="pt-3">
+      <hr />
+      <h3>Add file</h3>
+      <form action="/common/upload" method="post" enctype="multipart/form-data">
+         <input type="file" name="file">
+         <div class="pt-2">
+            <button type="submit" class="btn btn-primary">Upload</button>
+         </div>
+      </form>
+   </div>
+</div>
+<script>
+   function deleteFile(fileName) {
+      let message = "";
+
+      $.ajax({
+         url: "/common/" + fileName,
+         method: 'DELETE',
+         dataType: 'text'
+      })
+      .done(function (result) {
+         message = result;
+         //$("#message").text(result);
+      })
+      .fail(function( jqXHR, textStatus ) {
+         message = "Delete Request failed: " + textStatus;
+      })
+      .always(function() {
+         window.location.replace(window.location.href + "?message=" + message);
+      });
+   }
+</script>
+</body>
+</html>

@@ -68,8 +68,16 @@ an optional parameter. This way you can add attributes such as id and class like
 html.add(mtcars, htmlattr=list(id = "mtcars-table", class="table table-striped"))
 ```
 
-There is currently no way to add generic stylesheets that can be referenced in the reports but you can 
-of course add stylesheets inline, e.g.
+You can either upload a common stylesheet (using the "common resources" button) that you can reference in your reports e.g.
+```r
+# import the uploaded stylesheet mystyle.css
+html.add("
+<head>
+  <link rel='stylesheet' href='/common/mystyle.css'>
+</head>
+")
+```
+...and you can of course also add stylesheets inline, e.g.
 ```r
 # add a style class to adjust the font size of table text:
 html.add("
@@ -134,6 +142,13 @@ barplot and a table with some styling.
 - [Parameterized](https://github.com/perNyfelt/munin/blob/main/src/test/resources/paramReport.R): This is report 
 that show how to do parameterized reports. The [parameters form](https://github.com/perNyfelt/munin/blob/main/src/test/resources/paramReportInput.html)
   provides the input variables used in the report. 
+  
+- [Pie Chart with External Image](https://github.com/perNyfelt/munin/blob/main/src/test/resources/pieChartWithExternalImage.R):
+This reports requires you to upload an external image first (this is to show the use of 
+  common content). Download the [iris.jpg](https://github.com/perNyfelt/munin/raw/main/src/test/resources/iris.jpg)
+  and upload the content using the "common resources" button you can see if you are logged in as admin or analyst.
+  Then you can upload the [pieChartWithExternalImage.R](https://github.com/perNyfelt/munin/blob/main/src/test/resources/pieChartWithExternalImage.R)
+  script and publish the report. 
   
 # Production config 
 You can do any customization by adding an application-prod.properties file next to the jar.
