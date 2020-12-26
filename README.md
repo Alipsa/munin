@@ -99,7 +99,7 @@ There are a few different ways to install Munin.
     - Download the munin-[version].jar file from https://github.com/perNyfelt/munin/releases/latest
     - Copy the jar to a directory of your choice
     - create a application-prod.properties file and override whatever default config you need
-    - run the application with `java -Dspring.profiles.active=prod -jar munin-[version].jar`
+    - run the application with `java -Dspring.profiles.active=prod -jar munin-[version]-exec.jar`
       or create a bash starter script and make it run as a [Linux service](https://linuxconfig.org/how-to-create-systemd-service-unit-in-linux)
       or [Windows service](https://github.com/winsw/winsw).
       See the [Spring documentation](https://docs.spring.io/spring-boot/docs/current/reference/html/deployment.html#deployment-service)
@@ -113,7 +113,7 @@ There are a few different ways to install Munin.
    <parent>
        <artifactId>munin</artifactId>
        <groupId>se.alipsa</groupId>
-       <version>1.0.0</version>
+       <version>1.0.1</version>
    </parent>
    ```
 3. Customized alternative:
@@ -123,7 +123,7 @@ Create the executable jar with `mvn clean package` and copy it from your target 
 # Demo
 The release jar is in "demo" mode meaning it comes with a few user accounts preinstalled, and uses 
 a file base h2 database for persistence. 
-You start it by simply doing `java -jar munin-1.0.0-SNAPSHOT.jar`.
+You start it by simply doing `java -jar munin-[version]-exec.jar`.
 The application will be available on http://localhost:8088
 
 ## Admin
@@ -161,7 +161,7 @@ This report requires you to upload an external css (another typical us of common
 # Production config 
 You can do any customization by adding an application-prod.properties file next to the jar.
 Then start the server with `-Dspring.profiles.active=prod` set e.g.
-`java -Dspring.profiles.active=prod -jar munin-1.0.0-SNAPSHOT.jar`
+`java -Dspring.profiles.active=prod -jar munin-[version]-exec.jar`
 This will override any default config with your specific config.
 
 ## application-prod.properties variables
@@ -183,7 +183,7 @@ the jdbc driver jar. This can be done by setting the loader.path, e.g:
 1. create a lib folder where your spring boot jar resides
 2. copy the additional jar to the lib folder
 3. add the path to the folder when starting spring boot:
-`java -Dloader.path=file:lib/ -Dspring.profiles.active=prod -jar munin-1.0.0-SNAPSHOT.jar`
+`java -Dloader.path=file:lib/ -Dspring.profiles.active=prod -jar munin-[version]-exec.jar`
 
 ### Mail
 Mail is used to email passwords when users are created as well as mailing out scheduled reports.
