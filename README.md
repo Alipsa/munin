@@ -211,7 +211,9 @@ This report requires you to upload an external css (another typical us of common
   based on the [tableWithExternalCss.R](https://github.com/perNyfelt/munin/blob/main/src/test/resources/tableWithExternalCss.R)
   script.
   
-
+- [Example mdr report](https://github.com/perNyfelt/munin/blob/main/src/test/resources/research.mdr)
+This report is an example of a mdr report, which is the other report format supported in Munin and described briefly above.
+  
 # Production config 
 You can do any customization by adding an application-prod.properties file next to the jar.
 Then start the server with `-Dspring.profiles.active=prod` set e.g.
