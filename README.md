@@ -98,14 +98,21 @@ Mdr files is another supported report format. Support for mdr files is provided 
 gives you more control of the output of the r code parts. As a consequence it also pushes rendering
 responsibility over to you i.e. you need to make sure that your R code returns valid markdown syntax.
 Fortunately, the [r2md](https://github.com/perNyfelt/r2md) package does just that. It is "built in" to
-the mdr2html package so no need to explicitly load it with "library(...)". Here is an example:
+the mdr2html package so no need to explicitly load it with "library(...)". 
+
+Set the "ReportType" to MDR to have Munin call mdr2html to render the report. If report type is set to 
+UNMANAGED Munin assumes it is working R code that return html and will execute the code and render its result.
+
+Here is a mdr example:
 
 `````
 # MDR report example
 
-This is a straight forward example of a mdr report. This way of creating reports are useful when there is
-more text to write than actual R code to run. I.e. you want the ease of markdown for your text, but
-the power of R for dynamic content. There are two ways to add R content.
+This is a straight forward example of a mdr report. 
+This way of creating reports are useful when there are more text to write than actual R code to run. 
+I.e. you want the ease of markdown for your text, but the power of R for dynamic content. 
+
+There are two ways to add R content.
 
 1. Inline, eg 2 + 5 * pi = `r 2 + 5 * pi` or `r x <- 2 + 5 * pi; x` which just evaluates and returns the result as markdown text
 2. Code blocks, i.e. longer pieces of R code that returns Markdown text e.g.
@@ -136,6 +143,11 @@ md.add(
 See the r2md [README](https://github.com/perNyfelt/r2md/blob/main/README.md) for more information.
 
 `````
+
+## What about RMD?
+Rmd requires knitr which depends on the Markdown package. The Markdown packages has some C code that
+the Renjin GCC bridge cannot make sense of. Hence, knitr and thus the rmd file format does not (currently) 
+work in Renjin. As soon as that is fixed, I plan to support rmd files in Munin as well. 
 
 # Installing
 There are a few different ways to install Munin.
