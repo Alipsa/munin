@@ -105,7 +105,7 @@ UNMANAGED Munin assumes it is working R code that return html and will execute t
 
 Here is a mdr example:
 
-`````
+`````markdown
 # MDR report example
 
 This is a straight forward example of a mdr report. 
