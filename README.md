@@ -100,8 +100,9 @@ responsibility over to you i.e. you need to make sure that your R code returns v
 Fortunately, the [r2md](https://github.com/perNyfelt/r2md) package does just that. It is "built in" to
 the mdr2html package so no need to explicitly load it with "library(...)". 
 
-Set the "ReportType" to MDR to have Munin call mdr2html to render the report. If report type is set to 
-UNMANAGED Munin assumes it is working R code that return html and will execute the code and render its result.
+Set the "ReportType" to MDR to have Munin call mdr2html to render the report (mdr -> md -> html). 
+If report type is set to UNMANAGED Munin assumes it is working R code that returns html 
+(like in all the example above which is using the htmlcreator package) and will execute the code and render its result.
 
 Here is a mdr example:
 
