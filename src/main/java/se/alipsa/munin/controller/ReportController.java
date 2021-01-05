@@ -22,6 +22,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 import se.alipsa.munin.model.Report;
 import se.alipsa.munin.model.ReportSchedule;
+import se.alipsa.munin.model.ReportType;
 import se.alipsa.munin.model.web.ReportScheduleWeb;
 import se.alipsa.munin.model.web.ReportScheduleWebFactory;
 import se.alipsa.munin.repo.ReportRepo;
@@ -64,7 +65,12 @@ public class ReportController {
     model.addAttribute("reportName", name);
     model.addAttribute("reportDescription", report.getDescription());
     if (report.getInputContent() == null || report.getInputContent().trim().isEmpty()){
-      String reportContent = reportEngine.runReport(report.getDefinition());
+      String reportContent;
+      if (ReportType.MDR.equals(report.getReportType())) {
+        reportContent = reportEngine.runMdrReport(report.getDefinition());
+      } else {
+        reportContent = reportEngine.runReport(report.getDefinition());
+      }
       model.addAttribute(report.getInputContent());
       model.addAttribute("reportContent", reportContent);
       return "viewReport";
@@ -88,8 +94,13 @@ public class ReportController {
         params.put(k, v);
       }
     });
-    String reportContent = reportEngine.runReport(report.getDefinition(), params);
+    String reportContent;
 
+    if (ReportType.MDR.equals(report.getReportType())) {
+      reportContent = reportEngine.runMdrReport(report.getDefinition(), params);
+    } else {
+      reportContent = reportEngine.runReport(report.getDefinition(), params);
+    }
     mav.addObject(report.getInputContent());
     mav.addObject("reportContent", reportContent);
     mav.setViewName("viewReport");
@@ -112,6 +123,7 @@ public class ReportController {
   @PostMapping(path = "/manage/addReport", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
   public RedirectView addReport(@RequestParam String reportName, @RequestParam String description,
                                 @RequestParam String definition, @RequestParam String inputContent,
+                                @RequestParam ReportType reportType,
                                 RedirectAttributes redirectAttributes) {
     if (reportName == null || "".equals(reportName.trim())) {
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Report name cannot be empty");
@@ -127,8 +139,49 @@ public class ReportController {
     report.setDescription(description);
     report.setDefinition(definition);
     report.setInputContent(inputContent);
+    report.setReportType(reportType);
     reportRepo.save(report);
     redirectAttributes.addFlashAttribute("message",reportName + " added successfully!");
+    return new RedirectView("/");
+  }
+
+  @GetMapping(path = "/manage/editReport/{name}")
+  public String editReportForm(@PathVariable String name, Model model) throws ReportNotFoundException {
+    Report report = loadReport(name);
+    model.addAttribute("reportName", name);
+    model.addAttribute("reportDescription", report.getDescription());
+    model.addAttribute("definition", report.getDefinition());
+    model.addAttribute("inputContent", report.getInputContent());
+    model.addAttribute("reportType", report.getReportType());
+    return "editReport";
+  }
+
+  @PostMapping(path = "/manage/editReport")
+  public RedirectView modifyReport(@RequestParam String reportName, @RequestParam String description,
+                             @RequestParam String definition, @RequestParam String inputContent,
+                             @RequestParam ReportType reportType,
+                             RedirectAttributes redirectAttributes) throws ReportNotFoundException {
+    if (reportName == null || "".equals(reportName.trim())) {
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Report name cannot be empty");
+    }
+    if (definition == null || "".equals(definition.trim())) {
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Report definition (R code) cannot be empty");
+    }
+    Report report = loadReport(reportName);
+    report.setDescription(description);
+    report.setDefinition(definition);
+    report.setInputContent(inputContent);
+    report.setReportType(reportType);
+    reportRepo.save(report);
+    redirectAttributes.addFlashAttribute("message",reportName + " modified successfully!");
+    return new RedirectView("/");
+  }
+
+  @GetMapping(path = "/manage/deleteReport/{name}")
+  public RedirectView deleteReport(@PathVariable String name, RedirectAttributes redirectAttributes) throws ReportNotFoundException {
+    Report report = loadReport(name);
+    reportRepo.delete(report);
+    redirectAttributes.addFlashAttribute("message",name + " deleted successfully!");
     return new RedirectView("/");
   }
 
@@ -175,42 +228,4 @@ public class ReportController {
     redirectAttributes.addFlashAttribute("message","Schedule for report " + reportName + " with schedule " + cron + " deleted successfully!");
     return new RedirectView("/manage/schedule");
   }
-
-  @GetMapping(path = "/manage/editReport/{name}")
-  public String editReportForm(@PathVariable String name, Model model) throws ReportNotFoundException {
-    Report report = loadReport(name);
-    model.addAttribute("reportName", name);
-    model.addAttribute("reportDescription", report.getDescription());
-    model.addAttribute("definition", report.getDefinition());
-    model.addAttribute("inputContent", report.getInputContent());
-    return "editReport";
-  }
-
-  @PostMapping(path = "/manage/editReport")
-  public RedirectView modifyReport(@RequestParam String reportName, @RequestParam String description,
-                             @RequestParam String definition, @RequestParam String inputContent,
-                             RedirectAttributes redirectAttributes) throws ReportNotFoundException {
-    if (reportName == null || "".equals(reportName.trim())) {
-      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Report name cannot be empty");
-    }
-    if (definition == null || "".equals(definition.trim())) {
-      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Report definition (R code) cannot be empty");
-    }
-    Report report = loadReport(reportName);
-    report.setDescription(description);
-    report.setDefinition(definition);
-    report.setInputContent(inputContent);
-    reportRepo.save(report);
-    redirectAttributes.addFlashAttribute("message",reportName + " modified successfully!");
-    return new RedirectView("/");
-  }
-
-  @GetMapping(path = "/manage/deleteReport/{name}")
-  public RedirectView deleteReport(@PathVariable String name, RedirectAttributes redirectAttributes) throws ReportNotFoundException {
-    Report report = loadReport(name);
-    reportRepo.delete(report);
-    redirectAttributes.addFlashAttribute("message",name + " deleted successfully!");
-    return new RedirectView("/");
-  }
-
 }

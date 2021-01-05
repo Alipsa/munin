@@ -4,44 +4,53 @@
    <title id="pageTitle">Manage Renjin Web Reports</title>
 </head>
 <body>
-   <div th:include="snippets/menu.html :: menu"/>
-   <div class="container">
-      <h3>Add report</h3>
-      <form id="addReportForm" enctype="application/x-www-form-urlencoded" action="/manage/addReport" method="post" onSubmit="return checkForm()">
-         <div class="form-group row">
-            <div class="col-md-4">
-               <label for="reportName">Report Name</label>
-               <input id="reportName" type="text" name="reportName" />
-            </div>
-            <div class="col-md-8">
-               <label for="description">Description</label>
-               <input id="description" type="text" name="description" size="65" maxlength="300"/>
-            </div>
+<div th:include="snippets/menu.html :: menu"/>
+<div class="container">
+   <h3>Add report</h3>
+   <form id="addReportForm" enctype="application/x-www-form-urlencoded" action="/manage/addReport" method="post"
+         onSubmit="return checkForm()">
+      <div class="form-group row">
+         <div class="col-md-4">
+            <label for="reportName">Report Name</label>
+            <input id="reportName" type="text" name="reportName" class="form-control"/>
          </div>
-
-         <div class="form-group">
-            <fieldset class="border">
-               <legend class="w-auto pb-0"><label for="definition">R report code:</label></legend>
-               <textarea class="form-control-file" id="definition" name="definition"></textarea>
-            </fieldset>
-            <label for="loadRFile">Load from file</label>
-            <input type="file" id="loadRFile"/>
+         <div class="col-md-3 row">
+            <label for="reportType">Report Type</label>
+            <select id="reportType" name="reportType" class="form-control">
+               <option th:each="reportType: ${T(se.alipsa.munin.model.ReportType).values()}" th:value="${reportType}"
+                       th:text="${reportType}">
+               </option>
+            </select>
          </div>
+      </div>
+      <div class="form-group row col-md-10">
+         <label for="description">Description</label>
+         <input id="description" type="text" name="description" size="65" maxlength="300" class="form-control"/>
+      </div>
+
+      <div class="form-group">
+         <fieldset class="border">
+            <legend class="w-auto pb-0"><label for="definition">R report code:</label></legend>
+            <textarea class="form-control-file" id="definition" name="definition"></textarea>
+         </fieldset>
+         <label for="loadRFile">Load from file</label>
+         <input type="file" id="loadRFile"/>
+      </div>
 
 
-         <div class="form-group">
-            <fieldset class="border">
-               <legend class="w-auto pb-0"><label for="inputContent">Parameters (Input form html content)</label></legend>
-               <textarea class="form-control-file" id="inputContent" name="inputContent"></textarea>
-            </fieldset>
-            <label for="loadInputFile">Load from file</label>
-            <input type="file" id="loadInputFile"/>
-         </div>
+      <div class="form-group">
+         <fieldset class="border">
+            <legend class="w-auto pb-0"><label for="inputContent">Parameters (Input form html content)</label></legend>
+            <textarea class="form-control-file" id="inputContent" name="inputContent"></textarea>
+         </fieldset>
+         <label for="loadInputFile">Load from file</label>
+         <input type="file" id="loadInputFile"/>
+      </div>
 
-         <button type="submit" class="btn btn-primary">Add report</button>
-      </form>
-   </div>
-   <br />
+      <button type="submit" class="btn btn-primary">Add report</button>
+   </form>
+</div>
+<br/>
 </body>
 <script type="text/javascript">
    let rCodeMirror = CodeMirror.fromTextArea(document.getElementById("definition"), {
@@ -57,18 +66,18 @@
    inputCodeMirror.setSize("100%", "100%");
 
    document.getElementById('loadRFile')
-      .addEventListener('change', function() {
-         let fr=new FileReader();
-         fr.onload=function(){
+      .addEventListener('change', function () {
+         let fr = new FileReader();
+         fr.onload = function () {
             rCodeMirror.setValue(fr.result);
          }
          fr.readAsText(this.files[0]);
       })
 
    document.getElementById('loadInputFile')
-      .addEventListener('change', function() {
-         let fr=new FileReader();
-         fr.onload=function(){
+      .addEventListener('change', function () {
+         let fr = new FileReader();
+         fr.onload = function () {
             inputCodeMirror.setValue(fr.result);
          }
          fr.readAsText(this.files[0]);

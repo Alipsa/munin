@@ -11,12 +11,20 @@
          <div class="form-group row">
             <div class="col-md-4">
                <label for="reportName">Report Name</label>
-               <input id="reportName" type="text"  name="reportName" th:value="${reportName}" readonly="readonly"/>
+               <input id="reportName" type="text"  name="reportName" th:value="${reportName}" readonly="readonly" class="form-control"/>
             </div>
-            <div class="col-md-8">
-               <label for="description">Description</label>
-               <input id="description" type="text" name="description" size="65" maxlength="300" th:value="${reportDescription}"/>
+            <div class="col-md-3">
+               <label for="reportType">Report Type</label>
+               <select id="reportType" name="reportType" class="form-control">
+                  <option th:each="reportTypeVal: ${T(se.alipsa.munin.model.ReportType).values()}" th:value="${reportTypeVal}"
+                          th:text="${reportTypeVal}" th:selected="${reportType == reportTypeVal}">
+                  </option>
+               </select>
             </div>
+         </div>
+         <div class="form-group row col-md-12">
+            <label for="description">Description</label>
+            <input id="description" type="text" name="description" size="65" maxlength="300" th:value="${reportDescription}" class="form-control"/>
          </div>
 
          <div class="form-group">
@@ -49,6 +57,10 @@
       lineNumbers: true
    });
    rCodeMirror.setSize("100%", "100%");
+   //console.log("reportType =", $("#reportType").val());
+   //if ($("#reportType").val() == "MDR") {
+   //   rCodeMirror.setOption("mode", "text/x-markdown");
+   //}
 
    let inputCodeMirror = CodeMirror.fromTextArea(document.getElementById("inputContent"), {
       mode: "text/html",
@@ -61,6 +73,9 @@
       .addEventListener('change', function() {
          let fr=new FileReader();
          fr.onload=function(){
+            //if ($("#reportType").val() == "MDR") {
+            //   rCodeMirror.setOption("mode", "text/x-markdown");
+            //}
             rCodeMirror.setValue(fr.result);
          }
          fr.readAsText(this.files[0]);

@@ -19,7 +19,8 @@ create table if not exists report (
     report_name varchar(50) not null primary key,
     description varchar(500),
     definition text,
-    input_content text
+    input_content text,
+    report_type varchar(50)
 );
 
 create table if not exists report_schedule (

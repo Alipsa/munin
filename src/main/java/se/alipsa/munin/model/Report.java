@@ -21,6 +21,9 @@ public class Report implements Serializable {
   @Column(length = 9000)
   private String inputContent;
 
+  @Enumerated(EnumType.STRING)
+  ReportType reportType;
+
   public String getReportName() {
     return reportName;
   }
@@ -60,4 +63,11 @@ public class Report implements Serializable {
     this.inputContent = inputContent;
   }
 
+  public ReportType getReportType() {
+    return reportType;
+  }
+
+  public void setReportType(ReportType reportType) {
+    this.reportType = reportType;
+  }
 }
