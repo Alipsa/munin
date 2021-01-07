@@ -59,6 +59,16 @@ public class ReportController {
     this.cronParser = cronParser;
   }
 
+  @GetMapping(path = "/reports/{group}")
+  public ModelAndView reportsInGroup(@PathVariable String group) {
+    ModelAndView mav = new ModelAndView();
+    List<Report> reportList = reportRepo.findByReportGroupOrderByReportName(group);
+    mav.addObject("reportList", reportList);
+    mav.addObject("reportGroup", group);
+    mav.setViewName("reportsInGroup");
+    return mav;
+  }
+
   @GetMapping("/viewReport/{name}")
   public String viewReport(@PathVariable String name, Model model) throws ReportNotFoundException, ScriptException, ReportDefinitionException {
     Report report = loadReport(name);
@@ -116,14 +126,15 @@ public class ReportController {
   }
 
   @GetMapping("/manage/addReport")
-  public String addReportForm() {
+  public String addReportForm(Model model) {
+    model.addAttribute("reportGroups", reportRepo.getReportGroups());
     return "addReport";
   }
 
   @PostMapping(path = "/manage/addReport", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
   public RedirectView addReport(@RequestParam String reportName, @RequestParam String description,
                                 @RequestParam String definition, @RequestParam String inputContent,
-                                @RequestParam ReportType reportType,
+                                @RequestParam ReportType reportType, @RequestParam String reportGroup,
                                 RedirectAttributes redirectAttributes) {
     if (reportName == null || "".equals(reportName.trim())) {
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Report name cannot be empty");
@@ -134,12 +145,17 @@ public class ReportController {
     if (definition == null || "".equals(definition.trim())) {
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Report definition (R code) cannot be empty");
     }
+    if (reportGroup == null || reportGroup.trim().isEmpty()) {
+      LOG.warn("Report Group is blank, setting it to None");
+      reportGroup = "None";
+    }
     Report report = new Report();
     report.setReportName(reportName);
     report.setDescription(description);
     report.setDefinition(definition);
     report.setInputContent(inputContent);
     report.setReportType(reportType);
+    report.setReportGroup(reportGroup);
     reportRepo.save(report);
     redirectAttributes.addFlashAttribute("message",reportName + " added successfully!");
     return new RedirectView("/");
@@ -153,13 +169,15 @@ public class ReportController {
     model.addAttribute("definition", report.getDefinition());
     model.addAttribute("inputContent", report.getInputContent());
     model.addAttribute("reportType", report.getReportType());
+    model.addAttribute("reportGroup", report.getReportGroup());
+    model.addAttribute("reportGroups", reportRepo.getReportGroups());
     return "editReport";
   }
 
   @PostMapping(path = "/manage/editReport")
   public RedirectView modifyReport(@RequestParam String reportName, @RequestParam String description,
                              @RequestParam String definition, @RequestParam String inputContent,
-                             @RequestParam ReportType reportType,
+                             @RequestParam ReportType reportType,  @RequestParam String reportGroup,
                              RedirectAttributes redirectAttributes) throws ReportNotFoundException {
     if (reportName == null || "".equals(reportName.trim())) {
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Report name cannot be empty");
@@ -167,11 +185,16 @@ public class ReportController {
     if (definition == null || "".equals(definition.trim())) {
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Report definition (R code) cannot be empty");
     }
+    if (reportGroup == null || reportGroup.trim().isEmpty()) {
+      LOG.warn("Report Group is blank, setting it to None");
+      reportGroup = "None";
+    }
     Report report = loadReport(reportName);
     report.setDescription(description);
     report.setDefinition(definition);
     report.setInputContent(inputContent);
     report.setReportType(reportType);
+    report.setReportGroup(reportGroup);
     reportRepo.save(report);
     redirectAttributes.addFlashAttribute("message",reportName + " modified successfully!");
     return new RedirectView("/");

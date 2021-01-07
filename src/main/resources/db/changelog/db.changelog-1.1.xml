@@ -10,4 +10,21 @@
                     type="varchar(50)"/>
         </addColumn>
     </changeSet>
+
+    <changeSet author="pernyfelt" id="changelog-1.1:2">
+        <addColumn tableName="report" >
+            <column name="report_group"
+                    type="varchar(50)"/>
+        </addColumn>
+        <createIndex  clustered="true"
+                      indexName="idx_report_group"
+                      tableName="report"
+                      unique="false">
+            <column  name="report_group"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="pernyfelt" id="changelog-1.1:2b">
+        <sql>update report set report_group = 'None' where report_group is null or report_group = '';</sql>
+    </changeSet>
 </databaseChangeLog>

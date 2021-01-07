@@ -55,7 +55,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
               "/actuator/health", "/h2-console/**")
             .permitAll()
           .antMatchers("/reports/**")
-            .hasRole(ROLE_VIEWER.getShortName())
+            .authenticated()
           .antMatchers("/manage/**")
             .hasRole(ROLE_ANALYST.getShortName())
           .antMatchers( "/admin/**")

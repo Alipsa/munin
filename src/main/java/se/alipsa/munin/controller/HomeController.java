@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import se.alipsa.munin.model.Report;
+import se.alipsa.munin.model.web.ReportGroupInfo;
 import se.alipsa.munin.repo.ReportRepo;
 import se.alipsa.munin.service.UserRoleService;
 
@@ -31,8 +32,8 @@ public class HomeController {
   @GetMapping(path = "/")
   public ModelAndView home() {
     ModelAndView mav = new ModelAndView();
-    List<Report> reportList = IterableUtils.toList(reportRepo.findAll());
-    mav.addObject("reportList", reportList);
+    List<ReportGroupInfo> groupList = reportRepo.getGroupInfo();
+    mav.addObject("reportGroups", groupList);
     mav.setViewName("index");
     return mav;
   }

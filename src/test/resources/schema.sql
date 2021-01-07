@@ -20,8 +20,11 @@ create table if not exists report (
     description varchar(500),
     definition text,
     input_content text,
-    report_type varchar(50)
+    report_type varchar(50),
+    report_group varchar(50)
 );
+
+CREATE INDEX idx_report_group ON report(report_group);
 
 create table if not exists report_schedule (
     id bigint not null primary key,

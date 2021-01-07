@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5" lang="en">
+
+<head th:include="snippets/header.html :: headerFragment">
+   <title id="pageTitle">Renjin Web Reports</title>
+</head>
+<body>
+   <div th:include="snippets/menu.html :: menu"/>
+   <div class="container">
+
+      <!--h1><img class="pb-3" src="/img/logo-combined-long.png" alt="Munin Web Reports" width="600" title="Munin Web Reports"/></h1-->
+      <h1>Web Reports in <span th:text="${reportGroup}"></span></h1>
+
+      <p th:if="${message}" th:text="${message}" />
+      <table class="table">
+         <thead class="thead-light">
+            <th>Name</th>
+            <th>Description</th>
+            <th>Is parameterized</th>
+            <th>Action</th>
+         </thead>
+         <tbody>
+            <tr th:each="report: ${reportList}">
+               <td th:text="${report.reportName}" disabled="disabled"/>
+               <td th:text="${report.description}" disabled="disabled" />
+               <td><input type="checkbox" th:checked="${report.inputContent == null ? false : report.inputContent.length() > 0}" disabled="disabled"/></td>
+               <td>
+                  <a th:href="@{/viewReport/{name}(name=${report.reportName})}" class="btn btn-success btn-sm" onclick="setBusy(true)">View</a>
+                  <span sec:authorize="hasRole('ROLE_ANALYST')">
+                     <a th:href="@{/manage/editReport/{name}(name=${report.reportName})}" class="btn btn-primary btn-sm">Edit</a>
+                     <a th:href="@{/manage/deleteReport/{name}(name=${report.reportName})}" class="btn btn-danger btn-sm">Delete</a>
+                  </span>
+               </td>
+            </tr>
+         </tbody>
+      </table>
+   </div>
+</body>
+</html>

@@ -1,12 +1,13 @@
 # MDR report example
 
-This is a straight forward example of a mdr report. This way of creating reports are useful when there is
-more text to write than actual R code to run. I.e. you want the ease of markdown for your text, but
-the power of R for dynamic content. There are two ways to add R content.
+This is a straight forward example of a mdr report.
+This way of creating reports are useful when there are more text to write than actual R code to run. I.e. you want the ease of markdown for your text, but the power of R for dynamic content.
+There are two ways to add R content:
 
-1. Inline, eg 2 + 5 * pi = `r 2 + 5 * pi` or `r x <- 2 + 5 * pi; x` which just evaluates and returns the result as markdown text
-2. Code blocks, i.e. longer pieces of R code that returns Markdown text e.g.
-```{r}
+1. Inline, eg 2 + 5 * pi = `‵r 2 + 5 * pi‵` which becomes 2 + 5 * pi = `r 2 + 5 * pi` or `‵r x <- 2 + 5 * pi; x‵` which becomes `r x <- 2 + 5 * pi; x` i.e. the statement just evaluates and returns the *result* as markdown text
+
+2. Code blocks, i.e. longer pieces of R code that returns Markdown text where you can pass some options to control what will happen e.g.
+```{r echo=TRUE}
 employee <- c('John Doe','Peter Smith','Jane Doe')
 salary <- c(21000, 23400, 26800)
 startdate <- as.Date(c('2013-11-1','2018-3-25','2017-3-14'))
@@ -14,12 +15,13 @@ endDate <- as.POSIXct(c('2020-01-10 00:00:00', '2020-04-12 12:10:13', '2020-10-0
 df <- data.frame(employee, salary, startdate, endDate)
 md.new(df, attr=list(class="table"))
 ```
+Note the echo=TRUE command which adds the r code in the code block to the html (default if FALSE i.e. not to echo).
 We can also reference previous code in the document e.g:
-```{r}
+```{r echo=TRUE}
 md.new(paste("As stated before, 2 + 5 * pi =", x))
 ```
-Plots are supported, here is an example of a barplot:
-```{r}
+Plots are supported, here is an example of a barplot (echo=TRUE also outputs the R code):
+```{r echo=TRUE}
 md.new("# Barplot")
 md.add(
   barplot,

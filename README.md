@@ -288,6 +288,7 @@ If you want to keep the admin user, begin by assigning your email to it and then
 - Change to deploy the original jar to central instead of the repackaged one.
 - Improve documentation
 - Add support for the mdr (markdown with r) format
+- Add report groups (folders)
 
 ### 1.0.1
 Add support for adding/removing external content (e.g. images and css) which can be referenced from 

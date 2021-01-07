@@ -14,6 +14,19 @@
             <label for="reportName">Report Name</label>
             <input id="reportName" type="text" name="reportName" class="form-control"/>
          </div>
+         <div class="col-md-3">
+            <label for="reportGroup">Report Group</label>
+            <div class="input-group">
+               <select id="reportGroup" name="reportGroup" class="form-control">
+                  <option th:each="reportGroupOpt: ${reportGroups}" th:value="${reportGroupOpt}"
+                          th:text="${reportGroupOpt}">
+                  </option>
+               </select>
+               <button type="button" class="btn" title="Create report group" onclick="addReportGroup()">
+                  <img th:src="@{/img/plus-circle.png}" height="20px" alt="Add" />
+               </button>
+            </div>
+         </div>
          <div class="col-md-3 row">
             <label for="reportType">Report Type</label>
             <select id="reportType" name="reportType" class="form-control">
@@ -93,6 +106,13 @@
          return false;
       }
       return true;
+   }
+
+   function addReportGroup() {
+      const reportGroup = prompt("Name of report group:");
+      const reportGroupCombo = $("#reportGroup");
+      reportGroupCombo.append(new Option(reportGroup, reportGroup));
+      reportGroupCombo.val(reportGroup);
    }
 </script>
 </html>
