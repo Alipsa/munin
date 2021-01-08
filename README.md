@@ -1,9 +1,8 @@
 # Munin
-This is a report server for reports created in R based on Renjin and Spring Boot.
-The name comes from the one of Odin's ravens who he sent out every day to scout the world and bring him
-back reports. 
+This is a report server for reports created in R based on [Renjin](https://www.renjin.org/) and [Spring Boot](https://spring.io/projects/spring-boot).
+The name comes from the one of Odin's ravens who he sent out every day to scout the world and bring him back reports. 
 
-# Basic idea
+# Overview
 This is a reporting server that can run and display reports created in Renjin R on the web.
 
 Currently, it supports R reports where the R program returns html or the mdr format (markdown with support for r code, similar to rmd - more on that further down). 

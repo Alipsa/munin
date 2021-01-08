@@ -7,7 +7,6 @@ import se.alipsa.munin.model.Report;
 import se.alipsa.munin.model.web.ReportGroupInfo;
 
 import java.util.List;
-import java.util.Map;
 
 @Repository
 public interface ReportRepo extends CrudRepository<Report, String> {

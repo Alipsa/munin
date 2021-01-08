@@ -1,6 +1,5 @@
 package se.alipsa.munin.controller;
 
-import org.apache.commons.collections4.IterableUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -10,7 +9,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import se.alipsa.munin.model.Report;
 import se.alipsa.munin.model.web.ReportGroupInfo;
 import se.alipsa.munin.repo.ReportRepo;
 import se.alipsa.munin.service.UserRoleService;
