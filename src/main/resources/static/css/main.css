@@ -54,7 +54,7 @@ body.busy, .busy * {
     width: 40%;
     height: 12px;
     border-radius: 0 20px 0 0;
-    background-color: #e9ecef;
+    background-color: #e1e6ea;
     position: absolute;
     top: -12px;
     left: -1px;

@@ -14,7 +14,7 @@
 
     <artifactId>munin</artifactId>
     <groupId>se.alipsa</groupId>
-    <version>1.1.0-SNAPSHOT</version>
+    <version>1.1.0</version>
 
     <name>Munin - a Renjin based web reporting server</name>
     <description>A reporting server based on Renjin and Spring Boot.</description>
@@ -47,8 +47,8 @@
         <renjin.version>3.5-beta76</renjin.version>
         <spring.boot.version>2.4.1</spring.boot.version>
         <renjin-spring-boot-starter.version>1.0.0</renjin-spring-boot-starter.version>
-        <htmlcreator.version>1.3-SNAPSHOT</htmlcreator.version>
-        <mdr2html.version>1.0-SNAPSHOT</mdr2html.version>
+        <htmlcreator.version>1.3</htmlcreator.version>
+        <mdr2html.version>1.0</mdr2html.version>
         <commons-io.version>2.8.0</commons-io.version>
         <commons-collections4.version>4.4</commons-collections4.version>
         <liquibase-core.version>4.2.2</liquibase-core.version>
