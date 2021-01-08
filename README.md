@@ -301,11 +301,11 @@ Basic functionality for admin and view/add/edit/delete/schedule reports.
 
 # 3:rd party dependencies
 
-### [Renjin](https://renjin.org/)
+### [Renjin](https://github.com/bedatadriven/renjin)
 - R interpreter for the JVM; used to execute reports
 - License: GNU General Public License v2.0
 
-### [Spring boot](https://spring.io/projects/spring-boot)
+### [Spring boot](https://github.com/spring-projects/spring-boot)
 - The application server framework providing most of the functionality
 - License: Apache License 2.0
 
