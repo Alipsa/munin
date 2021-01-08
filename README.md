@@ -283,6 +283,9 @@ If you want to keep the admin user, begin by assigning your email to it and then
 
 # Version history
 
+### 1.1.1-SNAPSHOT
+(Nothing yet)
+
 ### 1.1.0
 - Change to deploy the original jar to central instead of the repackaged one.
 - Improve documentation
@@ -298,46 +301,49 @@ Basic functionality for admin and view/add/edit/delete/schedule reports.
 
 # 3:rd party dependencies
 
-## [Renjin](https://renjin.org/)
+### [Renjin](https://renjin.org/)
 - R interpreter for the JVM; used to execute reports
 - License: GNU General Public License v2.0
 
-## [Spring boot](https://spring.io/projects/spring-boot)
+### [Spring boot](https://spring.io/projects/spring-boot)
 - The application server framework providing most of the functionality
 - License: Apache License 2.0
 
-## [renjin-spring-boot-starter](https://github.com/perNyfelt/renjin-spring-boot-starter)
+### [renjin-spring-boot-starter](https://github.com/perNyfelt/renjin-spring-boot-starter)
 - Integration of Renjin with Spring boot
 - License: MIT
 
-## [htmlcreator](https://github.com/perNyfelt/htmlcreator)
+### [htmlcreator](https://github.com/perNyfelt/htmlcreator)
 - renjin extension (package) to create html from R objects (data.frames, images etc)
 
-## [commons-io](https://commons.apache.org/proper/commons-io/)
+### [mdr2html](https://github.com/perNyfelt/mdr2html)
+- renjin extension (package) to create html from mdr files / content
+
+### [commons-io](https://commons.apache.org/proper/commons-io/)
 - Various IO stuff
 - License: Apache License 2.0
 
-## [commons-collections4](https://commons.apache.org/proper/commons-collections/)
+### [commons-collections4](https://commons.apache.org/proper/commons-collections/)
 - Used to handle various collection transformations
 - License: Apache License 2.0
 
-## [cron-utils](https://github.com/jmrozanec/cron-utils)
+### [cron-utils](https://github.com/jmrozanec/cron-utils)
 - Used to parse cron expressions to provide "plain english" descriptions for them.
 - License: Apache License 2.0
 
-## [webjars-locator](http://webjars.org)
+### [webjars-locator](http://webjars.org)
 - Simplifies web resource locations
 - License: MIT
 
-## [webjars bootstrap](http://webjars.org)
+### [webjars bootstrap](http://webjars.org)
 - Pretty web pages
 - License: Apache License 2.0
 
-## [webjars jquery](http://webjars.org)
+### [webjars jquery](http://webjars.org)
 - More convenient javascripts
 - License: MIT
 
-## [webjars codemirror](http://webjars.org)
+### [webjars codemirror](http://webjars.org)
 - Syntax highlighting for R and html code
 - License: MIT
 
