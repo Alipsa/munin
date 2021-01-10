@@ -2,6 +2,7 @@
 This is a report server for reports created in R based on [Renjin](https://www.renjin.org/) and [Spring Boot](https://spring.io/projects/spring-boot).
 The name comes from the one of Odin's ravens who he sent out every day to scout the world and bring him back reports. 
 
+![example report](docs/viewSampleReport.png)
 # Overview
 This is a reporting server that can run and display reports created in Renjin R on the web.
 
