@@ -197,7 +197,7 @@ public class ReportController {
     report.setReportGroup(reportGroup);
     reportRepo.save(report);
     redirectAttributes.addFlashAttribute("message",reportName + " modified successfully!");
-    return new RedirectView("/");
+    return new RedirectView("/reports/" + reportGroup);
   }
 
   @GetMapping(path = "/manage/deleteReport/{name}")
