@@ -180,6 +180,8 @@ a file base h2 database for persistence.
 You start it by simply doing `java -jar munin-[version]-exec.jar`.
 The application will be available on http://localhost:8088
 
+See [here](docs/screenshots.md) for some screenshots.
+
 ## Admin
 The default admin user name / password is admin / adminpwd.
 If you log in as admin you will see an "Administration" button on the main page (http://localhost:8088).
