@@ -242,9 +242,12 @@ CodeMirror.defineMode("mdr", function(cmCfg, modeCfg) {
       let languageMode = match[2];
       if (match[0].includes("{")) {
         // capture everything between { and }
-        const codeStuff = match[0].match(codeBlockLangRe)[1]
-        //console.log("codeStuff =", codeStuff);
-        languageMode = codeStuff.split(" ")[0];
+        const codeStuffRegexpResult = match[0].match(codeBlockLangRe);
+        if (codeStuffRegexpResult !== null) {
+          const codeStuff = codeStuffRegexpResult[1]
+          //console.log("codeStuff =", codeStuff);
+          languageMode = codeStuff.split(" ")[0];
+        }
       }
       //console.log("setting codeblock languageMode to", languageMode);
       state.localMode = modeCfg.fencedCodeBlockHighlighting && getMode(languageMode);

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5" lang="en">
 <head th:include="snippets/header.html :: headerFragment">
    <title id="pageTitle">Manage Renjin Web Reports</title>
 </head>
@@ -29,7 +29,7 @@
          </div>
          <div class="col-md-3 row">
             <label for="reportType">Report Type</label>
-            <select id="reportType" name="reportType" class="form-control">
+            <select id="reportType" name="reportType" class="form-control" onchange="handleReportTypeChange(this.value)">
                <option th:each="reportType: ${T(se.alipsa.munin.model.ReportType).values()}" th:value="${reportType}"
                        th:text="${reportType}">
                </option>
@@ -43,7 +43,7 @@
 
       <div class="form-group">
          <fieldset class="border">
-            <legend class="w-auto pb-0"><label for="definition">R report code:</label></legend>
+            <legend class="w-auto pb-0"><label id="definitionLabel" for="definition">R report code:</label></legend>
             <textarea class="form-control-file" id="definition" name="definition"></textarea>
          </fieldset>
          <label for="loadRFile">Load from file</label>
@@ -113,6 +113,17 @@
       const reportGroupCombo = $("#reportGroup");
       reportGroupCombo.append(new Option(reportGroup, reportGroup));
       reportGroupCombo.val(reportGroup);
+   }
+
+   function handleReportTypeChange(reportType) {
+      console.log("ReportType =", reportType);
+      if (reportType === "MDR") {
+         $("#definitionLabel").text("MDR report code:");
+         rCodeMirror.setOption("mode", "mdr");
+      } else if (reportType === "UNMANAGED") {
+         $("#definitionLabel").text("R report code:");
+         rCodeMirror.setOption("mode", "r");
+      }
    }
 </script>
 </html>

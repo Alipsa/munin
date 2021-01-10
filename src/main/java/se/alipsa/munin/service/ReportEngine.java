@@ -76,7 +76,7 @@ public class ReportEngine {
       }
       scriptEngine.put("mdrContent", script);
 
-      return ((SEXP) scriptEngine.eval("library('se.alipsa:mdr2html')\n parseMdr(mdrContent)")).asString();
+      return ((SEXP) scriptEngine.eval("library('se.alipsa:mdr2html')\n renderMdr(mdrContent)")).asString();
     } catch (Exception e) {
       if (e instanceof ScriptException) {
         throw (ScriptException) e;

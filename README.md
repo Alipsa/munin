@@ -214,6 +214,9 @@ This report requires you to upload an external css (another typical us of common
 - [Example mdr report](https://github.com/perNyfelt/munin/blob/main/src/test/resources/research.mdr)
 This report is an example of a mdr report, which is the other report format supported in Munin and described briefly above.
   
+- [MDR code snippets](https://github.com/perNyfelt/munin/blob/main/src/test/resources/codeSnippets.mdr)
+Another very simple mdr report that show the mixing of formatted blocks styled for a specific language and the r code blocks which will be executed
+
 # Production config 
 You can do any customization by adding an application-prod.properties file next to the jar.
 Then start the server with `-Dspring.profiles.active=prod` set e.g.
@@ -284,7 +287,8 @@ If you want to keep the admin user, begin by assigning your email to it and then
 # Version history
 
 ### 1.1.1-SNAPSHOT
-(Nothing yet)
+- Add syntax highlighting for code blocks in mdr reports.
+- Fix bug that prevented "normal" syntax highligted blocks from working properly
 
 ### 1.1.0
 - Change to deploy the original jar to central instead of the repackaged one.
@@ -346,6 +350,10 @@ Basic functionality for admin and view/add/edit/delete/schedule reports.
 ### [webjars codemirror](http://webjars.org)
 - Syntax highlighting for R and html code
 - License: MIT
+
+### [highlightjs](https://highlightjs.org/)
+- Syntax highlighting for mdr reports
+- License: BSD 3-Clause
 
 See the [pom.xml](https://github.com/perNyfelt/munin/blob/main/pom.xml) for more details...
 

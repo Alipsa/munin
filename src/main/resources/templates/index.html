@@ -7,10 +7,7 @@
 <body>
    <div th:include="snippets/menu.html :: menu"/>
    <div class="container">
-
-      <!--h1><img class="pb-3" src="/img/logo-combined-long.png" alt="Munin Web Reports" width="600" title="Munin Web Reports"/></h1-->
       <h1>Web Reports</h1>
-
       <span th:each="group : ${reportGroups}">
          <a th:href="@{/reports/{group}(group=${group.getReportGroup()})}" th:text="${group.getReportGroup + ' (' + group.getCount() + ')'}" class="btn btn-link folder"></a>
       </span>
