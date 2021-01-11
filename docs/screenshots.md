@@ -1,5 +1,6 @@
 # Screenshots
 
+The login screen
 ![The login screen](login.png)
 
 ![The home screen](index.png)
