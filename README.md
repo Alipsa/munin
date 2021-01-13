@@ -343,9 +343,11 @@ Basic functionality for admin and view/add/edit/delete/schedule reports.
 
 ### [htmlcreator](https://github.com/perNyfelt/htmlcreator)
 - renjin extension (package) to create html from R objects (data.frames, images etc)
+- License: MIT
 
 ### [mdr2html](https://github.com/perNyfelt/mdr2html)
 - renjin extension (package) to create html from mdr files / content
+- License: MIT
 
 ### [commons-io](https://commons.apache.org/proper/commons-io/)
 - Various IO stuff
