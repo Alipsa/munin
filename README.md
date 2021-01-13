@@ -29,8 +29,8 @@ html.add("</html></body>")
 html.content()
 ```
 
-Any R code that returns html can be used - you are not bound to use htmlcreator. This is why
-these type of reports are classified as "UNMANAGED" i.e. there is no magic to it (other than the magic of R).
+Any R code that returns html can be used however - you are not bound to use htmlcreator. 
+This is why these type of reports are classified as "UNMANAGED" (as opposed to MDR) i.e. there is no magic to it (other than the magic of R).
 
 If you use [Ride](https://github.com/perNyfelt/ride) to create reports then you can do a simple
 trick to detect the environment and display the report in Ride or in Munin, i.e.
