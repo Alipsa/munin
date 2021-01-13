@@ -4,10 +4,11 @@ The name comes from the one of Odin's ravens who he sent out every day to scout 
 
 ![example report](docs/viewSampleReport.png)
 # Overview
-This is a reporting server that can run and display reports created in Renjin R on the web.
+Munin is a reporting server that can run and display reports created in Renjin R on the web.
 
-Currently, it supports R reports where the R program returns html or the mdr format (markdown with support for r code, similar to rmd - more on that further down). 
-This can be done by using the htmlcreator package for Renjin, e.g:
+Currently, it supports R reports where the R code returns html, or the mdr format (markdown with support for r code, similar to rmd - more on that further down). 
+
+Creating html from R code can be done by using the htmlcreator package for Renjin, e.g:
 ```r
 library('se.alipsa:htmlcreator')
 
@@ -27,6 +28,22 @@ html.add("</html></body>")
 # Return the html
 html.content()
 ```
+
+Any R code that returns html can be used - you are not bound to use htmlcreator. This is why
+these type of reports are classified as "UNMANAGED" i.e. there is no magic to it (other than the magic of R).
+
+If you use [Ride](https://github.com/perNyfelt/ride) to create reports then you can do a simple
+trick to detect the environment and display the report in Ride or in Munin, i.e.
+just before the very end when you return the html content, you check if you are running in Ride and
+display the report in Viewer tab, e.g:
+```r
+# If we are using Ride (or another IDE that defines an inout object), display the report in the IDE
+if(exists("inout")) {
+  inout$viewHtml(html.content(), "SimpleExample")
+}
+html.content()
+```
+
 
 ## Parameterized reports
 When publishing a report you can optionally add report parameters in the form of
