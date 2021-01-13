@@ -168,7 +168,7 @@ There are a few different ways to install Munin.
    <parent>
        <artifactId>munin</artifactId>
        <groupId>se.alipsa</groupId>
-       <version>1.1.0</version>
+       <version>1.1.1</version>
    </parent>
    ```
 3. Customized alternative:
