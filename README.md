@@ -289,9 +289,9 @@ If you want to keep the admin user, begin by assigning your email to it and then
 
 # Version history
 
-### 1.1.1-SNAPSHOT
+### 1.1.1
 - Add syntax highlighting for code blocks in mdr reports.
-- Fix bug that prevented "normal" syntax highligted blocks from working properly
+- Fix bug that prevented "normal" syntax highlighted blocks from working properly
 - Go to group page instead of back to index after edit report
 
 ### 1.1.0
