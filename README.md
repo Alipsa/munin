@@ -87,11 +87,9 @@ html.add(mtcars, htmlattr=list(id = "mtcars-table", class="table table-striped")
 You can either upload a common stylesheet (using the "common resources" button) that you can reference in your reports e.g.
 ```r
 # import the uploaded stylesheet mystyle.css
-html.add("
-  <link rel='stylesheet' href='/common/mystyle.css' />
-")
+html.add("<link rel='stylesheet' href='/common/mystyle.css' />")
 ```
-or, to put it in the head section:
+or, to put it in the head section ([should only be needed](https://html.spec.whatwg.org/multipage/links.html#link-type-stylesheet) if your viewers have very old browsers):
 ```r
 # import the uploaded stylesheet mystyle.css
 html.add('
