@@ -12,7 +12,7 @@ Creating html from R code can be done by using the htmlcreator package for Renji
 ```r
 library('se.alipsa:htmlcreator')
 
-html.add("<html><body>")
+html.clear()
 html.add("<h2>A Sample report with a table and an image<h2>")
 html.add(
   barplot,
@@ -23,7 +23,6 @@ html.add(
 html.add("<div class='table'>")
 html.add(mtcars)
 html.add("</div>")
-html.add("</html></body>")
 
 # Return the html
 html.content()
@@ -89,10 +88,20 @@ You can either upload a common stylesheet (using the "common resources" button) 
 ```r
 # import the uploaded stylesheet mystyle.css
 html.add("
-<head>
-  <link rel='stylesheet' href='/common/mystyle.css'>
-</head>
+  <link rel='stylesheet' href='/common/mystyle.css' />
 ")
+```
+or, to put it in the head section:
+```r
+# import the uploaded stylesheet mystyle.css
+html.add('
+	<script>   
+      const cssLink = document.createElement("link");
+      cssLink.href = "/common/mystyle.css";
+      cssLink.rel="stylesheet";
+      document.head.appendChild(cssLink);
+	</script>
+  ')
 ```
 ...and you can of course also add stylesheets inline, e.g.
 ```r
