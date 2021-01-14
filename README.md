@@ -93,12 +93,12 @@ or, to put it in the head section ([should only be needed](https://html.spec.wha
 ```r
 # import the uploaded stylesheet mystyle.css
 html.add('
-	<script>   
+    <script>   
       const cssLink = document.createElement("link");
       cssLink.href = "/common/mystyle.css";
       cssLink.rel="stylesheet";
       document.head.appendChild(cssLink);
-	</script>
+    </script>
   ')
 ```
 ...and you can of course also add stylesheets inline, e.g.
