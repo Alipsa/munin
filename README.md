@@ -93,23 +93,23 @@ or, to put it in the head section ([should only be needed](https://html.spec.wha
 ```r
 # import the uploaded stylesheet mystyle.css
 html.add('
-    <script>   
-      const cssLink = document.createElement("link");
-      cssLink.href = "/common/mystyle.css";
-      cssLink.rel="stylesheet";
-      document.head.appendChild(cssLink);
-    </script>
-  ')
+  <script>   
+    const cssLink = document.createElement("link");
+    cssLink.href = "/common/mystyle.css";
+    cssLink.rel="stylesheet";
+    document.head.appendChild(cssLink);
+  </script>
+')
 ```
 ...and you can of course also add stylesheets inline, e.g.
 ```r
 # add a style class to adjust the font size of table text:
 html.add("
-<style>
-  .table-font-size {
-    font-size: 14px;
-  }
-</style>
+  <style>
+    .table-font-size {
+      font-size: 14px;
+    }
+  </style>
 ")
 
 # reference the class together with some bootstrap classes when rendering a table:
@@ -168,6 +168,9 @@ md.add(
 See the r2md [README](https://github.com/perNyfelt/r2md/blob/main/README.md) for more information.
 
 `````
+
+Which will result in the following report output:
+![mdrExample](docs/mdrExample.png)
 
 ## What about RMD?
 Rmd requires knitr which depends on the Markdown package. The Markdown packages has some C code that
