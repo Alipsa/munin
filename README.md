@@ -319,6 +319,7 @@ If you want to keep the admin user, begin by assigning your email to it and then
 ### 1.1.2-SNAPSHOT
 - add docs on how to add external css (two ways, in body or in head using js)
 - cleanup some link tags in the headers (use xhtml style)
+- Add mdr output to the mdr example in the README.md 
 
 ### 1.1.1
 - Add syntax highlighting for code blocks in mdr reports.
