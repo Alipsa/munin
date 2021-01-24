@@ -304,10 +304,15 @@ is to change / remove the three predefined users using the admin interface menti
 If you want to keep the admin user, begin by assigning your email to it and then log out and reset the password -
  a new password will then be emailed to you.
 
+# Integration
+Munin provides a REST api for integration with other application. It is described [here](api.md).
+
 # Version history
 
 ### 1.1.2-SNAPSHOT
-(nothing yet)
+- upgrade dependencies: htmlcreator, mdr2html, spring-boot, bootstrap
+- Add restapi for integration with other tools (mainly to be able to add built in 
+support for creating/editing Munin reports in Ride). 
 
 ### 1.1.1
 - Add syntax highlighting for code blocks in mdr reports.

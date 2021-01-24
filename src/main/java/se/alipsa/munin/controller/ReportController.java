@@ -71,7 +71,7 @@ public class ReportController {
 
   @GetMapping("/viewReport/{name}")
   public String viewReport(@PathVariable String name, Model model) throws ReportNotFoundException, ScriptException, ReportDefinitionException {
-    Report report = loadReport(name);
+    Report report = reportRepo.loadReport(name);
     model.addAttribute("reportName", name);
     model.addAttribute("reportDescription", report.getDescription());
     if (report.getInputContent() == null || report.getInputContent().trim().isEmpty()){
@@ -92,7 +92,7 @@ public class ReportController {
   @PostMapping(path = "/viewReport/{name}", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
   public ModelAndView viewReport(@PathVariable String name, @RequestParam MultiValueMap<String, List<?>> paramMap) throws ScriptException, ReportDefinitionException, ReportNotFoundException {
     ModelAndView mav = new ModelAndView();
-    Report report = loadReport(name);
+    Report report = reportRepo.loadReport(name);
     mav.addObject("reportName", name);
     mav.addObject("reportDescription", report.getDescription());
     Map<String, Object> params = new HashMap<>();
@@ -115,14 +115,6 @@ public class ReportController {
     mav.addObject("reportContent", reportContent);
     mav.setViewName("viewReport");
     return mav;
-  }
-
-  private Report loadReport(String name) throws ReportNotFoundException {
-    Optional<Report> dbReport = reportRepo.findById(name);
-    if (!dbReport.isPresent()) {
-      throw new ReportNotFoundException("There is no report with the name " + name);
-    }
-    return dbReport.get();
   }
 
   @GetMapping("/manage/addReport")
@@ -163,7 +155,7 @@ public class ReportController {
 
   @GetMapping(path = "/manage/editReport/{name}")
   public String editReportForm(@PathVariable String name, Model model) throws ReportNotFoundException {
-    Report report = loadReport(name);
+    Report report = reportRepo.loadReport(name);
     model.addAttribute("reportName", name);
     model.addAttribute("reportDescription", report.getDescription());
     model.addAttribute("definition", report.getDefinition());
@@ -189,7 +181,7 @@ public class ReportController {
       LOG.warn("Report Group is blank, setting it to None");
       reportGroup = "None";
     }
-    Report report = loadReport(reportName);
+    Report report = reportRepo.loadReport(reportName);
     report.setDescription(description);
     report.setDefinition(definition);
     report.setInputContent(inputContent);
@@ -202,7 +194,7 @@ public class ReportController {
 
   @GetMapping(path = "/manage/deleteReport/{name}")
   public RedirectView deleteReport(@PathVariable String name, RedirectAttributes redirectAttributes) throws ReportNotFoundException {
-    Report report = loadReport(name);
+    Report report = reportRepo.loadReport(name);
     reportRepo.delete(report);
     redirectAttributes.addFlashAttribute("message",name + " deleted successfully!");
     return new RedirectView("/");
