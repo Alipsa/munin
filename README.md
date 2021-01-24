@@ -12,7 +12,7 @@ Creating html from R code can be done by using the htmlcreator package for Renji
 ```r
 library('se.alipsa:htmlcreator')
 
-html.add("<html><body>")
+html.clear()
 html.add("<h2>A Sample report with a table and an image<h2>")
 html.add(
   barplot,
@@ -23,7 +23,6 @@ html.add(
 html.add("<div class='table'>")
 html.add(mtcars)
 html.add("</div>")
-html.add("</html></body>")
 
 # Return the html
 html.content()
@@ -88,21 +87,29 @@ html.add(mtcars, htmlattr=list(id = "mtcars-table", class="table table-striped")
 You can either upload a common stylesheet (using the "common resources" button) that you can reference in your reports e.g.
 ```r
 # import the uploaded stylesheet mystyle.css
-html.add("
-<head>
-  <link rel='stylesheet' href='/common/mystyle.css'>
-</head>
-")
+html.add("<link rel='stylesheet' href='/common/mystyle.css' />")
+```
+or, to put it in the head section ([should only be needed](https://html.spec.whatwg.org/multipage/links.html#link-type-stylesheet) if your viewers have very old browsers):
+```r
+# import the uploaded stylesheet mystyle.css
+html.add('
+  <script>   
+    const cssLink = document.createElement("link");
+    cssLink.href = "/common/mystyle.css";
+    cssLink.rel="stylesheet";
+    document.head.appendChild(cssLink);
+  </script>
+')
 ```
 ...and you can of course also add stylesheets inline, e.g.
 ```r
 # add a style class to adjust the font size of table text:
 html.add("
-<style>
-  .table-font-size {
-    font-size: 14px;
-  }
-</style>
+  <style>
+    .table-font-size {
+      font-size: 14px;
+    }
+  </style>
 ")
 
 # reference the class together with some bootstrap classes when rendering a table:
@@ -161,6 +168,9 @@ md.add(
 See the r2md [README](https://github.com/perNyfelt/r2md/blob/main/README.md) for more information.
 
 `````
+
+Which will result in the following report output:
+![mdrExample](docs/mdrExample.png)
 
 ## What about RMD?
 Rmd requires knitr which depends on the Markdown package. The Markdown packages has some C code that
@@ -310,6 +320,9 @@ Munin provides a REST api for integration with other application. It is describe
 # Version history
 
 ### 1.1.2-SNAPSHOT
+- add docs on how to add external css (two ways, in body or in head using js)
+- cleanup some link tags in the headers (use xhtml style)
+- Add mdr output to the mdr example in the README.md 
 - upgrade dependencies: htmlcreator, mdr2html, spring-boot, bootstrap
 - Add restapi for integration with other tools (mainly to be able to add built in 
 support for creating/editing Munin reports in Ride). 
