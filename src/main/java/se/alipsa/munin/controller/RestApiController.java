@@ -54,6 +54,7 @@ public class RestApiController {
 
   @PutMapping(value = "/api/updateReport", consumes = MediaType.APPLICATION_JSON_VALUE)
   public void updateReport(@RequestBody Report report) {
+    LOG.debug("Updating report: {}", report);
     if (report.getReportName() == null || "".equals(report.getReportName().trim())) {
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Report name cannot be empty");
     }

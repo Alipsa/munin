@@ -81,4 +81,15 @@ public class Report implements Serializable {
   public void setReportGroup(String reportGroup) {
     this.reportGroup = reportGroup;
   }
+
+  @Override
+  public String toString() {
+    return "Report{" +
+           "reportName='" + reportName + '\'' +
+           ", description='" + description + '\'' +
+           ", reportType=" + reportType +
+           ", reportGroup='" + reportGroup + '\'' +
+           ", isParameterized=" + (inputContent == null ? "No" : inputContent.length() > 0 ? "Yes" : "No") +
+           '}';
+  }
 }
