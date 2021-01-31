@@ -31,12 +31,15 @@ html.content()
 Any R code that returns html can be used however - you are not bound to use htmlcreator. 
 This is why these type of reports are classified as "UNMANAGED" (as opposed to MDR) i.e. there is no magic to it (other than the magic of R).
 
-If you use [Ride](https://github.com/perNyfelt/ride) to create reports then you can do a simple
-trick to detect the environment and display the report in Ride or in Munin, i.e.
+[Ride](https://github.com/perNyfelt/ride) supports the Munin report formats natively, 
+so you can use Ride to create and edit Munin reports.
+
+If you use some other IDE to create reports then you can do a simple
+trick to detect the environment and display the report in the IDE or in Munin, i.e.
 just before the very end when you return the html content, you check if you are running in Ride and
 display the report in Viewer tab, e.g:
 ```r
-# If we are using Ride (or another IDE that defines an inout object), display the report in the IDE
+# If we are using some IDE that defines an inout object), display the report in the IDE
 if(exists("inout")) {
   inout$viewHtml(html.content(), "SimpleExample")
 }
