@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import se.alipsa.renjin.starter.RenjinSessionEnginePool;
 
 import javax.script.ScriptException;
+import java.util.Collections;
 import java.util.Map;
 
 @Service
@@ -30,7 +31,9 @@ public class ReportEngine {
   public final String runReport(String script, Map<String, Object>... params) throws ScriptException, ReportDefinitionException {
     SEXP sexp = runScript(script, params);
     if (!(sexp instanceof StringArrayVector)) {
-      throw new ReportDefinitionException("This report does not return an html String (character), nothing to render!");
+      sexp = runScript("as.character(.runScriptResult)", Collections.singletonMap(".runScriptResult", sexp));
+      LOG.info("Script did not return a character vector, so converted it with as.character()");
+      //throw new ReportDefinitionException("This report does not return an html String (character), nothing to render!");
     }
     return sexp.asString();
   }
