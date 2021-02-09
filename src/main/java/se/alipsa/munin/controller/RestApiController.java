@@ -37,13 +37,13 @@ public class RestApiController {
   @PostMapping(value = "/api/addReport", consumes = MediaType.APPLICATION_JSON_VALUE)
   public void addReport(@RequestBody Report report) {
     if (report.getReportName() == null || "".equals(report.getReportName().trim())) {
-      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Report name cannot be empty");
+      throw new ApiException(HttpStatus.BAD_REQUEST, "Report name cannot be empty");
     }
     if (reportRepo.findById(report.getReportName()).isPresent()) {
-      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "There is already a report with that name");
+      throw new ApiException(HttpStatus.BAD_REQUEST, "There is already a report with that name");
     }
     if (report.getDefinition() == null || "".equals(report.getDefinition().trim())) {
-      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Report definition (R code) cannot be empty");
+      throw new ApiException(HttpStatus.BAD_REQUEST, "Report definition (R code) cannot be empty");
     }
     if (report.getReportGroup() == null || report.getReportGroup().trim().isEmpty()) {
       LOG.warn("Report Group is blank, setting it to None");
@@ -57,11 +57,11 @@ public class RestApiController {
     LOG.debug("Updating report: {}", report);
     if (report.getReportName() == null || "".equals(report.getReportName().trim())) {
       LOG.warn("updateReport: Report name cannot be empty");
-      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Report name cannot be empty");
+      throw new ApiException(HttpStatus.BAD_REQUEST, "Report name cannot be empty");
     }
     if (report.getDefinition() == null || "".equals(report.getDefinition().trim())) {
       LOG.warn("updateReport: Report definition (R code) cannot be empty");
-      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Report definition (R code) cannot be empty");
+      throw new ApiException(HttpStatus.BAD_REQUEST, "Report definition (R code) cannot be empty");
     }
     if (report.getReportGroup() == null || report.getReportGroup().trim().isEmpty()) {
       LOG.warn("Report Group is blank, setting it to None");
@@ -77,7 +77,7 @@ public class RestApiController {
       reportRepo.save(report);
     } catch (ReportNotFoundException e) {
       LOG.warn("Failed to save report", e);
-      throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+      throw new ApiException(HttpStatus.NOT_FOUND, e.getMessage());
     }
   }
 }
