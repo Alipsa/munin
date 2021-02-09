@@ -56,9 +56,11 @@ public class RestApiController {
   public void updateReport(@RequestBody Report report) {
     LOG.debug("Updating report: {}", report);
     if (report.getReportName() == null || "".equals(report.getReportName().trim())) {
+      LOG.warn("updateReport: Report name cannot be empty");
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Report name cannot be empty");
     }
     if (report.getDefinition() == null || "".equals(report.getDefinition().trim())) {
+      LOG.warn("updateReport: Report definition (R code) cannot be empty");
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Report definition (R code) cannot be empty");
     }
     if (report.getReportGroup() == null || report.getReportGroup().trim().isEmpty()) {
@@ -74,7 +76,8 @@ public class RestApiController {
       dbReport.setReportGroup(report.getReportGroup());
       reportRepo.save(report);
     } catch (ReportNotFoundException e) {
-      throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+      LOG.warn("Failed to save report", e);
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
     }
   }
 }
