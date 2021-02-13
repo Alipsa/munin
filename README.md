@@ -36,7 +36,7 @@ so you can use Ride to create and edit Munin reports.
 
 If you use some other IDE to create reports then you can do a simple
 trick to detect the environment and display the report in the IDE or in Munin, i.e.
-just before the very end when you return the html content, you check if you are running in Ride and
+just before the very end when you return the html content, you check if you are running in the IDE and
 display the report in Viewer tab, e.g:
 ```r
 # If we are using some IDE that defines an inout object), display the report in the IDE
@@ -45,7 +45,9 @@ if(exists("inout")) {
 }
 html.content()
 ```
-
+Note that from ver 1.2.3 of Ride, there is built-in support for Munin reports, and you have a View button 
+instead of the "normal" Run button than does this magic for you (and adds bootstrap etc. making the View
+look the same as when viewed from a browser when run from within Munin).
 
 ## Parameterized reports
 When publishing a report you can optionally add report parameters in the form of
