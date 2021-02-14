@@ -331,7 +331,8 @@ Munin provides a REST api for integration with other application. It is describe
 - upgrade dependencies: htmlcreator, mdr2html, spring-boot, bootstrap
 - Add restapi for integration with other tools (mainly to be able to add built in 
 support for creating/editing Munin reports in Ride). 
-- convert unmanaged R reports to character vector if it returned something else.  
+- convert unmanaged R reports to character vector if it returned something else. 
+- add getReportInfo api method
 
 ### 1.1.1
 - Add syntax highlighting for code blocks in mdr reports.
