@@ -19,6 +19,21 @@ Returns:
 ["Examples","MDR","Parameterized reports"]
 ```
 
+## getReportInfo
+- Description: get a map of report groups, each containing a list of the report names
+- Path: /api/getReportInfo
+- Method: GET
+- Returns: A JSON map with a report group name, and an array of strings of the report names in that group
+- Example:
+
+```shell
+curl -u analyst:analystpwd localhost:8088/api/getReportInfo
+```
+Returns:
+```json
+{"Parameterized reports":["Param report","Param report2"],"SImple":["SimpleTest 2"],"MDR":["MdrSample","Code snippets"],"None":["SimpleTest"],"Examples":["Sample","Iris","Table Ext Css","Hello Example"]}
+```
+
 ## getReports
 - Description: get a list of reports for a report group
 - Path: /api/getReports
