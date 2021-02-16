@@ -333,6 +333,7 @@ Munin provides a REST api for integration with other application. It is describe
 support for creating/editing Munin reports in Ride). 
 - convert unmanaged R reports to character vector if it returned something else. 
 - add getReportInfo api method
+- upgrade dependencies for junit, liquibase, mdr2html, and spotbugs
 
 ### 1.1.1
 - Add syntax highlighting for code blocks in mdr reports.
