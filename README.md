@@ -324,16 +324,17 @@ Munin provides a REST api for integration with other application. It is describe
 
 # Version history
 
-### 1.1.2-SNAPSHOT
+### 1.1.3
+(nothing yet))
+
+### 1.1.2
 - add docs on how to add external css (two ways, in body or in head using js)
 - cleanup some link tags in the headers (use xhtml style)
-- Add mdr output to the mdr example in the README.md 
-- upgrade dependencies: htmlcreator, mdr2html, spring-boot, bootstrap
-- Add restapi for integration with other tools (mainly to be able to add built in 
-support for creating/editing Munin reports in Ride). 
-- convert unmanaged R reports to character vector if it returned something else. 
-- add getReportInfo api method
-- upgrade dependencies for junit, liquibase, mdr2html, and spotbugs
+- Add mdr output to the mdr example in the README.md
+- Add restapi for integration with other tools (mainly to be able to add built in
+  support for creating/editing Munin reports in Ride).
+- convert unmanaged R reports to character vector if it returned something else.
+- upgrade dependencies for junit, liquibase, mdr2html, and spotbugs,  htmlcreator, spring-boot, bootstrap
 
 ### 1.1.1
 - Add syntax highlighting for code blocks in mdr reports.
