@@ -325,7 +325,7 @@ Munin provides a REST api for integration with other application. It is describe
 # Version history
 
 ### 1.1.3
-(nothing yet))
+- Add muninBaseUrl variable to the global R env so it can be referred to in reports.
 
 ### 1.1.2
 - add docs on how to add external css (two ways, in body or in head using js)
