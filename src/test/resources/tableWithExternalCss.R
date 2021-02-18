@@ -20,7 +20,4 @@ orangeDfSum <- cbind(statistic = c("Min", "1st Q", "Median", "Mean", "3rd Q", "M
 html.add(orangeDfSum, htmlattr=list("id"="strongTable", "class"="table table-striped"))
 html.add("</html></body>")
 
-if(exists("inout")) {
-  inout$viewHtml(html.content(), "ext styled table")
-}
 html.content()

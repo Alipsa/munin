@@ -19,6 +19,21 @@ Returns:
 ["Examples","MDR","Parameterized reports"]
 ```
 
+## getReportInfo
+- Description: get a map of report groups, each containing a list of the report names
+- Path: /api/getReportInfo
+- Method: GET
+- Returns: A JSON map with a report group name, and an array of strings of the report names in that group
+- Example:
+
+```shell
+curl -u analyst:analystpwd localhost:8088/api/getReportInfo
+```
+Returns:
+```json
+{"Parameterized reports":["Param report","Param report2"],"SImple":["SimpleTest 2"],"MDR":["MdrSample","Code snippets"],"None":["SimpleTest"],"Examples":["Sample","Iris","Table Ext Css","Hello Example"]}
+```
+
 ## getReports
 - Description: get a list of reports for a report group
 - Path: /api/getReports
@@ -60,7 +75,7 @@ Returns:
   {
     "reportName":"Sample",
     "description":"Sample report",
-    "definition":"library('se.alipsa:htmlcreator')\r\n\r\nhtml.clear()\r\nhtml.add(\"<html><body>\")\r\nhtml.add(\"\r\n<style>\r\n  .table-font-size {\r\n    font-size: 14px;\r\n  }\r\n</style>\r\n\")\r\n\r\nhtml.add(\"<h2>A Sample report with a table and an image<h2>\")\r\nhtml.add(\r\n  barplot,\r\n  table(mtcars$vs, mtcars$gear),\r\n  main=\"Car Distribution by Gears and VS\",\r\n  col=c(\"darkblue\",\"red\"),\r\n  htmlattr = list(alt=\"an mtcars plot\")\r\n)\r\nhtml.add(mtcars, htmlattr=list(class=\"table table-striped table-font-size\"))\r\n\r\nhtml.add(\"</html></body>\")\r\n# If we are using Ride (or another IDE that defines an inout object), display the report in the IDE\r\nif(exists(\"inout\")) {\r\n  inout$viewHtml(html.content(), \"SimpleExample\")\r\n}\r\nhtml.content()\r\n",
+    "definition":"library('se.alipsa:htmlcreator')\r\n\r\nhtml.clear()\r\nhtml.add(\"<html><body>\")\r\nhtml.add(\"\r\n<style>\r\n  .table-font-size {\r\n    font-size: 14px;\r\n  }\r\n</style>\r\n\")\r\n\r\nhtml.add(\"<h2>A Sample report with a table and an image<h2>\")\r\nhtml.add(\r\n  barplot,\r\n  table(mtcars$vs, mtcars$gear),\r\n  main=\"Car Distribution by Gears and VS\",\r\n  col=c(\"darkblue\",\"red\"),\r\n  htmlattr = list(alt=\"an mtcars plot\")\r\n)\r\nhtml.add(mtcars, htmlattr=list(class=\"table table-striped table-font-size\"))\r\n\r\nhtml.add(\"</html></body>\")\r\n# If we are using an IDE that defines an inout object), display the report in the IDE\r\nhtml.content()\r\n",
     "inputContent":"",
     "reportType":"UNMANAGED",
     "reportGroup":"Examples"

@@ -29,8 +29,4 @@ if (dataSet == "PlantGrowth") {
   html.add(paste("Unknown option", dataSet))
 }
 html.add("</body></html>")
-# If we are using Ride (or another IDE that defines an inout object), display the report in the IDE
-if(exists("inout")) {
-  inout$viewHtml(html.content(), "ParamReport")
-}
 html.content()

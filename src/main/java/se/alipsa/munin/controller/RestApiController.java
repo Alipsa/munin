@@ -6,11 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 import se.alipsa.munin.model.Report;
 import se.alipsa.munin.repo.ReportRepo;
 
-import java.util.List;
+import java.util.*;
 
 @RestController
 public class RestApiController {
@@ -32,6 +31,16 @@ public class RestApiController {
   @GetMapping(value = "/api/getReports", produces = MediaType.APPLICATION_JSON_VALUE)
   public List<Report> getReports(@RequestParam String groupName) {
     return reportRepo.findByReportGroupOrderByReportName(groupName);
+  }
+
+  @GetMapping(value = "/api/getReportInfo", produces = MediaType.APPLICATION_JSON_VALUE)
+  public Map<String, List<String>> getReportINfo() {
+    Map<String, List<String>> map = new HashMap<>();
+    for (Report report : reportRepo.findAll()) {
+      map.computeIfAbsent(report.getReportGroup(), k -> new ArrayList<>());
+      map.get(report.getReportGroup()).add(report.getReportName());
+    }
+    return map;
   }
 
   @PostMapping(value = "/api/addReport", consumes = MediaType.APPLICATION_JSON_VALUE)

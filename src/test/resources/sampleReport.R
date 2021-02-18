@@ -21,8 +21,4 @@ html.add(
 html.add(mtcars, htmlattr=list(class="table table-striped table-font-size"))
 
 html.add("</html></body>")
-# If we are using Ride (or another IDE that defines an inout object), display the report in the IDE
-if(exists("inout")) {
-  inout$viewHtml(html.content(), "SimpleExample")
-}
 html.content()
