@@ -325,7 +325,7 @@ Munin provides a REST api for integration with other application. It is describe
 # Version history
 
 ### 1.1.3
-(nothing yet))
+Allow public access to shared resources (/common)
 
 ### 1.1.2
 - add docs on how to add external css (two ways, in body or in head using js)
