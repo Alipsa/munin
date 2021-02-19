@@ -8,7 +8,9 @@ import org.renjin.sexp.StringArrayVector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import se.alipsa.munin.util.EnvironmentUtil;
 import se.alipsa.renjin.starter.RenjinSessionEnginePool;
 
 import javax.script.ScriptException;
@@ -18,13 +20,16 @@ import java.util.Map;
 @Service
 public class ReportEngine {
 
+
   private final RenjinSessionEnginePool renjinSessionEnginePool;
+  private final EnvironmentUtil environmentUtil;
 
   private static final Logger LOG = LoggerFactory.getLogger(ReportEngine.class);
 
   @Autowired
-  public ReportEngine(RenjinSessionEnginePool renjinSessionEnginePool) {
+  public ReportEngine(RenjinSessionEnginePool renjinSessionEnginePool, EnvironmentUtil environmentUtil) {
     this.renjinSessionEnginePool = renjinSessionEnginePool;
+    this.environmentUtil = environmentUtil;
   }
 
   @SafeVarargs
@@ -47,6 +52,7 @@ public class ReportEngine {
         Map<String, Object> params = paramOpt[0];
         params.forEach(scriptEngine::put);
       }
+      scriptEngine.put("muninBaseUrl", environmentUtil.getBaseUrl());
       return (SEXP) scriptEngine.eval(script);
     } catch (Exception e) {
       if (e instanceof ScriptException) {
@@ -77,6 +83,7 @@ public class ReportEngine {
         Map<String, Object> params = paramOpt[0];
         params.forEach(scriptEngine::put);
       }
+      scriptEngine.put("muninBaseUrl", environmentUtil.getBaseUrl());
       scriptEngine.put("mdrContent", script);
 
       return ((SEXP) scriptEngine.eval("library('se.alipsa:mdr2html')\n renderMdr(mdrContent)")).asString();

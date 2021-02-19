@@ -52,7 +52,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         //.and()
         .authorizeRequests()
           .antMatchers("/resetPassword", "/webjars/**", "/js/**", "/css/**", "/favicon.ico" , "/img/**",
-              "/actuator/health", "/h2-console/**")
+              "/actuator/health", "/h2-console/**", "/common/**")
             .permitAll()
           .antMatchers("/reports/**")
             .authenticated()
