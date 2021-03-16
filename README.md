@@ -324,9 +324,14 @@ Munin provides a REST api for integration with other application. It is describe
 
 # Version history
 
+### 1.1.4
+Fix regression bug introduced in 1.1.3 where jquery update was not handled properly in 
+the header.
+
 ### 1.1.3
 - Allow public access to shared resources (/common)
 - Add muninBaseUrl variable to the global R env so it can be referred to in reports.
+- Upgrade jquery
 
 ### 1.1.2
 - add docs on how to add external css (two ways, in body or in head using js)
