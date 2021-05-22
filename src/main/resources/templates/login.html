@@ -8,7 +8,7 @@
 <div class="container">
    <div class="form-signin col-md-5">
       <img class="pb-3" src="/img/logo-combined.png" alt="Munin Web Reports" width="330" title="Munin Web Reports"/>
-      <p th:if="${message}" th:text="${message}" />
+      <p th:if="${message}" th:text="${message}"></p>
       <h1 class="pt-5">Login</h1>
       <form th:action="@{/login.html}" method="post">
          <div class="row">
@@ -35,5 +35,6 @@
       <p th:if="${loginError}" class="error pt-3">Wrong user or password</p>
    </div>
 </div>
+<div th:include="snippets/header.html :: scripsFragment"></div>
 </body>
 </html>

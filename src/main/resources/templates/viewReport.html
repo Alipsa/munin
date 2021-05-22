@@ -1,16 +1,23 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5" lang="en">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+      lang="en">
 <head th:include="snippets/header.html :: headerFragment">
-  <title id="pageTitle" th:inline="text">[[${reportName}]]</title>
+   <title id="pageTitle" th:inline="text">[[${reportName}]]</title>
 </head>
 <body>
-<script>
-  hljs.initHighlightingOnLoad();
-  $( document ).ready( setBusy(false) );
-</script>
-<div th:include="snippets/menu.html :: menu"/>
+
+<div th:include="snippets/menu.html :: menu"></div>
 <div class="container">
-  <div th:remove="tag" th:utext="${reportContent}"><html><body></body></html></div>
+   <div th:remove="tag" th:utext="${reportContent}">
+      <html>
+      <body></body>
+      </html>
+   </div>
 </div>
+<div th:include="snippets/header.html :: scripsFragment"></div>
+<script>
+   hljs.initHighlightingOnLoad();
+   $(document).ready(setBusy(false));
+</script>
 </body>
 </html>
