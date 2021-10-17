@@ -38,13 +38,15 @@
             </select>
          </div>
       </div>
-      <div class="form-group row col-md-12">
+      <div class="form-group row pt-1">
          <label for="description">Description</label>
-         <input id="description" type="text" name="description" size="65" maxlength="300"
-                th:value="${reportDescription}" class="form-control"/>
+         <div class="col-12">
+            <input id="description" type="text" name="description"
+                   th:value="${reportDescription}" class="form-control"/>
+         </div>
       </div>
 
-      <div class="form-group">
+      <div class="form-group pt-1">
          <fieldset class="border">
             <legend class="w-auto pb-0"><label for="definition">R report code:</label></legend>
             <textarea class="form-control-file" id="definition" name="definition" th:text="${definition}"></textarea>

@@ -17,6 +17,7 @@
          <tr>
             <th>File name</th>
             <th>URL</th>
+            <th>Preview</th>
             <th>Action</th>
          </tr>
       </thead>
@@ -25,6 +26,9 @@
          <td th:text="${file}" disabled="disabled"></td>
          <td>
             <a th:href="@{'/common/' + ${file}}" th:text="@{'/common/' + ${file}}"></a>
+         </td>
+         <td>
+            <img th:src="@{'/common/' + ${file}}" th:height="50" alt="" />
          </td>
          <td>
             <span sec:authorize="hasAnyRole('ROLE_ANALYST', 'ROLE_ADMIN')">

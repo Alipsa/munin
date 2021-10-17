@@ -271,7 +271,7 @@ Default config is a file based H2 database (`jdbc:h2:file:./munindb;DATABASE_TO_
 To change the underlying database config, set the spring.datasource.xxx parameters 
 as you see fit.
 
-Not that if you want another database other than H2, you need to make sure spring boot can access
+Note that if you want another database other than H2, you need to make sure spring boot can access
 the jdbc driver jar. This can be done by setting the loader.path, e.g:
 
 1. create a lib folder where your spring boot jar resides
@@ -325,8 +325,10 @@ Munin provides a REST api for integration with other application. It is describe
 # Version history
 
 ### 1.1.5-SNAPSHOT
-- Bump versions for jquery, spring boot, cronutils, liquibase, spotbugs-annotations, junit
+- Bump versions for jquery, spring boot, cronutils, liquibase, spotbugs-annotations, junit, commons-collections
+    bootstrap, webjars-locator
 - Load javascripts at the end of the body instead of in the header - should give a slight perceived speed increase 
+- Add preview to common files section
 
 ### 1.1.4
 Fix regression bug introduced in 1.1.3 where jquery update was not handled properly in 
