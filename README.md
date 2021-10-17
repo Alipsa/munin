@@ -324,7 +324,7 @@ Munin provides a REST api for integration with other application. It is describe
 
 # Version history
 
-### 1.1.5-SNAPSHOT
+### 1.1.5
 - Bump versions for jquery, spring boot, cronutils, liquibase, spotbugs-annotations, junit, commons-collections
     bootstrap, webjars-locator
 - Load javascripts at the end of the body instead of in the header - should give a slight perceived speed increase 
