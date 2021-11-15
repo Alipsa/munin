@@ -44,7 +44,7 @@
         <codemirror.version>5.62.2</codemirror.version>
         <commons-io.version>2.11.0</commons-io.version>
         <commons-collections4.version>4.4</commons-collections4.version>
-        <cron-utils.version>9.1.5</cron-utils.version>
+        <cron-utils.version>9.1.6</cron-utils.version>
         <htmlcreator.version>1.4</htmlcreator.version>
         <jquery.version>3.6.0</jquery.version>
         <junit-jupiter.version>5.8.1</junit-jupiter.version>
