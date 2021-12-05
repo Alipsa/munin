@@ -73,6 +73,7 @@ public class ReportController {
   public String viewReport(@PathVariable String name, Model model) throws ReportNotFoundException, ScriptException, ReportDefinitionException {
     Report report = reportRepo.loadReport(name);
     model.addAttribute("reportName", name);
+    model.addAttribute("reportGroup", report.getReportGroup());
     model.addAttribute("reportDescription", report.getDescription());
     if (report.getInputContent() == null || report.getInputContent().trim().isEmpty()){
       String reportContent;
@@ -94,6 +95,7 @@ public class ReportController {
     ModelAndView mav = new ModelAndView();
     Report report = reportRepo.loadReport(name);
     mav.addObject("reportName", name);
+    mav.addObject("reportGroup", report.getReportGroup());
     mav.addObject("reportDescription", report.getDescription());
     Map<String, Object> params = new HashMap<>();
     // Unpack the list if it contains a single value

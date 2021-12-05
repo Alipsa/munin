@@ -67,7 +67,7 @@ Returns:
   {
     "reportName":"Iris",
     "description":"Pie chart with external image",
-    "definition":"library('se.alipsa:htmlcreator')\r\n\r\nhtml.clear()\r\nhtml.add(\"<html><body>\")\r\nhtml.add(\"<h2>Iris report</h2>\")\r\n\r\nif(exists(\"inout\")) {\r\n  html.add(html.imgUrl(paste0(\"file://\", getwd(),\"/resources/iris.jpg\")))\r\n} else {\r\n  html.add(html.imgUrl(\"/common/iris.jpg\"))\r\n}\r\nspecies <- table(iris$Species)\r\nhtml.add(\r\n  pie, \r\n  species, \r\n  labels = paste(names(species), \"\\n\", species, sep=\"\"), \r\n  main=\"Pie Chart of Species\\n (with sample sizes)\"\r\n)\r\n\r\nhtml.add(\"</html></body>\")\r\n\r\nif(exists(\"inout\")) {\r\n  inout$viewHtml(html.content(), \"Pie chart\")\r\n}\r\nhtml.content()",
+    "definition":"library('se.alipsa:htmlcreator')\r\n\r\nhtml.clear()\r\nhtml.add(\"<html><body>\")\r\nhtml.add(\"<h2>Iris report</h2>\")\r\n\r\nif(exists(\"inout\")) {\r\n  html.add(html.imgUrl(paste0(\"file://\", getwd(),\"/resources/iris.jpg\")))\r\n} else {\r\n  html.add(html.imgUrl(\"/common/resources/iris.jpg\"))\r\n}\r\nspecies <- table(iris$Species)\r\nhtml.add(\r\n  pie, \r\n  species, \r\n  labels = paste(names(species), \"\\n\", species, sep=\"\"), \r\n  main=\"Pie Chart of Species\\n (with sample sizes)\"\r\n)\r\n\r\nhtml.add(\"</html></body>\")\r\n\r\nif(exists(\"inout\")) {\r\n  inout$viewHtml(html.content(), \"Pie chart\")\r\n}\r\nhtml.content()",
     "inputContent":"",
     "reportType":"UNMANAGED",
     "reportGroup":"Examples"

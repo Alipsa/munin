@@ -4,7 +4,12 @@
    <title id="pageTitle">Renjin Web Reports Error</title>
 </head>
 <body>
-   <div th:include="snippets/menu.html :: menu"></div>
+   <div th:include="snippets/menu.html :: menu">
+      <ol id="breadcrumbs" class="breadcrumb">
+         <li class="breadcrumb-item"><a href="/">Home</a></li>
+         <li class="breadcrumb-item active" aria-current="page">Error</li>
+      </ol>
+   </div>
    <div class="container pt-5">
       <h1>An error occurred</h1>
       <h4>Either something went wrong or the page doesn't exist anymore.</h4>

@@ -5,7 +5,13 @@
    <title id="pageTitle">Edit Renjin Web Report</title>
 </head>
 <body>
-<div th:include="snippets/menu.html :: menu"></div>
+<div th:include="snippets/menu.html :: menu">
+   <ol id="breadcrumbs" class="breadcrumb">
+      <li class="breadcrumb-item"><a href="/">Home</a></li>
+      <li class="breadcrumb-item" aria-current="page"><a th:href="@{/reports/{group}(group=${reportGroup})}" th:text="${reportGroup}"></a></li>
+      <li class="breadcrumb-item active" aria-current="page" th:text="${reportName}"></li>
+   </ol>
+</div>
 <div class="container">
    <h3>Edit report</h3>
    <form id="editReportForm" enctype="application/x-www-form-urlencoded" action="/manage/editReport" method="post">
@@ -18,7 +24,7 @@
          <div class="col-md-3 row">
             <label for="reportGroup">Report Group</label>
             <div class="input-group">
-               <select id="reportGroup" name="reportGroup" class="form-control">
+               <select id="reportGroup" name="reportGroup" class="form-select">
                   <option th:each="reportGroupOpt: ${reportGroups}" th:value="${reportGroupOpt}"
                           th:text="${reportGroupOpt}" th:selected="${reportGroup == reportGroupOpt}">
                   </option>
@@ -30,12 +36,21 @@
          </div>
          <div class="col-md-3">
             <label for="reportType">Report Type</label>
-            <select id="reportType" name="reportType" class="form-control" onchange="changeHighligtMode(this.value)">
-               <option th:each="reportTypeVal: ${T(se.alipsa.munin.model.ReportType).values()}"
-                       th:value="${reportTypeVal}"
-                       th:text="${reportTypeVal}" th:selected="${reportType == reportTypeVal}">
-               </option>
-            </select>
+            <div class="input-group">
+               <select id="reportType" name="reportType" class="form-select" onchange="changeHighligtMode(this.value)">
+                  <option th:each="reportTypeVal: ${T(se.alipsa.munin.model.ReportType).values()}"
+                          th:value="${reportTypeVal}"
+                          th:text="${reportTypeVal}" th:selected="${reportType == reportTypeVal}">
+                  </option>
+               </select>
+               <div class="input-group-append">
+                  <button class="btn" type="button"
+                          data-bs-toggle="modal"
+                          data-bs-target="#reportTypesInfo">
+                     <img th:src="@{/img/question-circle.svg}" alt="help" />
+                  </button>
+               </div>
+            </div>
          </div>
       </div>
       <div class="form-group row pt-1">
@@ -64,10 +79,41 @@
          <label for="loadInputFile">Load from file</label>
          <input type="file" id="loadInputFile"/>
       </div>
-
-      <button type="submit" class="btn btn-primary">Update report</button>
+      <div class="btn-group pt-2">
+         <button type="submit" class="btn btn-primary">Update report</button>
+      </div>
    </form>
 </div>
+
+<!-- Modal -->
+<div class="modal fade" id="reportTypesInfo" tabindex="-1" role="dialog" aria-labelledby="reportTypesInfoTitle" aria-hidden="true">
+   <div class="modal-dialog">
+      <div class="modal-content">
+         <div class="modal-header">
+            <h5 class="modal-title" id="reportTypesInfoTitle">Report Types</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+         </div>
+         <div class="modal-body">
+            <p>An <b>UNMANAGED report</b> is a report where the R code produces html (as an html character string). It is unmanaged in the sence that the R code is just executed
+               and assumed to return HTML which is then displayed. The <a href="https://github.com/perNyfelt/htmlcreator" target="_blank">html creator</a>
+               is a package that makes the producing of html from R simple, but you are free to use anything to produce the html.
+               When the programming logic is complex and the actual output does not contain a lot of text, an UNMANAGED
+               report is probably the more suitable approach.
+            </p>
+            <p>An <b>MDR report</b> is a MANAGED report meaning that Munin set up things for you. Code snippets in the MDR file
+               returns markdown rather than html. The mdr support is provided by the <a href="https://github.com/perNyfelt/mdr2html" target="_blank">mdr2html</a> package
+               and is loaded by munin, so you can focus on the actual report content. If your report has pretty simple logic
+               (a few plots and tables based on data that are easy to assemble) and or contains a lot of text, then
+               an MDR is probably the more suitable approach.
+            </p>
+         </div>
+         <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+         </div>
+      </div>
+   </div>
+</div>
+
 <div th:include="snippets/header.html :: scripsFragment"></div>
 
 <script type="text/javascript">
@@ -127,6 +173,7 @@
       reportGroupCombo.append(new Option(reportGroup, reportGroup));
       reportGroupCombo.val(reportGroup);
    }
+
 </script>
 </body>
 </html>

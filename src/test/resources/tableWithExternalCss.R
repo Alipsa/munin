@@ -9,7 +9,7 @@ if(exists("inout")) {
   html.add("<script src='https://maxcdn.bootstrapcdn.com/bootstrap/4.6.0/js/bootstrap.min.js'></script>")
   html.add(paste0("<link rel='stylesheet' href='file://", getwd(), "/resources/mystyle.css'>"))
 } else {
-  html.add("<link rel='stylesheet' href='/common/mystyle.css'>")
+  html.add("<link rel='stylesheet' href='/common/resources/mystyle.css'>")
 }
 
 html.add("</head><body>")

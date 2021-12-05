@@ -65,6 +65,10 @@ html form content, e.g:
 </select>
 </div>
 ```
+
+If you want numeric values, you need to convert the parameter to a number (e.g. by using as.numeric())
+
+
 Note that, in order to be able to schedule a parameterized report, you must provide default parameters in the R code
 e.g. by using `exists()`. Let's say the parameter is the name of the dataset to use i.e.  
 ```html
@@ -92,7 +96,7 @@ html.add(mtcars, htmlattr=list(id = "mtcars-table", class="table table-striped")
 You can either upload a common stylesheet (using the "common resources" button) that you can reference in your reports e.g.
 ```r
 # import the uploaded stylesheet mystyle.css
-html.add("<link rel='stylesheet' href='/common/mystyle.css' />")
+html.add("<link rel='stylesheet' href='/common/resources/mystyle.css' />")
 ```
 or, to put it in the head section ([should only be needed](https://html.spec.whatwg.org/multipage/links.html#link-type-stylesheet) if your viewers have very old browsers):
 ```r
@@ -100,7 +104,7 @@ or, to put it in the head section ([should only be needed](https://html.spec.wha
 html.add('
   <script>   
     const cssLink = document.createElement("link");
-    cssLink.href = "/common/mystyle.css";
+    cssLink.href = "/common/resources/mystyle.css";
     cssLink.rel="stylesheet";
     document.head.appendChild(cssLink);
   </script>
@@ -322,7 +326,22 @@ If you want to keep the admin user, begin by assigning your email to it and then
 # Integration
 Munin provides a REST api for integration with other application. It is described [here](api.md).
 
+# Reusing code
+You might notice that you have code snippets that you want to centralize and reuse. The standard approach
+to that is to formulate those code snippets into functions that you include in a package.
+
+An alternative way is to upload the R code into the common resource area and source it from the report e.g.
+```r
+source("http://localhost:8088/common/resources/utils.R")
+```
+
 # Version history
+
+### 1.1.6
+- Add breadcrumbs
+- Cleanup alignments and fix some bootstrap 4 to 5 changes
+- Add info dialog for report types
+- upgrade spring-boot, liquibase, junit
 
 ### 1.1.5
 - Bump versions for jquery, spring boot, cronutils, liquibase, spotbugs-annotations, junit, commons-collections

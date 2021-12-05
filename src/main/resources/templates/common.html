@@ -5,7 +5,12 @@
    <title id="pageTitle">Renjin Web Reports</title>
 </head>
 <body>
-<div th:include="snippets/menu.html :: menu"></div>
+<div th:include="snippets/menu.html :: menu">
+   <ol id="breadcrumbs" class="breadcrumb">
+      <li class="breadcrumb-item"><a href="/">Home</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Common resources</li>
+   </ol>
+</div>
 <div class="container">
 
    <!--h1><img class="pb-3" src="/img/logo-combined-long.png" alt="Munin Web Reports" width="600" title="Munin Web Reports"/></h1-->
@@ -25,10 +30,10 @@
       <tr th:each="file: ${files}">
          <td th:text="${file}" disabled="disabled"></td>
          <td>
-            <a th:href="@{'/common/' + ${file}}" th:text="@{'/common/' + ${file}}"></a>
+            <a th:href="@{'/common/resources/' + ${file}}" th:text="@{'/common/resources/' + ${file}}"></a>
          </td>
          <td>
-            <img th:src="@{'/common/' + ${file}}" th:height="50" alt="" />
+            <img th:src="@{'/common/resources/' + ${file}}" th:height="50" alt="" />
          </td>
          <td>
             <span sec:authorize="hasAnyRole('ROLE_ANALYST', 'ROLE_ADMIN')">
@@ -41,7 +46,7 @@
    <div sec:authorize="hasAnyRole('ROLE_ANALYST', 'ROLE_ADMIN')" class="pt-3">
       <hr />
       <h3>Add file</h3>
-      <form action="/common/upload" method="post" enctype="multipart/form-data">
+      <form action="/common/resources/upload" method="post" enctype="multipart/form-data">
          <input type="file" name="file">
          <div class="pt-2">
             <button type="submit" class="btn btn-primary">Upload</button>
@@ -55,7 +60,7 @@
       let message = "";
 
       $.ajax({
-         url: "/common/" + fileName,
+         url: "/common/resources/" + fileName,
          method: 'DELETE',
          dataType: 'text'
       })

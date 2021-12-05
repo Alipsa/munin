@@ -6,7 +6,12 @@
    <title id="pageTitle">Renjin Web Reports - Admin</title>
 </head>
 <body>
-   <div th:include="snippets/menu.html :: menu"></div>
+   <div th:include="snippets/menu.html :: menu">
+      <ol id="breadcrumbs" class="breadcrumb">
+         <li class="breadcrumb-item"><a href="/">Home</a></li>
+         <li class="breadcrumb-item active" aria-current="page">Admin</li>
+      </ol>
+   </div>
    <div sec:authorize="hasRole('ROLE_ADMIN')">
       <div class="container">
          <h2>Renjin Web Reports - Administration</h2>
@@ -33,14 +38,14 @@
                                 th:value="${user.getUsername()}"></td>
                      <td><input class="form-control" type="text" th:field="*{updateList[__${itemStat.index}__].email}"
                                 th:value="${user.getEmail()}"></td>
-                     <td><input class="form-control" type="checkbox" th:field="*{updateList[__${itemStat.index}__].enabled}"
+                     <td><input class="form-check-input" type="checkbox" th:field="*{updateList[__${itemStat.index}__].enabled}"
                                 th:checked="${user.isEnabled()}"></td>
                      <td><input class="form-control" type="number" th:value="${user.getFailedAttempts()}" disabled></td>
-                     <td><input class="form-control" type="checkbox" th:field="*{updateList[__${itemStat.index}__].viewer}"
+                     <td><input class="form-check-input" type="checkbox" th:field="*{updateList[__${itemStat.index}__].viewer}"
                                 th:checked='${user.isViewer()}'></td>
-                     <td><input class="form-control" type="checkbox" th:field="*{updateList[__${itemStat.index}__].analyst}"
+                     <td><input class="form-check-input" type="checkbox" th:field="*{updateList[__${itemStat.index}__].analyst}"
                                 th:checked='${user.isAnalyst()}'></td>
-                     <td><input class="form-control" type="checkbox" th:field="*{updateList[__${itemStat.index}__].admin}"
+                     <td><input class="form-check-input" type="checkbox" th:field="*{updateList[__${itemStat.index}__].admin}"
                                 th:checked='${user.isAdmin()}'></td>
                      <td><a th:href="@{/admin/deleteUser/{username}(username=*{updateList[__${itemStat.index}__].username})}"
                             class="btn btn-danger btn-sm">Delete</a>
@@ -84,13 +89,13 @@
                         </div>
                         <div class="row">
                            <div class="col-md-4 text-center">
-                              <input class="form-control" type="checkbox" id="viewer" name="viewer">
+                              <input class="form-check-input" type="checkbox" id="viewer" name="viewer">
                            </div>
                            <div class="col-md-4 text-center">
-                              <input class="form-control" type="checkbox" id="analyst" name="analyst">
+                              <input class="form-check-input" type="checkbox" id="analyst" name="analyst">
                            </div>
                            <div class="col-md-4 text-center">
-                              <input class="form-control" type="checkbox" id="admin" name="admin">
+                              <input class="form-check-input" type="checkbox" id="admin" name="admin">
                            </div>
                         </div>
                      </div>

@@ -19,7 +19,7 @@
          </li>
 
          <li class="nav-item" sec:authorize="hasAnyRole('ROLE_ANALYST', 'ROLE_ADMIN')">
-            <a href="/common" class="nav-link">Common resources</a>
+            <a href="/common/resources" class="nav-link">Common resources</a>
          </li>
 
          <li class="nav-item" sec:authorize="hasRole('ROLE_ADMIN')">
@@ -28,13 +28,17 @@
 
       </ul>
 
-      <ul class="navbar-nav ml-auto">
+      <ul class="navbar-nav">
          <li class="nav-item">
             <a class="nav-link" href="/logout">Logout</a>
          </li>
       </ul>
-
-
+      <div class="ms-auto pe-3">
+         <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+               <ol class="breadcrumb" th:include=":: #breadcrumbs"></ol>
+         </nav>
+      </div>
    </nav>
+
    <br/>
 </div>

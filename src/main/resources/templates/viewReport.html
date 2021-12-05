@@ -6,7 +6,13 @@
 </head>
 <body>
 
-<div th:include="snippets/menu.html :: menu"></div>
+<div th:include="snippets/menu.html :: menu">
+   <ol id="breadcrumbs" class="breadcrumb">
+      <li class="breadcrumb-item"><a href="/">Home</a></li>
+      <li class="breadcrumb-item" aria-current="page"><a th:href="@{/reports/{group}(group=${reportGroup})}" th:text="${reportGroup}"></a></li>
+      <li class="breadcrumb-item active" aria-current="page" th:text="${reportName}"></li>
+   </ol>
+</div>
 <div class="container">
    <div th:remove="tag" th:utext="${reportContent}">
       <html>

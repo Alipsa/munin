@@ -34,7 +34,7 @@ public class CommonStorageController {
     this.fileStorageService = fileStorageService;
   }
 
-  @GetMapping("/common")
+  @GetMapping("/common/resources")
   public ModelAndView commonIndex(@RequestParam Optional<String> message) {
     ModelAndView mav = new ModelAndView();
     List<String> files = new ArrayList<>();
@@ -49,14 +49,14 @@ public class CommonStorageController {
     return mav;
   }
 
-  @GetMapping("/common/{fileName}")
+  @GetMapping("/common/resources/{fileName}")
   public ResponseEntity<Resource> getFile(@PathVariable String fileName) {
     Resource file = fileStorageService.load(fileName);
     return ResponseEntity.ok()
         .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFilename() + "\"").body(file);
   }
 
-  @PostMapping("/common/upload")
+  @PostMapping("/common/resources/upload")
   public String uploadFile(@RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes) {
     try {
       fileStorageService.store(file);
@@ -65,10 +65,10 @@ public class CommonStorageController {
     } catch (FileStorageException e) {
       redirectAttributes.addFlashAttribute("message","Could not upload the file: " + file.getOriginalFilename() + "!");
     }
-    return "redirect:/common";
+    return "redirect:/common/resources";
   }
 
-  @DeleteMapping(value = "/common/{fileName}", produces = MediaType.TEXT_PLAIN_VALUE)
+  @DeleteMapping(value = "/common/resources/{fileName}", produces = MediaType.TEXT_PLAIN_VALUE)
   public @ResponseBody String deleteFile(@PathVariable String fileName) {
     try {
       fileStorageService.delete(fileName);

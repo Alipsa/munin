@@ -4,7 +4,12 @@
    <title id="pageTitle">Manage Renjin Web Reports</title>
 </head>
 <body>
-<div th:include="snippets/menu.html :: menu"></div>
+<div th:include="snippets/menu.html :: menu">
+   <ol id="breadcrumbs" class="breadcrumb">
+      <li class="breadcrumb-item"><a href="/">Home</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Add Report</li>
+   </ol>
+</div>
 <div class="container">
    <h3>Add report</h3>
    <form id="addReportForm" enctype="application/x-www-form-urlencoded" action="/manage/addReport" method="post"
@@ -17,7 +22,7 @@
          <div class="col-md-3">
             <label for="reportGroup">Report Group</label>
             <div class="input-group">
-               <select id="reportGroup" name="reportGroup" class="form-control">
+               <select id="reportGroup" name="reportGroup" class="form-select">
                   <option th:each="reportGroupOpt: ${reportGroups}" th:value="${reportGroupOpt}"
                           th:text="${reportGroupOpt}">
                   </option>
@@ -29,7 +34,7 @@
          </div>
          <div class="col-md-3 row">
             <label for="reportType">Report Type</label>
-            <select id="reportType" name="reportType" class="form-control" onchange="handleReportTypeChange(this.value)">
+            <select id="reportType" name="reportType" class="form-select" onchange="handleReportTypeChange(this.value)">
                <option th:each="reportType: ${T(se.alipsa.munin.model.ReportType).values()}" th:value="${reportType}"
                        th:text="${reportType}">
                </option>
@@ -38,7 +43,9 @@
       </div>
       <div class="form-group row col-md-10">
          <label for="description">Description</label>
-         <input id="description" type="text" name="description" size="65" maxlength="300" class="form-control"/>
+         <div class="input-group">
+            <input id="description" type="text" name="description" size="65" maxlength="300" class="form-control"/>
+         </div>
       </div>
 
       <div class="form-group">
