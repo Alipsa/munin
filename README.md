@@ -340,6 +340,8 @@ source("http://localhost:8088/common/resources/utils.R")
 
 # Version history
 
+### 1.1.7
+
 ### 1.1.6
 - Add breadcrumbs for improved navigation
 - Cleanup alignments and fix some bootstrap 4 to 5 changes
