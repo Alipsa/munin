@@ -14,11 +14,14 @@ library('se.alipsa:htmlcreator')
 
 html.clear()
 html.add("<h2>A Sample report with a table and an image<h2>")
-html.add(
-  barplot,
-  table(mtcars$vs, mtcars$gear),
-  main="Car Distribution by Gears and VS",
-  col=c("darkblue","red")
+html.addPlot(
+  {
+    barplot(
+      table(mtcars$vs, mtcars$gear),
+      main="Car Distribution by Gears and VS",
+      col=c("darkblue","red")
+    )
+  }
 )
 html.add("<div class='table'>")
 html.add(mtcars)
@@ -204,7 +207,7 @@ There are a few different ways to install Munin.
    <parent>
        <artifactId>munin</artifactId>
        <groupId>se.alipsa</groupId>
-       <version>1.1.1</version>
+       <version>1.1.6</version>
    </parent>
    ```
 3. Customized alternative:
@@ -338,10 +341,10 @@ source("http://localhost:8088/common/resources/utils.R")
 # Version history
 
 ### 1.1.6
-- Add breadcrumbs
+- Add breadcrumbs for improved navigation
 - Cleanup alignments and fix some bootstrap 4 to 5 changes
 - Add info dialog for report types
-- upgrade spring-boot, liquibase, junit
+- upgrade spring-boot, liquibase, junit, htmlcreator, mdr2html
 
 ### 1.1.5
 - Bump versions for jquery, spring boot, cronutils, liquibase, spotbugs-annotations, junit, commons-collections
