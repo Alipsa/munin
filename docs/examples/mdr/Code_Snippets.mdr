@@ -1,0 +1,27 @@
+# Some code snippets
+
+We can use regular code blocks like this:
+```r
+# just some R code
+a <- list("foo", "bar", FALSE, 23)
+```
+
+Or r code blocks that will execute and can be printed, like this:
+```{r echo=TRUE}
+# just some R code
+a <- list(first="foo", second="bar", bla=FALSE, count=23)
+md.add(as.data.frame(a), attr=list(class="table"))
+```
+
+Or include some othe language syntax (java in this case)
+```java
+// and some java code
+System.out.println("Hello world");
+String foo = null;
+```
+
+And SQL in this case
+```sql
+Select * from someething
+group by somethingElse order by date desc
+```

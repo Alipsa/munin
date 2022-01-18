@@ -1,0 +1,50 @@
+# MDR report example
+
+This is a straight forward example of a mdr report.
+This way of creating reports are useful when there is more text to write than actual R code to run. I.e. you want the ease of markdown for your text but the power of R for dynamic content.
+There are two ways to add R content.
+
+1. Inline, eg 2 + 5 * pi = `‵r 2 + 5 * pi‵` which becomes 2 + 5 * pi = `r 2 + 5 * pi` or `‵r x <- 2 + 5 * pi; x‵` which becomes `r x <- 2 + 5 * pi; x` i.e. it just evaluates and returns the result as markdown text
+2. Code blocks, i.e. longer pieces of R code that returns Markdown text e.g.
+```{r echo=TRUE}
+employee <- c('John Doe','Peter Smith','Jane Doe')
+salary <- c(21000, 23400, 26800)
+startdate <- as.Date(c('2013-11-1','2018-3-25','2017-3-14'))
+endDate <- as.POSIXct(c('2020-01-10 00:00:00', '2020-04-12 12:10:13', '2020-10-06 10:00:05'), tz='UTC' )
+df <- data.frame(employee, salary, startdate, endDate)
+md.new(df, attr=list(class="table"))
+```
+We can also reference previous code in the document e.g:
+```{r echo=TRUE}
+md.new(paste("As stated before, 2 + 5 * pi =", x))
+```
+Plots are supported, here is an example of a barplot:
+```{r echo=TRUE}
+md.add("# Barplot")
+md.add(
+  barplot,
+  table(mtcars$gear),
+  main="Car Distribution",
+  horiz=TRUE,
+  names.arg=c("3 Gears", "4 Gears", "5 Gears"),
+  col=c("darkblue","red", "green")
+)
+```
+
+However, a more versatile way of adding plots is to use the md.plot() function which takes a code block as argument
+so that you can add lines and other things to the plot, e.g:
+```{r echo=TRUE}
+md.add("# Barplot 2")
+md.plot({
+  barplot(
+    table(mtcars$gear),
+    main="Car Distribution",
+    horiz=FALSE,
+    names.arg=c("3 Gears", "4 Gears", "5 Gears"),
+    col=c("darkblue","red", "green")
+  )
+  abline(h=mean(mtcars$gear), col="black")
+})
+```
+
+See the r2md [README](https://github.com/perNyfelt/r2md/blob/main/README.md) for more information.

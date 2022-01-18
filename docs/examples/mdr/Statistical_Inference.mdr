@@ -1,0 +1,281 @@
+# Statistical Inference Example
+## Part 1: Simulation Exercise
+
+In this project we will investigate the exponential distribution in R and compare it with the Central Limit Theorem. We will investigate illustrate via simulation and associated explanatory text the properties of the distribution of the mean of 40 exponentials.
+We will:
+1. Show the sample mean and compare it to the theoretical mean of the distribution.
+2. Show how variable the sample is (via variance) and compare it to the theoretical variance of the distribution.
+3. Show that the distribution is approximately normal.
+
+### Simulations
+
+```{r echo=TRUE}
+set.seed(1)
+lambda <- 0.2
+n <- 40
+nsim <- 1000
+mns <- NULL
+for (i in 1 : nsim) {
+  mns = c(mns, mean(rexp(n, lambda)))
+}
+md.plot({
+  myhist <- hist(
+          mns,
+          breaks=n,
+          main="Distribution of averages of 40 exponentials",
+          col="lightblue"
+  )
+  freqCurve <- density(mns)
+  freqCurve$y <- freqCurve$y * (myhist$counts / myhist$density)[1]
+  lines(x = freqCurve, col = "blue")
+})
+```
+
+### Sample Mean versus Theoretical Mean
+The mean of exponential distributions is 1/lambda and the standard deviation is also 1/lambda.
+
+Thus the theoretical mean, 1 / lambda = 1 / `r lambda` = `r 1/lambda`
+
+```{r echo=TRUE}
+paste("The sample mean is", mean(mns))
+```
+
+Which is in accordance with the CLT.
+
+### Sample Variance versus Theoretical Variance
+
+The standard deviation of the exponential distribution (sd) is:
+(1/lambda)/sqrt(n) = `r (1/lambda)/sqrt(n)`.
+
+The variance is the standard deviation squared i.e.
+((1/lambda)/sqrt(n))^2 = `r theoreticalVariance <- ((1/lambda)/sqrt(n))^2`.
+
+The sample variance is
+```{r echo=TRUE}
+stdDev <- sd(mns)
+sampleVariance <- stdDev ^ 2
+sampleVariance
+```
+
+The difference is `r round(theoreticalVariance - sampleVariance, 3)` which shows that the sample variance is close to the
+theoretical variance, again in accordance with the CLT.
+
+### Distribution
+
+Comparing the probability distribution of the sample to the ideal normal distribution reveals the following:
+
+```{r echo=TRUE}
+x <- seq(min(mns), max(mns), length=n)
+y <- dnorm(x, mean=1/lambda, sd=(1/lambda)/sqrt(n))
+md.plot({
+  hist(mns,
+       breaks=n,
+       prob = TRUE,
+       main="Distribution of averages of 40 exponentials",
+       col="lightblue"
+  )
+  # Add a line following the sample distribution
+  lines(density(mns), lwd=2, col="blue")
+  # Add a line following the ideal, normal distribution
+  lines(x, y, pch=19, lwd=2, col="black")
+  legend("topright", c("Sample", "Std normal"), col=c("blue", "black"), lwd=4)
+})
+```
+
+As seen in the plot above, the blue line (the curve showing the sample distribution) follows quite closely, the black line which signifies the ideal theoretical normal curve.
+
+Again, this is in support for the validity of the CLT.
+
+If the number of simulations was increased, the sample distribution would align even more with the normal distribution.
+
+## Part 2: Basic Inferential Data Analysis
+
+Here we're going to analyze the ToothGrowth data in the R datasets package.
+
+### Basic exploration of the ToothGrowth dataset
+
+The [R documentation on the ToothGrowth dataset](https://stat.ethz.ch/R-manual/R-devel/library/datasets/html/ToothGrowth.html) describes it as follows
+The response is the length of odontoblasts (cells responsible for tooth growth) in 60 guinea pigs. Each animal received one of three dose levels of vitamin C (0.5, 1, and 2 mg/day) by one of two delivery methods, orange juice or ascorbic acid (a form of vitamin C and coded as VC).
+
+The data looks as follows:
+```{r echo=TRUE}
+data(ToothGrowth)
+md.add(head(ToothGrowth))
+d <- dim(ToothGrowth)
+md.add(paste(d[1], "observations of", d[2], "variables"))
+```
+
+The quantiles are as follows:
+
+```{r echo=TRUE}
+summaryDf <- do.call(cbind, lapply(ToothGrowth, summary))
+summaryDf <- data.frame(names = row.names(summaryDf),summaryDf)
+md.add(summaryDf)
+```
+
+### Group size of supplements:
+
+```{r echo=TRUE}
+tab <- data.frame(table(ToothGrowth$supp))
+names(tab) <- c("supp", "freq")
+md.add(tab, attr=list(style="width: 30%"))
+```
+Note that there are equal number of test subjects that received orange juice as there are test subjects who received vitamin C.
+
+### Group size of dosage:
+
+```{r echo=TRUE}
+tab <- data.frame(table(ToothGrowth$dose))
+names(tab) <- c("dose", "freq")
+md.add(tab, attr=list(style="width: 30%"))
+```
+Note that there are equal number of test subjects for each dose.
+
+Lets look att a box plot for each supplement
+```{r echo="TRUE"}
+md.plot({
+  par(mfrow = c(1,2))
+  boxplot(
+          len~dose,
+          data=ToothGrowth[ToothGrowth$supp == "OJ",],
+          main="Orange Juice",
+          xlab="Dose",
+          ylab="Odontoblasts length",
+          col=colors()[1:3]
+  )
+  boxplot(
+          len~dose,
+          data=ToothGrowth[ToothGrowth$supp == "VC",],
+          main="Vitamin C",
+          xlab="Dose",
+          ylab="Odontoblasts Length",
+          col=colors()[1:3]
+  )
+})
+```
+
+At a glance we can see that there appears to be a clear difference in odontoblast length depending on the dosage (the higher dose, the longerthe odontoblast.
+There _might_ also be a difference in efficacy of supplement in favor of orange juice over vitamin C.
+
+## Lets test the first idea i.e.
+
+**H0**: There is no significant difference between odontoblast length depending on the dosage
+**Ha**: There is a significant difference between odontoblast length depending on the dosage
+
+
+#### 1. Do a t test comparing the dose 0.5 with 1
+
+```{r echo="TRUE"}
+hyp1_1 <- t.test(
+        ToothGrowth$len[ToothGrowth$dose==.5],
+        ToothGrowth$len[ToothGrowth$dose==1],
+        mu=0,
+        var.equal = FALSE,
+        alternative=c("two.sided"),
+        digits=15
+)
+md.add(
+        hyp1_1, prefix="##### "
+)
+```
+
+#### 2. Do a t test comparing the dose 1 with 2
+
+```{r echo="TRUE"}
+hyp1_2 <- t.test(
+        ToothGrowth$len[ToothGrowth$dose==1],
+        ToothGrowth$len[ToothGrowth$dose==2],
+        mu=0,
+        var.equal = FALSE,
+        alternative=c("two.sided"),
+        digits=15
+)
+md.add(
+        hyp1_2, prefix="##### "
+)
+```
+
+#### 3. Do a t test comparing the dose 0.5 with 2
+
+```{r echo="TRUE"}
+hyp1_3 <- t.test(
+        ToothGrowth$len[ToothGrowth$dose==0.5],
+        ToothGrowth$len[ToothGrowth$dose==2],
+        mu=0,
+        var.equal = FALSE,
+        alternative=c("two.sided"),
+        digits=15
+)
+md.add(
+        hyp1_3, prefix="##### "
+)
+```
+
+### Summary of the first hypothesis
+
+
+```{r echo=TRUE}
+sumDf <- data.frame(
+        comparison = c("0.5 vs 1", "1 vs 2", "0.5 vs 2"),
+        p.value = c(hyp1_1$p.value, hyp1_2$p.value, hyp1_3$p.value),
+        conf.int.low = c(
+                hyp1_1$conf.int[1],
+                hyp1_2$conf.int[1],
+                hyp1_3$conf.int[1]
+        ),
+        conf.int.high = c(
+                hyp1_1$conf.int[2],
+                hyp1_2$conf.int[2],
+                hyp1_3$conf.int[2]
+        ),
+        mean.x = c(
+                hyp1_1$estimate[1],
+                hyp1_2$estimate[1],
+                hyp1_3$estimate[1]
+        ),
+        mean.y = c(
+                hyp1_1$estimate[2],
+                hyp1_2$estimate[2],
+                hyp1_3$estimate[2]
+        )
+)
+
+md.add("<div class='col-8'>")
+md.add(sumDf, attr=list(class="table-striped"))
+md.add("</div>")
+
+```
+
+The p values are to be more exact:
+test 1 = `r hyp1_1$p.value`
+test 2 = `r hyp1_2$p.value`
+test 3 = `r hyp1_3$p.value`
+
+As seen above, the p values are very low and we can based on the results of these 3 t tests reject the null hypothesis that there is no difference between odontoblast length due to dose.
+
+## Now we test the second idea i.e.
+
+H0: There is no significant difference between odontoblast length depending on the supplement
+Ha: There is a significant difference between odontoblast length depending on the supplement
+
+```{r echo="TRUE"}
+
+hyp2 <- t.test(
+        ToothGrowth$len[ToothGrowth$supp=="OJ"],
+        ToothGrowth$len[ToothGrowth$supp=="VC"],
+        mu=0,
+        var.equal = FALSE,
+        alternative=c("two.sided")
+)
+
+md.add(
+        hyp2, prefix="##### "
+)
+```
+
+The p value (`r hyp2$p.value`) is larger than 5% and 0 lies within the confidence interval.
+Hence we fail to reject the null hypothesis that there is no difference between odontoblast length depending on the supplement.
+
+## Conclusions
+* The higher the dose, the larger the odontoblast length becomes.
+* There is no difference in odontoblast length between Orange juice and vitamin C.

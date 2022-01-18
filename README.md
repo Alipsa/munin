@@ -130,13 +130,13 @@ html.add(mtcars, htmlattr=list(class="table table-striped table-font-size"))
 
 ## Mdr reports
 Mdr files is another supported report format. Support for mdr files is provided by the 
-[mdr2html](https://github.com/perNyfelt/mdr2html) package. Mdr files are similar to rmd files but
+[mdr](https://github.com/perNyfelt/mdr) package. Mdr files are similar to rmd files but
 gives you more control of the output of the r code parts. As a consequence it also pushes rendering
 responsibility over to you i.e. you need to make sure that your R code returns valid markdown syntax.
 Fortunately, the [r2md](https://github.com/perNyfelt/r2md) package does just that. It is "built in" to
-the mdr2html package so no need to explicitly load it with "library(...)". 
+the mdr package so no need to explicitly load it with "library(...)". 
 
-Set the "ReportType" to MDR to have Munin call mdr2html to render the report (mdr -> md -> html). 
+Set the "ReportType" to MDR to have Munin call mdr to render the report (mdr -> md -> html). 
 If report type is set to UNMANAGED Munin assumes it is working R code that returns html 
 (like in all the example above which is using the htmlcreator package) and will execute the code and render its result.
 
@@ -342,6 +342,7 @@ source("http://localhost:8088/common/resources/utils.R")
 
 ### 1.1.7
 - upgrade spring boot, mdr, plugins etc.
+- Add some example to docs 
 
 ### 1.1.6
 - Add breadcrumbs for improved navigation
