@@ -1,5 +1,7 @@
 package se.alipsa.munin.model;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.JoinColumn;
@@ -14,21 +16,25 @@ public class AuthoritiesPk implements Serializable {
   @JoinColumn(name = "username")
   private User user;
 
+  @SuppressFBWarnings("EI_EXPOSE_REP2")
   @Column(length = 50)
   private String authority;
 
   public AuthoritiesPk() {
   }
 
+  @SuppressFBWarnings("EI_EXPOSE_REP2")
   public AuthoritiesPk(User user, String authority) {
     this.user = user;
     this.authority = authority;
   }
 
+  @SuppressFBWarnings("EI_EXPOSE_REP")
   public User getUser() {
     return user;
   }
 
+  @SuppressFBWarnings("EI_EXPOSE_REP")
   public void setUser(User user) {
     this.user = user;
   }

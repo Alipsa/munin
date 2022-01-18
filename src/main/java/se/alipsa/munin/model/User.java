@@ -1,5 +1,7 @@
 package se.alipsa.munin.model;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
@@ -62,6 +64,7 @@ public class User implements Serializable {
     this.email = email;
   }
 
+  @SuppressFBWarnings("EI_EXPOSE_REP")
   public List<Authorities> getAuthorities() {
     return authorities;
   }

@@ -3,6 +3,7 @@ package se.alipsa.munin.controller;
 import com.cronutils.descriptor.CronDescriptor;
 import com.cronutils.model.Cron;
 import com.cronutils.parser.CronParser;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,6 +48,7 @@ public class ReportController {
   private final CronDescriptor descriptor = CronDescriptor.instance();
   private final CronParser cronParser;
 
+  @SuppressFBWarnings("EI_EXPOSE_REP2")
   @Autowired
   public ReportController(ReportRepo reportRepo, ReportScheduleRepo reportScheduleRepo, ReportEngine reportEngine,
                           ReportSchedulerService reportSchedulerService, ReportScheduleWebFactory reportScheduleWebFactory,

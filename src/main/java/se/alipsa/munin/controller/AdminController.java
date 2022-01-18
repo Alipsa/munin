@@ -1,5 +1,7 @@
 package se.alipsa.munin.controller;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -27,6 +29,8 @@ public class AdminController {
   private final UserRoleService userRoleService;
   private final EmailService emailService;
 
+  @SuppressFBWarnings("EI_EXPOSE_REP2")
+  @Autowired
   public AdminController(UserRoleService userRoleService, EmailService emailService) {
     this.userRoleService = userRoleService;
     this.emailService = emailService;

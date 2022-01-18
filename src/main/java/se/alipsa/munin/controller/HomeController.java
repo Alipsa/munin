@@ -1,5 +1,6 @@
 package se.alipsa.munin.controller;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -21,6 +22,7 @@ public class HomeController {
   private final ReportRepo reportRepo;
   private final UserRoleService userRoleService;
 
+  @SuppressFBWarnings("EI_EXPOSE_REP2")
   @Autowired
   public HomeController( ReportRepo reportRepo, UserRoleService userRoleService) {
     this.reportRepo = reportRepo;

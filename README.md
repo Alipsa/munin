@@ -159,7 +159,7 @@ salary <- c(21000, 23400, 26800)
 startdate <- as.Date(c('2013-11-1','2018-3-25','2017-3-14'))
 endDate <- as.POSIXct(c('2020-01-10 00:00:00', '2020-04-12 12:10:13', '2020-10-06 10:00:05'), tz='UTC' )
 df <- data.frame(employee, salary, startdate, endDate)
-md.new(df, attr=list(class="table"))
+md.add(df, attr=list(class="table"))
 ```
 We can also reference previous code in the document e.g:
 ```{r}
@@ -167,7 +167,7 @@ md.new(paste("As stated before, 2 + 5 * pi =", x))
 ```
 Plots are supported, here is an example of a barplot:
 ```{r}
-md.new("# Barplot")
+md.add("# Barplot")
 md.add(
   barplot,
   table(mtcars$gear),
@@ -341,6 +341,7 @@ source("http://localhost:8088/common/resources/utils.R")
 # Version history
 
 ### 1.1.7
+- upgrade spring boot, mdr, plugins etc.
 
 ### 1.1.6
 - Add breadcrumbs for improved navigation

@@ -1,5 +1,6 @@
 package se.alipsa.munin.controller;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -29,6 +30,7 @@ public class CommonStorageController {
 
   private final FileStorageService fileStorageService;
 
+  @SuppressFBWarnings("EI_EXPOSE_REP2")
   @Autowired
   public CommonStorageController(FileStorageService fileStorageService) {
     this.fileStorageService = fileStorageService;

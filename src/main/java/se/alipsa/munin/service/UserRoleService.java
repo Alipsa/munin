@@ -1,5 +1,6 @@
 package se.alipsa.munin.service;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,7 @@ public class UserRoleService {
 
   private static final Logger LOG = LoggerFactory.getLogger(UserRoleService.class);
 
+  @SuppressFBWarnings("EI_EXPOSE_REP2")
   @Autowired
   public UserRoleService(UserRepo userRepo, AuthoritiesRepo authoritiesRepo, EmailService emailService) {
     this.userRepo = userRepo;

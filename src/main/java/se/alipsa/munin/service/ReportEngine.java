@@ -1,5 +1,6 @@
 package se.alipsa.munin.service;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.renjin.eval.EvalException;
 import org.renjin.parser.ParseException;
 import org.renjin.script.RenjinScriptEngine;
@@ -25,6 +26,7 @@ public class ReportEngine {
 
   private static final Logger LOG = LoggerFactory.getLogger(ReportEngine.class);
 
+  @SuppressFBWarnings("EI_EXPOSE_REP2")
   @Autowired
   public ReportEngine(RenjinSessionEnginePool renjinSessionEnginePool, EnvironmentUtil environmentUtil) {
     this.renjinSessionEnginePool = renjinSessionEnginePool;
