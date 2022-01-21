@@ -340,6 +340,8 @@ source("http://localhost:8088/common/resources/utils.R")
 
 # Version history
 
+### 1.1.8
+
 ### 1.1.7
 - upgrade spring boot, mdr, plugins etc.
 - Add some example to docs 

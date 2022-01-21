@@ -14,7 +14,7 @@
 
     <artifactId>munin</artifactId>
     <groupId>se.alipsa</groupId>
-    <version>1.1.7</version>
+    <version>1.1.8-SNAPSHOT</version>
 
     <name>Munin - a Renjin based web reporting server</name>
     <description>A reporting server based on Renjin and Spring Boot.</description>
