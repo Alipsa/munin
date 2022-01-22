@@ -64,7 +64,7 @@
         <webjars-locator.version>0.42</webjars-locator.version>
         <!-- Due to https://github.com/h2database/h2database/issues/3393, upgrade of H2 has been suspended for now -->
         <!--h2.version>2.1.210</h2.version-->
-        <h2.version>1.4.200</h2.version>
+        <h2.version>2.1.210</h2.version>
     </properties>
 
     <dependencies>
