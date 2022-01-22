@@ -354,37 +354,39 @@ source(paste0(muninBaseUrl, "/common/resources/utils.R"))
 
 # Version history
 
-### 1.2.0
+### 1.2.1
+
+### 1.2.0 (2022-Jan-22)
 - Upgrade the h2 version from 1.4.200 to 2.1.210 due to security vulnerability issues with the previous versions. Migration is needed.
 - Added a migrateDb.sh script to facilitate h2 migration
 - Upgrade liquibase core from 4.7.0 to 4.7.1 
 
-### 1.1.7
+### 1.1.7 (2022-Jan-21)
 - upgrade spring boot, mdr, plugins etc.
 - Add some example to docs 
 
-### 1.1.6
+### 1.1.6 (2021-Dec-08)
 - Add breadcrumbs for improved navigation
 - Cleanup alignments and fix some bootstrap 4 to 5 changes
 - Add info dialog for report types
 - upgrade spring-boot, liquibase, junit, htmlcreator, mdr2html
 
-### 1.1.5
+### 1.1.5 (2021-Oct-17)
 - Bump versions for jquery, spring boot, cronutils, liquibase, spotbugs-annotations, junit, commons-collections
     bootstrap, webjars-locator
 - Load javascripts at the end of the body instead of in the header - should give a slight perceived speed increase 
 - Add preview to common files section
 
-### 1.1.4
+### 1.1.4 (2021-Mar-16)
 Fix regression bug introduced in 1.1.3 where jquery update was not handled properly in 
 the header.
 
-### 1.1.3
+### 1.1.3 (2021-Mar-13)
 - Allow public access to shared resources (/common)
 - Add muninBaseUrl variable to the global R env so it can be referred to in reports.
 - Upgrade jquery
 
-### 1.1.2
+### 1.1.2 (2021-Feb-17)
 - add docs on how to add external css (two ways, in body or in head using js)
 - cleanup some link tags in the headers (use xhtml style)
 - Add mdr output to the mdr example in the README.md
@@ -393,18 +395,18 @@ the header.
 - convert unmanaged R reports to character vector if it returned something else.
 - upgrade dependencies for junit, liquibase, mdr2html, and spotbugs,  htmlcreator, spring-boot, bootstrap
 
-### 1.1.1
+### 1.1.1 (2021-Jan-13)
 - Add syntax highlighting for code blocks in mdr reports.
 - Fix bug that prevented "normal" syntax highlighted blocks from working properly
 - Go to group page instead of back to index after edit report
 
-### 1.1.0
+### 1.1.0 (2021-Jan-08)
 - Change to deploy the original jar to central instead of the repackaged one.
 - Improve documentation
 - Add support for the mdr (markdown with r) format
 - Add report groups (folders that go one level deep only)
 
-### 1.0.1
+### 1.0.1 (2020-Dec-26)
 Add support for adding/removing external content (e.g. images and css) which can be referenced from 
 the reports.
 
