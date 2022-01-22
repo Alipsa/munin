@@ -349,14 +349,15 @@ to that is to formulate those code snippets into functions that you include in a
 
 An alternative way is to upload the R code into the common resource area and source it from the report e.g.
 ```r
-source("http://localhost:8088/common/resources/utils.R")
+source(paste0(muninBaseUrl, "/common/resources/utils.R"))
 ```
 
 # Version history
 
 ### 1.2.0
-- Upgrade the h2 version to 2.1.210 due to security vulnerability issues with the previous versions. Migration is needed.
+- Upgrade the h2 version from 1.4.200 to 2.1.210 due to security vulnerability issues with the previous versions. Migration is needed.
 - Added a migrateDb.sh script to facilitate h2 migration
+- Upgrade liquibase core from 4.7.0 to 4.7.1 
 
 ### 1.1.7
 - upgrade spring boot, mdr, plugins etc.
