@@ -278,6 +278,22 @@ Default config is a file based H2 database (`jdbc:h2:file:./munindb;DATABASE_TO_
 To change the underlying database config, set the spring.datasource.xxx parameters 
 as you see fit.
 
+NOTE: Due to [Issue #3393](https://github.com/h2database/h2database/issues/3393) upgrade of H2 has been suspended for now.
+
+There is a braking change between the h2 database used prior to munin version 1.2.0 (i.e. h2 1.4.x) and the h2 
+version used in version from 1.20 and later (h2 version 2.1.x). TO upgrade the database you need to export the old database 
+to SQL and then import in the new version. Essentially you need to the following steps
+
+1. Download the 1.4.200 h2 from https://repo1.maven.org/maven2/com/h2database/h2/1.4.200/h2-1.4.200.jar
+2. Backup using `java -cp h2-1.4.200.jar org.h2.tools.Script -url jdbc:h2:file:./munindb -user sa -script test.zip -options compression zip`
+3. rename ./munindb.* to ./oldmunindb.*
+4. Download 2.210 from https://repo1.maven.org/maven2/com/h2database/h2/2.1.210/h2-2.1.210.jar
+5. Restore using `java -cp h2-2.1.210.jar org.h2.tools.RunScript -url jdbc:h2:file:./munindb -user sa -script test.zip -options compression zip`
+
+See the [Upgrade, Backup, and Restore](https://h2database.com/html/tutorial.html#upgrade_backup_restore)
+section of the h2 documentation for details. There is also a simple [database migration script](migrateDb.sh) you can use 
+(edit credentials etc. appropriately first).
+
 Note that if you want another database other than H2, you need to make sure spring boot can access
 the jdbc driver jar. This can be done by setting the loader.path, e.g:
 
