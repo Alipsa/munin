@@ -49,7 +49,7 @@
         <jquery.version>3.6.0</jquery.version>
         <junit-jupiter.version>5.8.2</junit-jupiter.version>
         <junit-platform.version>1.8.2</junit-platform.version>
-        <liquibase-core.version>4.7.1</liquibase-core.version>
+        <liquibase-core.version>4.8.0</liquibase-core.version>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <mdr.version>1.5.1</mdr.version>
