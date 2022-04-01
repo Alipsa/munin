@@ -9,7 +9,7 @@
     <parent>
         <artifactId>spring-boot-starter-parent</artifactId>
         <groupId>org.springframework.boot</groupId>
-        <version>2.6.3</version>
+        <version>2.6.6</version>
     </parent>
 
     <artifactId>munin</artifactId>
@@ -49,19 +49,19 @@
         <jquery.version>3.6.0</jquery.version>
         <junit-jupiter.version>5.8.2</junit-jupiter.version>
         <junit-platform.version>1.8.2</junit-platform.version>
-        <liquibase-core.version>4.7.1</liquibase-core.version>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
+        <liquibase-core.version>4.9.1</liquibase-core.version>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
         <mdr.version>1.5.1</mdr.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <renjin.version>3.5-beta76</renjin.version>
         <renjin-spring-boot-starter.version>1.0.0</renjin-spring-boot-starter.version>
-        <spotbugs-annotations.version>4.5.3</spotbugs-annotations.version>
+        <spotbugs-annotations.version>4.6.0</spotbugs-annotations.version>
         <!-- note that parent has the version hard coded so must duplicate the setting there as well -->
-        <spring.boot.version>2.6.3</spring.boot.version>
+        <spring.boot.version>2.6.6</spring.boot.version>
         <thymeleaf-extras-springsecurity5.version>3.0.4.RELEASE</thymeleaf-extras-springsecurity5.version>
-        <webjars-locator.version>0.42</webjars-locator.version>
+        <webjars-locator.version>0.45</webjars-locator.version>
         <h2.version>2.1.210</h2.version>
     </properties>
 
@@ -90,6 +90,11 @@
             <version>${renjin.version}</version>
         </dependency>
         <dependency>
+            <groupId>org.renjin</groupId>
+            <artifactId>renjin-script-engine</artifactId>
+            <version>${renjin.version}</version>
+        </dependency>
+        <dependency>
             <groupId>se.alipsa</groupId>
             <artifactId>renjin-spring-boot-starter</artifactId>
             <version>${renjin-spring-boot-starter.version}</version>
@@ -97,6 +102,14 @@
                 <exclusion>
                     <groupId>org.renjin</groupId>
                     <artifactId>renjin-aether-package-loader</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.renjin</groupId>
+                    <artifactId>renjin-script-engine</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.renjin.cran</groupId>
+                    <artifactId>testthat</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>
@@ -305,7 +318,7 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>versions-maven-plugin</artifactId>
-                <version>2.9.0</version>
+                <version>2.10.0</version>
                 <configuration>
                     <rulesUri>file://${basedir}/version-plugin-rules.xml</rulesUri>
                 </configuration>
@@ -340,7 +353,7 @@
             <plugin>
                 <groupId>com.github.spotbugs</groupId>
                 <artifactId>spotbugs-maven-plugin</artifactId>
-                <version>4.5.3.0</version>
+                <version>4.6.0.0</version>
                 <executions>
                     <execution>
                         <goals>
@@ -352,7 +365,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-pmd-plugin</artifactId>
-                <version>3.15.0</version>
+                <version>3.16.0</version>
                 <configuration>
                     <targetJdk>1.8</targetJdk>
                     <printFailingErrors>true</printFailingErrors>
@@ -392,12 +405,12 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-project-info-reports-plugin</artifactId>
-                <version>3.1.2</version>
+                <version>3.2.2</version>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-site-plugin</artifactId>
-                <version>3.10.0</version>
+                <version>3.11.0</version>
             </plugin>
             <!--plugin>
                 <groupId>org.jacoco</groupId>
@@ -434,7 +447,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <version>3.3.1</version>
+                <version>3.3.2</version>
                 <executions>
                     <execution>
                         <id>attach-javadocs</id>
@@ -490,7 +503,7 @@
                     <plugin>
                         <groupId>org.sonatype.plugins</groupId>
                         <artifactId>nexus-staging-maven-plugin</artifactId>
-                        <version>1.6.8</version>
+                        <version>1.6.12</version>
                         <extensions>true</extensions>
                         <configuration>
                             <serverId>ossrh</serverId>
