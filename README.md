@@ -354,7 +354,9 @@ source(paste0(muninBaseUrl, "/common/resources/utils.R"))
 
 # Version history
 
-### 1.2.1
+### 1.2.2
+
+### 1.2.1 (2022-Aug-16)
 - Upgrade dependencies for bootstrap (5.1.3 -> 5.2.0), cron-utils (9.1.6 -> 9.2.0),
 liquibase (4.9.1 -> 4.15.0), h2 (2.1.210 -> 2.1.214), spring-boot (2.6.6 -> 2.7.2)
 
