@@ -4,9 +4,9 @@ html.clear()
 html.add("<html><head>")
 if(exists("inout")) {
   # To be able to preview it in Ride:
-  html.add("<link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css'>")
+  html.add("<link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/5.2.0/css/bootstrap.min.css'>")
   html.add("<script src='https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js'></script>")
-  html.add("<script src='https://maxcdn.bootstrapcdn.com/bootstrap/4.6.0/js/bootstrap.min.js'></script>")
+  html.add("<script src='https://maxcdn.bootstrapcdn.com/bootstrap/5.2.0/js/bootstrap.min.js'></script>")
   html.add(paste0("<link rel='stylesheet' href='file://", getwd(), "/resources/mystyle.css'>"))
 } else {
   html.add("<link rel='stylesheet' href='/common/resources/mystyle.css'>")

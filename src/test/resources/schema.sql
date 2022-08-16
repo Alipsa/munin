@@ -18,8 +18,8 @@ create index IF NOT EXISTS ix_username on authorities (username);
 create table if not exists report (
     report_name varchar(50) not null primary key,
     description varchar(500),
-    definition text,
-    input_content text,
+    definition clob,
+    input_content clob,
     report_type varchar(50),
     report_group varchar(50)
 );
