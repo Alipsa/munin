@@ -9,7 +9,7 @@
     <parent>
         <artifactId>spring-boot-starter-parent</artifactId>
         <groupId>org.springframework.boot</groupId>
-        <version>2.7.2</version>
+        <version>2.7.8</version>
     </parent>
 
     <artifactId>munin</artifactId>
@@ -40,29 +40,29 @@
     </scm>
 
     <properties>
-        <bootstrap.version>5.2.0</bootstrap.version>
+        <bootstrap.version>5.2.3</bootstrap.version>
         <codemirror.version>5.62.2</codemirror.version>
         <commons-io.version>2.11.0</commons-io.version>
         <commons-collections4.version>4.4</commons-collections4.version>
         <cron-utils.version>9.2.0</cron-utils.version>
         <h2.version>2.1.214</h2.version>
         <htmlcreator.version>1.4.1</htmlcreator.version>
-        <jquery.version>3.6.0</jquery.version>
-        <junit-jupiter.version>5.9.0</junit-jupiter.version>
-        <junit-platform.version>1.9.0</junit-platform.version>
-        <liquibase-core.version>4.15.0</liquibase-core.version>
+        <jquery.version>3.6.3</jquery.version>
+        <junit-jupiter.version>5.9.2</junit-jupiter.version>
+        <junit-platform.version>1.9.2</junit-platform.version>
+        <liquibase-core.version>4.19.0</liquibase-core.version>
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
-        <mdr.version>1.5.1</mdr.version>
+        <mdr.version>1.5.2</mdr.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <renjin.version>3.5-beta76</renjin.version>
         <renjin-spring-boot-starter.version>1.0.0</renjin-spring-boot-starter.version>
-        <spotbugs-annotations.version>4.7.1</spotbugs-annotations.version>
+        <spotbugs-annotations.version>4.7.3</spotbugs-annotations.version>
         <!-- note that parent has the version hard coded so must duplicate the setting there as well -->
-        <spring.boot.version>2.7.2</spring.boot.version>
-        <thymeleaf-extras-springsecurity5.version>3.0.4.RELEASE</thymeleaf-extras-springsecurity5.version>
-        <webjars-locator.version>0.45</webjars-locator.version>
+        <spring.boot.version>2.7.8</spring.boot.version>
+        <thymeleaf-extras-springsecurity5.version>3.0.5.RELEASE</thymeleaf-extras-springsecurity5.version>
+        <webjars-locator.version>0.46</webjars-locator.version>
     </properties>
 
     <dependencies>
