@@ -16,8 +16,8 @@
     <groupId>se.alipsa</groupId>
     <version>1.2.2-SNAPSHOT</version>
 
-    <name>Munin - a Renjin based web reporting server</name>
-    <description>A reporting server based on Renjin and Spring Boot.</description>
+    <name>Munin - a web reporting server for R and Groovy</name>
+    <description>A reporting server for reports created in R or Groovy based on Spring Boot.</description>
     <url>https://github.com/perNyfelt/munin</url>
     <licenses>
         <license>
@@ -51,8 +51,8 @@
         <junit-jupiter.version>5.9.2</junit-jupiter.version>
         <junit-platform.version>1.9.2</junit-platform.version>
         <liquibase-core.version>4.19.0</liquibase-core.version>
-        <maven.compiler.source>11</maven.compiler.source>
-        <maven.compiler.target>11</maven.compiler.target>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
         <mdr.version>1.5.2</mdr.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -122,6 +122,17 @@
             <groupId>se.alipsa</groupId>
             <artifactId>mdr</artifactId>
             <version>${mdr.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.groovy</groupId>
+            <artifactId>groovy-all</artifactId>
+            <version>4.0.9</version>
+            <type>pom</type>
+        </dependency>
+        <dependency>
+            <groupId>se.alipsa.groovy</groupId>
+            <artifactId>gmd</artifactId>
+            <version>1.0.4</version>
         </dependency>
         <dependency>
             <groupId>commons-io</groupId>
@@ -242,6 +253,7 @@
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
             <version>${junit-jupiter.version}</version>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.junit.platform</groupId>
@@ -341,9 +353,9 @@
                                     <message>Please use maven version 3.5.2 or higher</message>
                                 </requireMavenVersion>
                                 <requireJavaVersion>
-                                    <version>1.8.0</version>
+                                    <version>17</version>
                                     <level>WARN</level>
-                                    <message>Please use Java 8</message>
+                                    <message>Please use Java 17</message>
                                 </requireJavaVersion>
                             </rules>
                         </configuration>

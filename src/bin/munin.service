@@ -1,6 +1,6 @@
 # Example config file for a systemd service
 [Unit]
-Description=Munin, a reporting server based on Spring Boot and Renjin
+Description=Munin, a reporting server based on Spring Boot for Renjin R and Groovy
 After=network.target syslog.target
 
 [Service]

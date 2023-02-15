@@ -18,17 +18,17 @@ import java.util.Collections;
 import java.util.Map;
 
 @Service
-public class ReportEngine {
+public class RenjinReportEngine {
 
 
   private final RenjinSessionEnginePool renjinSessionEnginePool;
   private final EnvironmentUtil environmentUtil;
 
-  private static final Logger LOG = LoggerFactory.getLogger(ReportEngine.class);
+  private static final Logger LOG = LoggerFactory.getLogger(RenjinReportEngine.class);
 
   @SuppressFBWarnings("EI_EXPOSE_REP2")
   @Autowired
-  public ReportEngine(RenjinSessionEnginePool renjinSessionEnginePool, EnvironmentUtil environmentUtil) {
+  public RenjinReportEngine(RenjinSessionEnginePool renjinSessionEnginePool, EnvironmentUtil environmentUtil) {
     this.renjinSessionEnginePool = renjinSessionEnginePool;
     this.environmentUtil = environmentUtil;
   }

@@ -29,8 +29,9 @@ import se.alipsa.munin.model.web.ReportScheduleWebFactory;
 import se.alipsa.munin.repo.ReportRepo;
 import se.alipsa.munin.repo.ReportScheduleRepo;
 import se.alipsa.munin.service.ReportDefinitionException;
-import se.alipsa.munin.service.ReportEngine;
+import se.alipsa.munin.service.RenjinReportEngine;
 import se.alipsa.munin.service.ReportSchedulerService;
+import se.alipsa.munin.service.ReportService;
 
 import javax.script.ScriptException;
 import java.util.*;
@@ -41,7 +42,8 @@ public class ReportController {
   private static final Logger LOG = LoggerFactory.getLogger(ReportController.class);
   private final ReportRepo reportRepo;
   private final ReportScheduleRepo reportScheduleRepo;
-  private final ReportEngine reportEngine;
+
+  private final ReportService reportService;
   private final ReportSchedulerService reportSchedulerService;
   private final ReportScheduleWebFactory reportScheduleWebFactory;
 
@@ -50,12 +52,12 @@ public class ReportController {
 
   @SuppressFBWarnings("EI_EXPOSE_REP2")
   @Autowired
-  public ReportController(ReportRepo reportRepo, ReportScheduleRepo reportScheduleRepo, ReportEngine reportEngine,
+  public ReportController(ReportRepo reportRepo, ReportScheduleRepo reportScheduleRepo, ReportService reportService,
                           ReportSchedulerService reportSchedulerService, ReportScheduleWebFactory reportScheduleWebFactory,
                           @Qualifier("springCronParser") CronParser cronParser) {
     this.reportRepo = reportRepo;
     this.reportScheduleRepo = reportScheduleRepo;
-    this.reportEngine = reportEngine;
+    this.reportService = reportService;
     this.reportSchedulerService = reportSchedulerService;
     this.reportScheduleWebFactory = reportScheduleWebFactory;
     this.cronParser = cronParser;
@@ -78,12 +80,7 @@ public class ReportController {
     model.addAttribute("reportGroup", report.getReportGroup());
     model.addAttribute("reportDescription", report.getDescription());
     if (report.getInputContent() == null || report.getInputContent().trim().isEmpty()){
-      String reportContent;
-      if (ReportType.MDR.equals(report.getReportType())) {
-        reportContent = reportEngine.runMdrReport(report.getDefinition());
-      } else {
-        reportContent = reportEngine.runReport(report.getDefinition());
-      }
+      String reportContent = reportService.runReport(report);
       model.addAttribute(report.getInputContent());
       model.addAttribute("reportContent", reportContent);
       return "viewReport";
@@ -108,13 +105,7 @@ public class ReportController {
         params.put(k, v);
       }
     });
-    String reportContent;
-
-    if (ReportType.MDR.equals(report.getReportType())) {
-      reportContent = reportEngine.runMdrReport(report.getDefinition(), params);
-    } else {
-      reportContent = reportEngine.runReport(report.getDefinition(), params);
-    }
+    String reportContent = reportService.runReport(report, params);
     mav.addObject(report.getInputContent());
     mav.addObject("reportContent", reportContent);
     mav.setViewName("viewReport");

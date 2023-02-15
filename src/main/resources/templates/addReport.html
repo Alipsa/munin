@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5" lang="en">
 <head th:include="snippets/header.html :: headerFragment">
-   <title id="pageTitle">Manage Renjin Web Reports</title>
+   <title id="pageTitle">Manage Munin Web Reports</title>
 </head>
 <body>
 <div th:include="snippets/menu.html :: menu">
@@ -128,9 +128,15 @@
       if (reportType === "MDR") {
          $("#definitionLabel").text("MDR report code:");
          rCodeMirror.setOption("mode", "mdr");
-      } else if (reportType === "UNMANAGED") {
+      } else if (reportType === "R") {
          $("#definitionLabel").text("R report code:");
          rCodeMirror.setOption("mode", "r");
+      } else if (reportType === "GROOVY") {
+         $("#definitionLabel").text("Groovy report code:");
+         rCodeMirror.setOption("mode", "groovy");
+      } else if (reportType === "GMD") {
+         $("#definitionLabel").text("GMD report code:");
+         rCodeMirror.setOption("mode", "gmd");
       }
    }
 </script>

@@ -1,12 +1,17 @@
 # Munin
-This is a report server for reports created in R based on [Renjin](https://www.renjin.org/) and [Spring Boot](https://spring.io/projects/spring-boot).
+This is a report server for reports created in either R based on [Renjin](https://www.renjin.org/) or Groovy 
+. It is an application on [Spring Boot](https://spring.io/projects/spring-boot).
 The name comes from the one of Odin's ravens who he sent out every day to scout the world and bring him back reports. 
 
 ![example report](docs/viewSampleReport.png)
 # Overview
-Munin is a reporting server that can run and display reports created in Renjin R on the web.
+Munin is a reporting server that can run and display reports, created in Renjin R or Groovy, on the web.
 
-Currently, it supports R reports where the R code returns html, or the mdr format (markdown with support for r code, similar to rmd - more on that further down). 
+Currently, it supports:
+- R reports where the R code returns html
+- mdr Reports (markdown with support for r code, similar to rmd - more on that further down).
+- Groovy reports where the Groovy code returns html
+- gmd Reports (markdown with support for groovy code - more on that further down)
 
 Creating html from R code can be done by using the htmlcreator package for Renjin, e.g:
 ```r
@@ -188,6 +193,10 @@ Which will result in the following report output:
 Rmd requires knitr which depends on the Markdown package. The Markdown packages has some C code that
 the Renjin GCC bridge cannot make sense of. Hence, knitr and thus the rmd file format does not (currently) 
 work in Renjin. As soon as that is fixed, I plan to support rmd files in Munin as well. 
+
+# Groovy reports
+
+# GMD reports
 
 # Installing
 There are a few different ways to install Munin.

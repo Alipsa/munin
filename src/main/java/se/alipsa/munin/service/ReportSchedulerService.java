@@ -32,14 +32,14 @@ public class ReportSchedulerService implements
   private final TaskScheduler executor;
   private final ReportRepo reportRepo;
   private final ReportScheduleRepo reportScheduleRepo;
-  private final ReportEngine reportEngine;
+  private final RenjinReportEngine reportEngine;
   private final EmailService emailService;
   private final Map<Long, ScheduledFuture<?>> currentSchedules = new HashMap<>();
 
   private final static Logger LOG = LoggerFactory.getLogger(ReportSchedulerService.class);
 
   @Autowired
-  public ReportSchedulerService(TaskScheduler executor, ReportRepo reportRepo, ReportScheduleRepo reportScheduleRepo, ReportEngine reportEngine,
+  public ReportSchedulerService(TaskScheduler executor, ReportRepo reportRepo, ReportScheduleRepo reportScheduleRepo, RenjinReportEngine reportEngine,
                                 EmailService emailService) {
     this.executor = executor;
     this.reportRepo = reportRepo;

@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
       lang="en">
 <head th:include="snippets/header.html :: headerFragment">
-   <title id="pageTitle">Edit Renjin Web Report</title>
+   <title id="pageTitle">Edit Report</title>
 </head>
 <body>
 <div th:include="snippets/menu.html :: menu">
@@ -128,6 +128,9 @@
    if ($("#reportType").val() === "MDR") {
       //console.log("Setting rCodeMirror to mdr mode");
       rCodeMirror.setOption("mode", "mdr");
+   } else if ($("#reportType").val() === "GMD") {
+      //console.log("Setting rCodeMirror to gmd mode");
+      rCodeMirror.setOption("mode", "gmd");
    }
 
    let inputCodeMirror = CodeMirror.fromTextArea(document.getElementById("inputContent"), {
@@ -144,6 +147,9 @@
             if ($("#reportType").val() == "MDR") {
                console.log("Setting rCodeMirror to mdr mode");
                rCodeMirror.setOption("mode", "mdr");
+            } else if ($("#reportType").val() == "GMD") {
+               console.log("Setting rCodeMirror to gmd mode");
+               rCodeMirror.setOption("mode", "gmd");
             }
             rCodeMirror.setValue(fr.result);
          }
@@ -162,8 +168,8 @@
    function changeHighligtMode(mode) {
       if ("MDR" === mode) {
          rCodeMirror.setOption("mode", "mdr");
-      } else {
-         rCodeMirror.setOption("mode", "r");
+      } else if ("GMD" === mode) {
+         rCodeMirror.setOption("mode", "gmd");
       }
    }
 

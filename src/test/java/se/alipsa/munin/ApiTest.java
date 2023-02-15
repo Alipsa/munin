@@ -12,7 +12,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import se.alipsa.munin.model.Report;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static se.alipsa.munin.model.ReportType.UNMANAGED;
+import static se.alipsa.munin.model.ReportType.R;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = Application.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -39,7 +39,7 @@ public class ApiTest {
         "html.add(\"<h1>Hello World</h1>\")\n" +
         "html.content()\"");
     report.setInputContent("");
-    report.setReportType(UNMANAGED);
+    report.setReportType(R);
     report.setReportGroup("Examples");
     String json = objectMapper.writeValueAsString(report);
     HttpEntity<String> request = new HttpEntity<>(json, headers);
