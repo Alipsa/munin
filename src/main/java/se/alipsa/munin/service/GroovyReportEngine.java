@@ -20,7 +20,8 @@ public class GroovyReportEngine {
     engine = new GroovyScriptEngineImpl(classLoader);
   }
 
-  public String runGroovyReport(String definition, Map<String, Object>... params) throws ScriptException {
+  @SafeVarargs
+  public final String runGroovyReport(String definition, Map<String, Object>... params) throws ScriptException {
     try {
       if (params.length > 0) {
         engine.getBindings(ScriptContext.ENGINE_SCOPE).putAll(params[0]);
@@ -31,7 +32,8 @@ public class GroovyReportEngine {
     }
   }
 
-  public String runGmdReport(String definition, Map<String, Object>... params) {
+  @SafeVarargs
+  public final String runGmdReport(String definition, Map<String, Object>... params) {
     var gmd = new Gmd();
     if (params.length == 0) {
       return gmd.gmdToHtml(definition);
