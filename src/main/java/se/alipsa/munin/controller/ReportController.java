@@ -29,7 +29,6 @@ import se.alipsa.munin.model.web.ReportScheduleWebFactory;
 import se.alipsa.munin.repo.ReportRepo;
 import se.alipsa.munin.repo.ReportScheduleRepo;
 import se.alipsa.munin.service.ReportDefinitionException;
-import se.alipsa.munin.service.RenjinReportEngine;
 import se.alipsa.munin.service.ReportSchedulerService;
 import se.alipsa.munin.service.ReportService;
 

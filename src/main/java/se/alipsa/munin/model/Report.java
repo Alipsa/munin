@@ -27,26 +27,49 @@ public class Report implements Serializable {
   @Column(length = 50)
   private String reportGroup;
 
+  /**
+   * @return the name of the report
+   */
   public String getReportName() {
     return reportName;
   }
 
+  /**
+   * Set the name of the report
+   * @param reportName, the name of the report
+   */
   public void setReportName(String reportName) {
     this.reportName = reportName;
   }
 
+  /**
+   *
+   * @return a short description of the report
+   */
   public String getDescription() {
     return description;
   }
 
+  /**
+   *
+   * @param description, a short description of the report (e.g. what it does)
+   */
   public void setDescription(String description) {
     this.description = description;
   }
 
+  /**
+   *
+   * @return the reporting code logic (the code to execute)
+   */
   public String getDefinition() {
     return definition;
   }
 
+  /**
+   *
+   * @param reportContent, the reporting code logic (the code to execute)
+   */
   public void setDefinition(String reportContent) {
     this.definition = reportContent;
   }

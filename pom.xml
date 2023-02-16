@@ -348,13 +348,13 @@
                         <configuration>
                             <rules>
                                 <requireMavenVersion>
-                                    <version>[3.5.2,)</version>
+                                    <version>[3.6.3,)</version>
                                     <level>ERROR</level>
-                                    <message>Please use maven version 3.5.2 or higher</message>
+                                    <message>Please use maven version 3.6.3 or higher</message>
                                 </requireMavenVersion>
                                 <requireJavaVersion>
                                     <version>17</version>
-                                    <level>WARN</level>
+                                    <level>ERROR</level>
                                     <message>Please use Java 17</message>
                                 </requireJavaVersion>
                             </rules>
