@@ -18,9 +18,10 @@ public class ReportService {
     this.renjinReportEngine = renjinReportEngine;
     this.groovyReportEngine = groovyReportEngine;
   }
-  public String runReport(Report report, Map<String, Object>... params) throws ScriptException, ReportDefinitionException {
+  @SafeVarargs
+  public final String runReport(Report report, Map<String, Object>... params) throws ScriptException, ReportDefinitionException {
     return switch (report.getReportType()) {
-      case R -> renjinReportEngine.runReport(report.getDefinition(), params);
+      case R, UNMANAGED -> renjinReportEngine.runReport(report.getDefinition(), params);
       case MDR -> renjinReportEngine.runMdrReport(report.getDefinition(), params);
       case GROOVY -> groovyReportEngine.runGroovyReport(report.getDefinition(), params);
       case GMD -> groovyReportEngine.runGmdReport(report.getDefinition(), params);

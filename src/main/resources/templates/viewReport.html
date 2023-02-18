@@ -22,8 +22,8 @@
 </div>
 <div th:include="snippets/header.html :: scripsFragment"></div>
 <script>
-   hljs.initHighlightingOnLoad();
-   $(document).ready(setBusy(false));
+   hljs.highlightAll();
+   $(document).ready(() => setBusy(false));
 </script>
 </body>
 </html>
