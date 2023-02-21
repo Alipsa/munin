@@ -195,8 +195,13 @@ the Renjin GCC bridge cannot make sense of. Hence, knitr and thus the rmd file f
 work in Renjin. As soon as that is fixed, I plan to support rmd files in Munin as well. 
 
 # Groovy reports
+Groovy reports are just Groovy code that generates html. 
+You are completely free to generate that html any way you prefer.
 
 # GMD reports
+GMD or Groovy Markdown is essentially markdown with possibilities to add groovy code to dynamically generate 
+content on the fly. It is quite similar to the MDR format but the code is Groovy instead of R.
+See [The gmd project](https://github.com/perNyfelt/gmd) for more information on syntax etc.
 
 # Installing
 There are a few different ways to install Munin.
