@@ -221,7 +221,7 @@ There are a few different ways to install Munin.
    <parent>
        <artifactId>munin</artifactId>
        <groupId>se.alipsa</groupId>
-       <version>1.1.7</version>
+       <version>1.2.1</version>
    </parent>
    ```
 3. Customized alternative:
@@ -293,7 +293,7 @@ To change the underlying database config, set the spring.datasource.xxx paramete
 as you see fit.
 
 There is a braking change between the h2 database used prior to munin version 1.2.0 (i.e. h2 1.4.x) and the h2 
-version used in version from 1.20 and later (h2 version 2.1.x). TO upgrade the database you need to export the old database 
+version used in version from 1.20 and later (h2 version 2.1.x). To upgrade the database you need to export the old database 
 to SQL and then import in the new version. Essentially you need to the following steps
 
 1. Download the 1.4.200 h2 from https://repo1.maven.org/maven2/com/h2database/h2/1.4.200/h2-1.4.200.jar
@@ -316,7 +316,7 @@ the jdbc driver jar. This can be done by setting the loader.path, e.g:
 
 ### Mail
 Mail is used to email passwords when users are created as well as mailing out scheduled reports.
-Set spring.mail.xxx properties as suitable for your mail server
+Set spring.mail.xxx properties (host, port, username, password) as suitable for your mail server.
 The "from" address is controlled by the property `munin.email.from`
 
 ### Monitoring
@@ -355,7 +355,7 @@ If you want to keep the admin user, begin by assigning your email to it and then
  a new password will then be emailed to you.
 
 # Integration
-Munin provides a REST api for integration with other application. It is described [here](api.md).
+Munin provides a REST api for integration with other applications. It is described [here](api.md).
 
 # Reusing code
 You might notice that you have code snippets that you want to centralize and reuse. The standard approach
@@ -369,6 +369,7 @@ source(paste0(muninBaseUrl, "/common/resources/utils.R"))
 # Version history
 
 ### 1.2.2
+- Add support for Groovy and GMD reports.
 
 ### 1.2.1 (2022-Aug-16)
 - Upgrade dependencies for bootstrap (5.1.3 -> 5.2.0), cron-utils (9.1.6 -> 9.2.0),
