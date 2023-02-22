@@ -370,7 +370,13 @@ source(paste0(muninBaseUrl, "/common/resources/utils.R"))
 
 ### 1.2.2
 - Add support for Groovy and GMD reports.
-
+- Upgrade spring boot (2.7.2 -> 2.7.8)
+- Upgrade boostrap (5.2.0 -> 5.2.3)
+- Upgrade jQuery (3.6.0 -> 3.6.3)
+- Upgrade liquibase (4.15.0 -> 4.19.0)
+- Upgrade mdr (1.5.1 -> 1.5.2)
+- Upgrade webjars (0.45 -> 0.46)
+- Require Java 17
 ### 1.2.1 (2022-Aug-16)
 - Upgrade dependencies for bootstrap (5.1.3 -> 5.2.0), cron-utils (9.1.6 -> 9.2.0),
 liquibase (4.9.1 -> 4.15.0), h2 (2.1.210 -> 2.1.214), spring-boot (2.6.6 -> 2.7.2)
