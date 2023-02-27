@@ -90,10 +90,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
      */
   }
 
-  @Bean
-  public CsrfTokenRepository csrfTokenRepository() {
-    return CookieCsrfTokenRepository.withHttpOnlyFalse();
-  }
+  //@Bean
+  //public CsrfTokenRepository csrfTokenRepository() {
+  //  return CookieCsrfTokenRepository.withHttpOnlyFalse();
+  //}
 
   @Bean
   public PasswordEncoder passwordEncoder() {

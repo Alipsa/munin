@@ -1,5 +1,6 @@
 package se.alipsa.munin.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,8 @@ import org.springframework.web.bind.annotation.*;
 import se.alipsa.munin.model.Report;
 import se.alipsa.munin.repo.ReportRepo;
 
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 @RestController
@@ -18,9 +21,12 @@ public class RestApiController {
 
   private final ReportRepo reportRepo;
 
+  private final ObjectMapper mapper;
+
   @Autowired
-  public RestApiController(ReportRepo reportRepo) {
+  public RestApiController(ReportRepo reportRepo, ObjectMapper mapper) {
     this.reportRepo = reportRepo;
+    this.mapper = mapper;
   }
 
   @GetMapping(value = "/api/getReportGroups", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -34,13 +40,23 @@ public class RestApiController {
   }
 
   @GetMapping(value = "/api/getReportInfo", produces = MediaType.APPLICATION_JSON_VALUE)
-  public Map<String, List<String>> getReportINfo() {
+  public Map<String, List<String>> getReportInfo() {
     Map<String, List<String>> map = new HashMap<>();
     for (Report report : reportRepo.findAll()) {
       map.computeIfAbsent(report.getReportGroup(), k -> new ArrayList<>());
       map.get(report.getReportGroup()).add(report.getReportName());
     }
     return map;
+  }
+
+  @GetMapping(value = "/api/getReport", produces = MediaType.APPLICATION_JSON_VALUE)
+  public @ResponseBody Report getReport(@RequestParam String name) {
+    var decoded = URLDecoder.decode(name, StandardCharsets.UTF_8);
+    try {
+      return reportRepo.loadReport(decoded);
+    } catch (ReportNotFoundException e) {
+      throw new ApiException(HttpStatus.BAD_REQUEST, "Report name '" + decoded + "' cannot be found");
+    }
   }
 
   @PostMapping(value = "/api/addReport", consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -61,16 +77,28 @@ public class RestApiController {
     reportRepo.save(report);
   }
 
+  /*@RequestMapping(value = "/api/updateReport", method = {RequestMethod.POST, RequestMethod.PUT, RequestMethod.GET})
+  public void updateReportAny(@RequestBody String report, HttpServletRequest request) {
+    LOG.info("got call to /api/updateReport, method = {}, mediatype = {}",
+        request.getMethod(), request.getHeader(CONTENT_TYPE));
+    try {
+      updateReport(mapper.readValue(report, Report.class));
+    } catch (JsonProcessingException e) {
+      LOG.warn("Failed to deserialize the report", e);
+      throw new ApiException(HttpStatus.BAD_REQUEST, "Failed to deserialize the report: " + e);
+    }
+  }*/
+
   @PutMapping(value = "/api/updateReport", consumes = MediaType.APPLICATION_JSON_VALUE)
   public void updateReport(@RequestBody Report report) {
-    LOG.debug("Updating report: {}", report);
+    LOG.info("Updating report: {}", report);
     if (report.getReportName() == null || "".equals(report.getReportName().trim())) {
       LOG.warn("updateReport: Report name cannot be empty");
       throw new ApiException(HttpStatus.BAD_REQUEST, "Report name cannot be empty");
     }
     if (report.getDefinition() == null || "".equals(report.getDefinition().trim())) {
-      LOG.warn("updateReport: Report definition (R code) cannot be empty");
-      throw new ApiException(HttpStatus.BAD_REQUEST, "Report definition (R code) cannot be empty");
+      LOG.warn("updateReport: Report definition (code) cannot be empty");
+      throw new ApiException(HttpStatus.BAD_REQUEST, "Report definition (code) cannot be empty");
     }
     if (report.getReportGroup() == null || report.getReportGroup().trim().isEmpty()) {
       LOG.warn("Report Group is blank, setting it to None");
