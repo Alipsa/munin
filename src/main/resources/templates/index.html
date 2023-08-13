@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5" lang="en">
 
-<head th:include="snippets/header.html :: headerFragment">
+<head th:insert="~{snippets/header.html :: headerFragment}">
    <title id="pageTitle">Munin Web Reports</title>
 </head>
 <body>
-   <div th:include="snippets/menu.html :: menu">
+   <div th:insert="~{snippets/menu.html :: menu}">
       <ol id="breadcrumbs" class="breadcrumb">
          <li class="breadcrumb-item"><a href="/">Home</a></li>
       </ol>
@@ -16,6 +16,6 @@
          <a th:href="@{/reports/{group}(group=${group.getReportGroup()})}" th:text="${group.getReportGroup + ' (' + group.getCount() + ')'}" class="btn btn-link folder"></a>
       </span>
    </div>
-   <div th:include="snippets/header.html :: scripsFragment"></div>
+   <div th:insert="~{snippets/header.html :: scripsFragment}"></div>
 </body>
 </html>

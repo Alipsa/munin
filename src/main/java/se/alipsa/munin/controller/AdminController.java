@@ -16,8 +16,8 @@ import se.alipsa.munin.service.EmailService;
 import se.alipsa.munin.service.UserRoleService;
 import se.alipsa.munin.util.PasswordGenerator;
 
-import javax.mail.internet.AddressException;
-import javax.mail.internet.InternetAddress;
+import jakarta.mail.internet.AddressException;
+import jakarta.mail.internet.InternetAddress;
 import java.util.List;
 
 @Controller

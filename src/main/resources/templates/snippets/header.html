@@ -1,5 +1,5 @@
 <head th:fragment="headerFragment" xmlns:th="http://www.w3.org/1999/xhtml">
-   <title th:include=":: #pageTitle">Layout Generic Title</title>
+   <title th:insert="~{:: #pageTitle}">Layout Generic Title</title>
    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
    <link th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" rel="stylesheet"/>
    <link th:href="@{/webjars/codemirror/lib/codemirror.css}" rel="stylesheet"/>

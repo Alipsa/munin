@@ -16,7 +16,7 @@ import se.alipsa.munin.model.ReportSchedule;
 import se.alipsa.munin.repo.ReportRepo;
 import se.alipsa.munin.repo.ReportScheduleRepo;
 
-import javax.mail.MessagingException;
+import jakarta.mail.MessagingException;
 import javax.script.ScriptException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;

@@ -2,6 +2,7 @@ package se.alipsa.munin.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import se.alipsa.groovy.gmd.GmdException;
 import se.alipsa.munin.model.Report;
 
 import java.util.Map;
@@ -19,7 +20,7 @@ public class ReportService {
     this.groovyReportEngine = groovyReportEngine;
   }
   @SafeVarargs
-  public final String runReport(Report report, Map<String, Object>... params) throws ScriptException, ReportDefinitionException {
+  public final String runReport(Report report, Map<String, Object>... params) throws ScriptException, ReportDefinitionException, GmdException {
     return switch (report.getReportType()) {
       case R, UNMANAGED -> renjinReportEngine.runReport(report.getDefinition(), params);
       case MDR -> renjinReportEngine.runMdrReport(report.getDefinition(), params);

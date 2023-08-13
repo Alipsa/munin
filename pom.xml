@@ -9,12 +9,12 @@
     <parent>
         <artifactId>spring-boot-starter-parent</artifactId>
         <groupId>org.springframework.boot</groupId>
-        <version>2.7.8</version>
+        <version>3.1.2</version>
     </parent>
 
     <artifactId>munin</artifactId>
     <groupId>se.alipsa</groupId>
-    <version>1.2.2-SNAPSHOT</version>
+    <version>2.0.0-SNAPSHOT</version>
 
     <name>Munin - a web reporting server for R and Groovy</name>
     <description>A reporting server for reports created in R or Groovy based on Spring Boot.</description>
@@ -40,17 +40,17 @@
     </scm>
 
     <properties>
-        <bootstrap.version>5.2.3</bootstrap.version>
+        <bootstrap.version>5.3.1</bootstrap.version>
         <codemirror.version>5.62.2</codemirror.version>
-        <commons-io.version>2.11.0</commons-io.version>
+        <commons-io.version>2.13.0</commons-io.version>
         <commons-collections4.version>4.4</commons-collections4.version>
-        <cron-utils.version>9.2.0</cron-utils.version>
-        <h2.version>2.1.214</h2.version>
+        <cron-utils.version>9.2.1</cron-utils.version>
+        <h2.version>2.2.220</h2.version>
         <htmlcreator.version>1.4.1</htmlcreator.version>
-        <jquery.version>3.6.3</jquery.version>
-        <junit-jupiter.version>5.9.2</junit-jupiter.version>
-        <junit-platform.version>1.9.2</junit-platform.version>
-        <liquibase-core.version>4.19.0</liquibase-core.version>
+        <jquery.version>3.7.0</jquery.version>
+        <junit-jupiter.version>5.10.0</junit-jupiter.version>
+        <junit-platform.version>1.10.0</junit-platform.version>
+        <liquibase-core.version>4.23.1</liquibase-core.version>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <mdr.version>1.5.2</mdr.version>
@@ -60,9 +60,9 @@
         <renjin-spring-boot-starter.version>1.0.0</renjin-spring-boot-starter.version>
         <spotbugs-annotations.version>4.7.3</spotbugs-annotations.version>
         <!-- note that parent has the version hard coded so must duplicate the setting there as well -->
-        <spring.boot.version>2.7.8</spring.boot.version>
-        <thymeleaf-extras-springsecurity5.version>3.0.5.RELEASE</thymeleaf-extras-springsecurity5.version>
-        <webjars-locator.version>0.46</webjars-locator.version>
+        <spring.boot.version>3.1.2</spring.boot.version>
+        <thymeleaf-extras-springsecurity6.version>3.1.2.RELEASE</thymeleaf-extras-springsecurity6.version>
+        <webjars-locator.version>0.47</webjars-locator.version>
     </properties>
 
     <dependencies>
@@ -126,7 +126,7 @@
         <dependency>
             <groupId>org.apache.groovy</groupId>
             <artifactId>groovy-all</artifactId>
-            <version>4.0.8</version>
+            <version>4.0.13</version>
             <type>pom</type>
         </dependency>
         <dependency>
@@ -182,8 +182,8 @@
         </dependency>
         <dependency>
             <groupId>org.thymeleaf.extras</groupId>
-            <artifactId>thymeleaf-extras-springsecurity5</artifactId>
-            <version>${thymeleaf-extras-springsecurity5.version}</version>
+            <artifactId>thymeleaf-extras-springsecurity6</artifactId>
+            <version>${thymeleaf-extras-springsecurity6.version}</version>
         </dependency>
         <dependency>
             <groupId>org.webjars</groupId>
@@ -330,7 +330,7 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>versions-maven-plugin</artifactId>
-                <version>2.14.2</version>
+                <version>2.16.0</version>
                 <configuration>
                     <rulesUri>file://${basedir}/version-plugin-rules.xml</rulesUri>
                 </configuration>
@@ -338,7 +338,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-enforcer-plugin</artifactId>
-                <version>3.2.1</version>
+                <version>3.3.0</version>
                 <executions>
                     <execution>
                         <id>enforce-releases-maven-java</id>
@@ -365,7 +365,7 @@
             <plugin>
                 <groupId>com.github.spotbugs</groupId>
                 <artifactId>spotbugs-maven-plugin</artifactId>
-                <version>4.7.3.0</version>
+                <version>4.7.3.5</version>
                 <executions>
                     <execution>
                         <goals>
@@ -377,7 +377,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-pmd-plugin</artifactId>
-                <version>3.20.0</version>
+                <version>3.21.0</version>
                 <configuration>
                     <targetJdk>1.8</targetJdk>
                     <printFailingErrors>true</printFailingErrors>
@@ -395,7 +395,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.0.0-M5</version>
+                <version>3.1.2</version>
                 <configuration>
                     <skipTests>true</skipTests>
                 </configuration>
@@ -404,7 +404,7 @@
                 <!-- Note: Weird class not found errors are likely due to the schema.sql being out of sync with liquibase/entity definitions -->
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-failsafe-plugin</artifactId>
-                <version>3.0.0-M5</version>
+                <version>3.1.2</version>
                 <executions>
                     <execution>
                         <goals>
@@ -417,7 +417,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-project-info-reports-plugin</artifactId>
-                <version>3.4.2</version>
+                <version>3.4.5</version>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -427,7 +427,7 @@
             <!--plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
-                <version>0.8.8</version>
+                <version>0.8.10</version>
                 <executions>
                     <execution>
                         <goals>
@@ -446,7 +446,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
-                <version>3.2.1</version>
+                <version>3.3.0</version>
                 <executions>
                     <execution>
                         <id>attach-sources</id>
@@ -477,7 +477,7 @@
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
-                <version>0.8.8</version>
+                <version>0.8.10</version>
             </plugin>
         </plugins>
     </reporting>
@@ -501,7 +501,7 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-gpg-plugin</artifactId>
-                        <version>3.0.1</version>
+                        <version>3.1.0</version>
                         <executions>
                             <execution>
                                 <id>sign-artifacts</id>

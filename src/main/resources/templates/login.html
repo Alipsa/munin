@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5" lang="en">
-<head th:include="snippets/header.html :: headerFragment">
+<head th:insert="~{snippets/header.html :: headerFragment}">
    <title id="pageTitle">Munin Web Reports Login</title>
 </head>
 <body>
@@ -35,6 +35,6 @@
       <p th:if="${loginError}" class="error pt-3">Wrong user or password</p>
    </div>
 </div>
-<div th:include="snippets/header.html :: scripsFragment"></div>
+<div th:insert="~{snippets/header.html :: scripsFragment}"></div>
 </body>
 </html>

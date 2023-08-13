@@ -2,7 +2,7 @@ package se.alipsa.munin.model;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.io.Serializable;
 
 @Entity

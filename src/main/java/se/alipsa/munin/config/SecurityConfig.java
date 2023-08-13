@@ -5,95 +5,83 @@ import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
-import org.springframework.security.web.csrf.CsrfTokenRepository;
+import org.springframework.security.provisioning.JdbcUserDetailsManager;
+import org.springframework.security.web.SecurityFilterChain;
 
 import javax.sql.DataSource;
 
+import static org.springframework.security.web.util.matcher.AntPathRequestMatcher.antMatcher;
 import static se.alipsa.munin.config.Role.*;
 
 @Configuration
 @EnableWebSecurity
 @ConditionalOnBean(WebConfig.class)
 @AutoConfigureAfter(WebConfig.class)
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
+public class SecurityConfig {
 
   @Autowired
   private DataSource dataSource;
 
   @SuppressWarnings("PMD.AvoidCatchingGenericException")
-  @Autowired
-  public void configureGlobal(AuthenticationManagerBuilder auth) throws ConfigurationException {
+  @Bean
+  public UserDetailsService configureGlobal() throws ConfigurationException {
     try {
-      auth.jdbcAuthentication().dataSource(dataSource)
-          .usersByUsernameQuery("select username, password, enabled from users where username=?")
-          .authoritiesByUsernameQuery("select username, authority from authorities where username=?");
+      var auth = new JdbcUserDetailsManager(dataSource);
+      auth.setUsersByUsernameQuery("select username, password, enabled from users where username=?");
+      auth.setAuthoritiesByUsernameQuery("select username, authority from authorities where username=?");
+      return auth;
     } catch (Exception e) {
       throw new ConfigurationException("Error setting up authentication in configureGlobal()", e);
     }
-
   }
 
-  @Override
-  protected void configure(HttpSecurity http) throws Exception {
+  @Bean
+  protected SecurityFilterChain configure(HttpSecurity http) throws Exception {
     http
-        .cors().and()
-        .csrf()
-        .disable()
-        .headers().frameOptions().sameOrigin()
-        .and()
-        //.csrfTokenRepository(csrfTokenRepository())
-        //.and()
-        .authorizeRequests()
-          .antMatchers("/resetPassword", "/webjars/**", "/js/**", "/css/**", "/favicon.ico" , "/img/**",
-              "/actuator/health", "/h2-console/**", "/common/**")
+        .cors(Customizer.withDefaults())
+        .csrf(c -> c.disable())
+        .headers(h -> h.frameOptions(o -> o.sameOrigin()))
+        .authorizeHttpRequests( req ->
+          req.requestMatchers(
+              antMatcher("/resetPassword"),
+              antMatcher("/webjars/**"),
+              antMatcher("/js/**"),
+              antMatcher("/css/**"),
+              antMatcher("/favicon.ico") ,
+              antMatcher("/img/**"),
+              antMatcher("/actuator/health"),
+              antMatcher("/h2-console/**"),
+              antMatcher("/common/**")
+              )
             .permitAll()
-          .antMatchers("/reports/**")
+          .requestMatchers(antMatcher("/reports/**"))
             .authenticated()
-          .antMatchers("/manage/**", "/api/**")
+          .requestMatchers(
+              antMatcher("/manage/**"),
+              antMatcher("/api/**")
+          )
             .hasRole(ROLE_ANALYST.getShortName())
-          .antMatchers( "/admin/**")
+          .requestMatchers( antMatcher("/admin/**"))
             .hasRole(ROLE_ADMIN.getShortName())
           .anyRequest()
             .authenticated()
+        )
 
-        .and()
-        .formLogin()
-        .loginPage("/login.html").permitAll()
-        .failureUrl("/login.html").permitAll()
-        .and()
-        .logout().permitAll()
-        .logoutSuccessUrl("/login.html")
-        .and()
-        .httpBasic();
-    /*
-        .and()
-        .cors().and()
-        .csrf()
-        .csrfTokenRepository(csrfTokenRepository())
+        .formLogin(l -> l
+            .loginPage("/login.html").permitAll()
+            .failureUrl("/login.html").permitAll())
 
-        .anyRequest().denyAll() // Reject anything else not matched above
+        .logout(lo -> lo.permitAll().logoutSuccessUrl("/login.html"))
 
-        .and().headers().frameOptions().sameOrigin()
-        .and().httpBasic()
-
-        // Uncomment this to change to enforce SSL
-        //.and().requiresChannel().antMatchers(BASE_PATH + "/**").requiresSecure()
-        .and().requiresChannel().anyRequest().requiresInsecure()
-
-     */
+        .httpBasic(Customizer.withDefaults());
+    return http.build();
   }
-
-  //@Bean
-  //public CsrfTokenRepository csrfTokenRepository() {
-  //  return CookieCsrfTokenRepository.withHttpOnlyFalse();
-  //}
 
   @Bean
   public PasswordEncoder passwordEncoder() {

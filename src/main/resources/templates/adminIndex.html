@@ -2,11 +2,11 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
       lang="en">
 
-<head th:include="snippets/header.html :: headerFragment">
+<head th:insert="~{snippets/header.html :: headerFragment}">
    <title id="pageTitle">Munin Web Reports - Admin</title>
 </head>
 <body>
-   <div th:include="snippets/menu.html :: menu">
+   <div th:insert="~{snippets/menu.html :: menu}">
       <ol id="breadcrumbs" class="breadcrumb">
          <li class="breadcrumb-item"><a href="/">Home</a></li>
          <li class="breadcrumb-item active" aria-current="page">Admin</li>
@@ -106,6 +106,6 @@
          </div>
       </div>
    </div>
-   <div th:include="snippets/header.html :: scripsFragment"></div>
+   <div th:insert="~{snippets/header.html :: scripsFragment}"></div>
 </body>
 </html>

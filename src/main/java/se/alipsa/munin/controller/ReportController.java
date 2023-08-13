@@ -21,6 +21,7 @@ import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
+import se.alipsa.groovy.gmd.GmdException;
 import se.alipsa.munin.model.Report;
 import se.alipsa.munin.model.ReportSchedule;
 import se.alipsa.munin.model.ReportType;
@@ -79,7 +80,12 @@ public class ReportController {
     model.addAttribute("reportGroup", report.getReportGroup());
     model.addAttribute("reportDescription", report.getDescription());
     if (report.getInputContent() == null || report.getInputContent().trim().isEmpty()){
-      String reportContent = reportService.runReport(report);
+      String reportContent = null;
+      try {
+        reportContent = reportService.runReport(report);
+      } catch (GmdException e) {
+        throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Failed to run report", e);
+      }
       model.addAttribute(report.getInputContent());
       model.addAttribute("reportContent", reportContent);
       return "viewReport";
@@ -104,7 +110,12 @@ public class ReportController {
         params.put(k, v);
       }
     });
-    String reportContent = reportService.runReport(report, params);
+    String reportContent = null;
+    try {
+      reportContent = reportService.runReport(report, params);
+    } catch (GmdException e) {
+      throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Failed to run report", e);
+    }
     mav.addObject(report.getInputContent());
     mav.addObject("reportContent", reportContent);
     mav.setViewName("viewReport");
