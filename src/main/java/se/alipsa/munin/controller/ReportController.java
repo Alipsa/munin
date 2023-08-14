@@ -84,6 +84,7 @@ public class ReportController {
       try {
         reportContent = reportService.runReport(report);
       } catch (GmdException e) {
+        LOG.warn("Failed to run report", e);
         throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Failed to run report", e);
       }
       model.addAttribute(report.getInputContent());
@@ -114,6 +115,7 @@ public class ReportController {
     try {
       reportContent = reportService.runReport(report, params);
     } catch (GmdException e) {
+      LOG.warn("Failed to run parameterized report", e);
       throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Failed to run report", e);
     }
     mav.addObject(report.getInputContent());

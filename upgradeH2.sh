@@ -16,7 +16,7 @@ pluginVer=3.5.0
 mvn org.apache.maven.plugins:maven-dependency-plugin:${pluginVer}:get -Dartifact=com.h2database:h2:${fromVersion}:jar
 mvn org.apache.maven.plugins:maven-dependency-plugin:${pluginVer}:get -Dartifact=com.h2database:h2:${toVersion}:jar
 
-localRepository=$(mvn help:evaluate -Dexpression=settings.localRepository|grep -v "[INFO]")
+localRepository=$(mvn help:evaluate -Dexpression=settings.localRepository|grep -v "[INFO]" | grep -v "Download")
 echo "localRepository=${localRepository}"
 
 fromJar="${localRepository}/com/h2database/h2/${fromVersion}/h2-${fromVersion}.jar"
@@ -43,3 +43,4 @@ else
   echo "Failed to find h2 jar in ${toJar}"
   exit 1
 fi
+echo "Done!"

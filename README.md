@@ -380,6 +380,7 @@ source(paste0(muninBaseUrl, "/common/resources/utils.R"))
 - Upgrade h2 (2.1.214 -> 2.2.220)
 - Upgrade cron-utils (9.2.1 -> 9.2.0)
 - Require Java 17
+- Add parameters to the Preprocessor so that e.g. `= ` expressions works
 
 ### 1.2.1 (2022-Aug-16)
 - Upgrade dependencies for bootstrap (5.1.3 -> 5.2.0), cron-utils (9.1.6 -> 9.2.0),
