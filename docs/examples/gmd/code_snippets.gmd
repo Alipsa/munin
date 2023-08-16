@@ -1,0 +1,29 @@
+# Some code snippets
+
+We can use regular code blocks like this:
+```groovy
+// just some groovy code
+a = ["foo", "bar", false, 23]
+```
+
+Or Groovy code blocks that will execute and can be printed, like this:
+```{groovy echo=true}
+// just some groovy code
+import se.alipsa.groovy.matrix.Matrix
+
+a = [first:["foo"], second:["bar"], bla:[false], count:[23]]
+out.println(Matrix.create(a), [id: '12', class:'table foo'])
+```
+
+Or include some other language syntax (java in this case)
+```java
+// and some java code
+System.out.println("Hello world");
+String foo = null;
+```
+
+And SQL in this case
+```sql
+Select * from something
+group by somethingElse order by date desc
+```

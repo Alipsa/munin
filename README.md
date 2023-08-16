@@ -201,7 +201,11 @@ You are completely free to generate that html any way you prefer.
 # GMD reports
 GMD or Groovy Markdown is essentially markdown with possibilities to add groovy code to dynamically generate 
 content on the fly. It is quite similar to the MDR format but the code is Groovy instead of R.
-See [The gmd project](https://github.com/perNyfelt/gmd) for more information on syntax etc.
+See [The gmd project](https://github.com/perNyfelt/gmd) for more information on syntax etc. but basically
+
+1. code blocks are defined using \`\`\`{groovy} or \`\`\`{groovy echo=false}. 
+    - Inside code blocks, you can use out.println to output markdown. For convenience Matrix tables can be printed directly i.e. `out.println(myMatrix)`
+2. Variables can be inlined using \`=varName\`
 
 # Installing
 There are a few different ways to install Munin.
@@ -304,7 +308,7 @@ to SQL and then import in the new version. Essentially you need to the following
 
 See the [Upgrade, Backup, and Restore](https://h2database.com/html/tutorial.html#upgrade_backup_restore)
 section of the h2 documentation for details. There is also a simple [database migration script](migrateDb.sh) you can use 
-(edit credentials etc. appropriately first).
+(edit credentials etc. appropriately first). For 2.1 to 2.2 upgrade. use the upgradeH2.sh script instead.
 
 Note that if you want another database other than H2, you need to make sure spring boot can access
 the jdbc driver jar. This can be done by setting the loader.path, e.g:

@@ -13,7 +13,7 @@ a <- list(first="foo", second="bar", bla=FALSE, count=23)
 md.add(as.data.frame(a), attr=list(class="table"))
 ```
 
-Or include some othe language syntax (java in this case)
+Or include some other language syntax (java in this case)
 ```java
 // and some java code
 System.out.println("Hello world");
