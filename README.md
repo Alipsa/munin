@@ -8,54 +8,18 @@ The name comes from the one of Odin's ravens who he sent out every day to scout 
 Munin is a reporting server that can run and display reports, created in Renjin R or Groovy, on the web.
 
 Currently, it supports:
-- R reports where the R code returns html
-- mdr Reports (markdown with support for r code, similar to rmd - more on that further down).
-- Groovy reports where the Groovy code returns html
-- gmd Reports (markdown with support for groovy code - more on that further down)
+- [docs/r-reports.md](R reports) where the R code returns html
+- [docs/mdr-reports.md](mdr Reports) (markdown with support for r code, similar to rmd - more on that further down).
+- [docs/groovy-reports.md](Groovy reports) where the Groovy code returns html
+- [docs/gmd-reports.md](gmd reports) (markdown with support for groovy code - more on that further down)
 
-Creating html from R code can be done by using the htmlcreator package for Renjin, e.g:
-```r
-library('se.alipsa:htmlcreator')
 
-html.clear()
-html.add("<h2>A Sample report with a table and an image<h2>")
-html.addPlot(
-  {
-    barplot(
-      table(mtcars$vs, mtcars$gear),
-      main="Car Distribution by Gears and VS",
-      col=c("darkblue","red")
-    )
-  }
-)
-html.add("<div class='table'>")
-html.add(mtcars)
-html.add("</div>")
-
-# Return the html
-html.content()
-```
-
-Any R code that returns html can be used however - you are not bound to use htmlcreator. 
-This is why these type of reports are classified as "UNMANAGED" (as opposed to MDR) i.e. there is no magic to it (other than the magic of R).
-
-[Ride](https://github.com/perNyfelt/ride) supports the Munin report formats natively, 
+[Ride](https://github.com/Alipsa/ride) supports the Munin R and mdr report formats natively, 
 so you can use Ride to create and edit Munin reports.
 
-If you use some other IDE to create reports then you can do a simple
-trick to detect the environment and display the report in the IDE or in Munin, i.e.
-just before the very end when you return the html content, you check if you are running in the IDE and
-display the report in Viewer tab, e.g:
-```r
-# If we are using some IDE that defines an inout object), display the report in the IDE
-if(exists("inout")) {
-  inout$viewHtml(html.content(), "SimpleExample")
-}
-html.content()
-```
-Note that from ver 1.2.3 of Ride, there is built-in support for Munin reports, and you have a View button 
-instead of the "normal" Run button than does this magic for you (and adds bootstrap etc. making the View
-look the same as when viewed from a browser when run from within Munin).
+[Gade](https://github.com/Alipsa/gade) support the Munin Groovy and gmd report formats natively,
+so you can use Ride to create and edit Munin reports.
+
 
 ## Parameterized reports
 When publishing a report you can optionally add report parameters in the form of
@@ -74,7 +38,7 @@ html form content, e.g:
 </div>
 ```
 
-If you want numeric values, you need to convert the parameter to a number (e.g. by using as.numeric())
+If you want numeric values, you need to convert the parameter to a number.
 
 
 Note that, in order to be able to schedule a parameterized report, you must provide default parameters in the R code
@@ -93,6 +57,13 @@ if (!exists("dataSet")) {
   dataSet <- "iris"
 }
 ```
+or the equivalent for groovy:
+```groovy
+if (binding.hasVariable('dataSet')) {
+  dataSet = se.alipsa.groovy.datasets.Dataset.iris()
+}
+```
+
 # Styling
 Bootstrap is available, so you can use bootstrap classes to style the form.
 If you are using the htmlcreator package, the html.add() functions takes a list of attributes as 
@@ -100,12 +71,18 @@ an optional parameter. This way you can add attributes such as id and class like
 ```r
 html.add(mtcars, htmlattr=list(id = "mtcars-table", class="table table-striped"))
 ```
+for groovy (using the gmd library) it is
+```groovy
+html = new se.alipsa.groovy.gmd.Html()
+html.add(se.alipsa.groovy.datasets.Dataset.mtcars(), ["id":"mtcars-table", "class": "table table-striped"])
+```
 
 You can either upload a common stylesheet (using the "common resources" button) that you can reference in your reports e.g.
 ```r
 # import the uploaded stylesheet mystyle.css
 html.add("<link rel='stylesheet' href='/common/resources/mystyle.css' />")
 ```
+
 or, to put it in the head section ([should only be needed](https://html.spec.whatwg.org/multipage/links.html#link-type-stylesheet) if your viewers have very old browsers):
 ```r
 # import the uploaded stylesheet mystyle.css
@@ -118,6 +95,7 @@ html.add('
   </script>
 ')
 ```
+
 ...and you can of course also add stylesheets inline, e.g.
 ```r
 # add a style class to adjust the font size of table text:
@@ -128,84 +106,17 @@ html.add("
     }
   </style>
 ")
-
+```
+then for R:
+```r
 # reference the class together with some bootstrap classes when rendering a table:
 html.add(mtcars, htmlattr=list(class="table table-striped table-font-size"))
 ```
-
-## Mdr reports
-Mdr files is another supported report format. Support for mdr files is provided by the 
-[mdr](https://github.com/perNyfelt/mdr) package. Mdr files are similar to rmd files but
-gives you more control of the output of the r code parts. As a consequence it also pushes rendering
-responsibility over to you i.e. you need to make sure that your R code returns valid markdown syntax.
-Fortunately, the [r2md](https://github.com/perNyfelt/r2md) package does just that. It is "built in" to
-the mdr package so no need to explicitly load it with "library(...)". 
-
-Set the "ReportType" to MDR to have Munin call mdr to render the report (mdr -> md -> html). 
-If report type is set to UNMANAGED Munin assumes it is working R code that returns html 
-(like in all the example above which is using the htmlcreator package) and will execute the code and render its result.
-
-Here is a mdr example:
-
-`````markdown
-# MDR report example
-
-This is a straight forward example of a mdr report. 
-This way of creating reports are useful when there are more text to write than actual R code to run. 
-I.e. you want the ease of markdown for your text, but the power of R for dynamic content. 
-
-There are two ways to add R content.
-
-1. Inline, eg 2 + 5 * pi = `r 2 + 5 * pi` or `r x <- 2 + 5 * pi; x` which just evaluates and returns the result as markdown text
-2. Code blocks, i.e. longer pieces of R code that returns Markdown text e.g.
-```{r}
-employee <- c('John Doe','Peter Smith','Jane Doe')
-salary <- c(21000, 23400, 26800)
-startdate <- as.Date(c('2013-11-1','2018-3-25','2017-3-14'))
-endDate <- as.POSIXct(c('2020-01-10 00:00:00', '2020-04-12 12:10:13', '2020-10-06 10:00:05'), tz='UTC' )
-df <- data.frame(employee, salary, startdate, endDate)
-md.add(df, attr=list(class="table"))
+... and for groovy
+```groovy
+// reference the class together with some bootstrap classes when rendering a table:
+html.add(mtcars, ["class": "table table-striped table-font-size"])
 ```
-We can also reference previous code in the document e.g:
-```{r}
-md.new(paste("As stated before, 2 + 5 * pi =", x))
-```
-Plots are supported, here is an example of a barplot:
-```{r}
-md.add("# Barplot")
-md.add(
-  barplot,
-  table(mtcars$gear),
-  main="Car Distribution",
-  horiz=TRUE,
-  names.arg=c("3 Gears", "4 Gears", "5 Gears"),
-  col=c("darkblue","red", "green")
-)
-```
-See the r2md [README](https://github.com/perNyfelt/r2md/blob/main/README.md) for more information.
-
-`````
-
-Which will result in the following report output:
-![mdrExample](docs/mdrExample.png)
-
-## What about RMD?
-Rmd requires knitr which depends on the Markdown package. The Markdown packages has some C code that
-the Renjin GCC bridge cannot make sense of. Hence, knitr and thus the rmd file format does not (currently) 
-work in Renjin. As soon as that is fixed, I plan to support rmd files in Munin as well. 
-
-# Groovy reports
-Groovy reports are just Groovy code that generates html. 
-You are completely free to generate that html any way you prefer.
-
-# GMD reports
-GMD or Groovy Markdown is essentially markdown with possibilities to add groovy code to dynamically generate 
-content on the fly. It is quite similar to the MDR format but the code is Groovy instead of R.
-See [The gmd project](https://github.com/perNyfelt/gmd) for more information on syntax etc. but basically
-
-1. code blocks are defined using \`\`\`{groovy} or \`\`\`{groovy echo=false}. 
-    - Inside code blocks, you can use out.println to output markdown. For convenience Matrix tables can be printed directly i.e. `out.println(myMatrix)`
-2. Variables can be inlined using \`=varName\`
 
 # Installing
 There are a few different ways to install Munin.
