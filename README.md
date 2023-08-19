@@ -1,5 +1,5 @@
 # Munin
-This is a report server for reports created in either R based on [Renjin](https://www.renjin.org/) or Groovy 
+This is a report server for reports created in either R based on [Renjin](https://www.renjin.org/) or [Groovy](https://groovy-lang.org/) 
 . It is an application on [Spring Boot](https://spring.io/projects/spring-boot).
 The name comes from the one of Odin's ravens who he sent out every day to scout the world and bring him back reports. 
 
@@ -8,10 +8,10 @@ The name comes from the one of Odin's ravens who he sent out every day to scout 
 Munin is a reporting server that can run and display reports, created in Renjin R or Groovy, on the web.
 
 Currently, it supports:
-- [docs/r-reports.md](R reports) where the R code returns html
-- [docs/mdr-reports.md](mdr Reports) (markdown with support for r code, similar to rmd - more on that further down).
-- [docs/groovy-reports.md](Groovy reports) where the Groovy code returns html
-- [docs/gmd-reports.md](gmd reports) (markdown with support for groovy code - more on that further down)
+- [R reports](docs/r-reports.md) where the R code returns html
+- [mdr Reports](docs/mdr-reports.md) (markdown with support for r code, similar to rmd - more on that further down).
+- [Groovy reports](docs/groovy-reports.md) where the Groovy code returns html
+- [gmd reports](docs/gmd-reports.md) (markdown with support for groovy code - more on that further down)
 
 
 [Ride](https://github.com/Alipsa/ride) supports the Munin R and mdr report formats natively, 
