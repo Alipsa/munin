@@ -18,7 +18,7 @@ Currently, it supports:
 so you can use Ride to create and edit Munin reports.
 
 [Gade](https://github.com/Alipsa/gade) support the Munin Groovy and gmd report formats natively,
-so you can use Ride to create and edit Munin reports.
+so you can use Gade to create and edit Munin reports.
 
 
 ## Parameterized reports
