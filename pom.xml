@@ -42,7 +42,7 @@
     <properties>
         <bootstrap.version>5.3.1</bootstrap.version>
         <codemirror.version>5.62.2</codemirror.version>
-        <commons-io.version>2.13.0</commons-io.version>
+        <commons-io.version>2.14.0</commons-io.version>
         <commons-collections4.version>4.4</commons-collections4.version>
         <cron-utils.version>9.2.1</cron-utils.version>
         <h2.version>2.2.220</h2.version>
