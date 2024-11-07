@@ -38,7 +38,7 @@ public class ApiTest {
     Report report = new Report();
     report.setReportName("Hello Example");
     report.setDescription("Hello World");
-    report.setDefinition("\"library(\"se.alipsa:htmlcreator\")\n" +
+    report.setTemplate("\"library(\"se.alipsa:htmlcreator\")\n" +
         "html.clear()\n" +
         "html.add(\"<h1>Hello World</h1>\")\n" +
         "html.content()\"");
@@ -70,7 +70,7 @@ public class ApiTest {
     Report report = new Report();
     report.setReportName("Hello Example2");
     report.setDescription("Hello World");
-    report.setDefinition("<h1>Hello World</h1>");
+    report.setTemplate("<h1>Hello World</h1>");
     report.setInputContent("");
     report.setReportType(GROOVY);
     report.setReportGroup("Examples");

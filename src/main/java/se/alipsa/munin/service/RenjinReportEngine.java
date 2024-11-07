@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import se.alipsa.munin.model.Report;
 import se.alipsa.munin.util.EnvironmentUtil;
 import se.alipsa.renjin.starter.RenjinSessionEnginePool;
 
@@ -34,8 +35,8 @@ public class RenjinReportEngine {
   }
 
   @SafeVarargs
-  public final String runReport(String script, Map<String, Object>... params) throws ScriptException, ReportDefinitionException {
-    SEXP sexp = runScript(script, params);
+  public final String runReport(Report report, Map<String, Object>... params) throws ScriptException, ReportDefinitionException {
+    SEXP sexp = runScript(report.getTemplate(), params);
     if (!(sexp instanceof StringArrayVector)) {
       sexp = runScript("as.character(.runScriptResult)", Collections.singletonMap(".runScriptResult", sexp));
       LOG.info("Script did not return a character vector, so converted it with as.character()");
@@ -76,8 +77,9 @@ public class RenjinReportEngine {
   }
 
   @SafeVarargs
-  public final String runMdrReport(String script, Map<String, Object>... paramOpt) throws ScriptException {
+  public final String runMdrReport(Report report, Map<String, Object>... paramOpt) throws ScriptException {
     RenjinScriptEngine scriptEngine = null;
+    String script = report.getTemplate();
     try {
       scriptEngine = renjinSessionEnginePool.borrowObject();
       if (paramOpt.length > 0) {

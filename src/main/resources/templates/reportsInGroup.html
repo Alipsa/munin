@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurit6"
       lang="en">
 
 <head th:insert="~{snippets/header.html :: headerFragment}">
@@ -43,6 +43,8 @@
             <span sec:authorize="hasRole('ROLE_ANALYST')">
                      <a th:href="@{/manage/editReport/{name}(name=${report.reportName})}"
                         class="btn btn-primary btn-sm">Edit</a>
+               <a th:href="@{/manage/oldEditReport/{name}(name=${report.reportName})}"
+                  class="btn btn-primary btn-sm">Old Edit</a>
                      <a th:href="@{/manage/deleteReport/{name}(name=${report.reportName})}"
                         class="btn btn-danger btn-sm">Delete</a>
                   </span>

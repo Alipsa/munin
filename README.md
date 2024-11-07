@@ -12,7 +12,7 @@ Currently, it supports:
 - [mdr Reports](docs/mdr-reports.md) (markdown with support for r code, similar to rmd - more on that further down).
 - [Groovy reports](docs/groovy-reports.md) where the Groovy code returns html
 - [gmd reports](docs/gmd-reports.md) (markdown with support for groovy code - more on that further down)
-
+- [Journo (Freemarker) reports](docs/journo-reports.md) Groovy code handles the parameters to a Freemarker template
 
 [Ride](https://github.com/Alipsa/ride) supports the Munin R and mdr report formats natively, 
 so you can use Ride to create and edit Munin reports.
@@ -285,17 +285,18 @@ source(paste0(muninBaseUrl, "/common/resources/utils.R"))
 
 ### 2.0.0, in progress
 - Add support for Groovy and GMD reports.
-- Upgrade spring boot (2.7.2 -> 3.1.2)
+- Upgrade spring boot (2.7.2 -> 3.3.5)
 - Upgrade thymeleaf (5 to 6)
-- Upgrade boostrap (5.2.0 -> 5.3.1)
-- Upgrade jQuery (3.6.0 -> 3.7.0)
-- Upgrade liquibase (4.15.0 -> 4.23.1)
+- Upgrade boostrap (5.2.0 -> 5.3.3)
+- Upgrade jQuery (3.6.0 -> 3.7.1)
+- Upgrade liquibase (4.15.0 -> 4.29.2)
 - Upgrade mdr (1.5.1 -> 1.5.2)
-- Upgrade webjars (0.45 -> 0.47)
-- Upgrade h2 (2.1.214 -> 2.2.220)
-- Upgrade cron-utils (9.2.1 -> 9.2.0)
+- Upgrade webjars (0.45 -> 0.52)
+- Upgrade h2 (2.1.214 -> 2.3.232)
+- Upgrade cron-utils (9.2.1 -> 9.2.1)
 - Require Java 17
 - Add parameters to the Preprocessor so that e.g. `= ` expressions works
+- Add support for Journo (Freemarker) reports
 
 ### 1.2.1 (2022-Aug-16)
 - Upgrade dependencies for bootstrap (5.1.3 -> 5.2.0), cron-utils (9.1.6 -> 9.2.0),

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6"
       lang="en">
 <head th:insert="~{snippets/header.html :: headerFragment}">
    <title id="pageTitle">Edit Report</title>
@@ -63,8 +63,8 @@
 
       <div class="form-group pt-1">
          <fieldset class="border">
-            <legend class="w-auto pb-0"><label for="definition" th:text="${reportType + ' Report code:'}"></label></legend>
-            <textarea class="form-control-file" id="definition" name="definition" th:text="${definition}"></textarea>
+            <legend class="w-auto pb-0"><label for="template" th:text="${reportType + ' Report code:'}"></label></legend>
+            <textarea class="form-control-file" id="template" name="template" th:text="${template}"></textarea>
          </fieldset>
          <label for="loadRFile">Load from file</label>
          <input type="file" id="loadRFile"/>
@@ -118,7 +118,7 @@
 
 <script type="text/javascript">
 
-   let rCodeMirror = CodeMirror.fromTextArea(document.getElementById("definition"), {
+   let rCodeMirror = CodeMirror.fromTextArea(document.getElementById("template"), {
       mode: "r",
       autoRefresh: true,
       lineNumbers: true

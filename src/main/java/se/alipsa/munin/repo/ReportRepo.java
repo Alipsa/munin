@@ -28,4 +28,7 @@ public interface ReportRepo extends CrudRepository<Report, String> {
     }
     return dbReport.get();
   }
+
+  @Query("select r.reportName from Report r where r.reportType = se.alipsa.munin.model.ReportType.JOURNO")
+  List<String> getJournoReports();
 }

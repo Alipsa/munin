@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6"
+      lang="en">
+<head th:insert="~{snippets/header.html :: headerFragment}">
+    <title id="pageTitle">Edit Report</title>
+</head>
+<body>
+<div th:insert="~{snippets/menu.html :: menu}">
+    <ol id="breadcrumbs" class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/">Home</a></li>
+        <li class="breadcrumb-item" aria-current="page"><a th:href="@{/reports/{group}(group=${reportGroup})}"
+                                                           th:text="${reportGroup}"></a></li>
+        <li class="breadcrumb-item active" aria-current="page" th:text="${reportName}"></li>
+    </ol>
+</div>
+<div class="container">
+    <div class="btn-group pt-3" th:switch="${action}">
+        <h3 th:case="'editReport'">Edit report</h3>
+        <h3 th:case="'addReport'">Add report</h3>
+    </div>
+
+    <!-- Action is either addReport or editReport -->
+    <form id="addOrEditReportForm" enctype="application/x-www-form-urlencoded"
+          th:action="@{/manage/{path}(path=${action})}" method="post" onSubmit="return checkForm()">
+        <div class="form-group row">
+            <div class="col-md-4">
+                <label for="reportName">Report Name</label>
+                <input id="reportName" type="text" name="reportName" th:value="${reportName}" th:readonly="${action == 'editReport'}"
+                       class="form-control"/>
+            </div>
+            <div class="col-md-3 row">
+                <label for="reportGroup">Report Group</label>
+                <div class="input-group">
+                    <select id="reportGroup" name="reportGroup" class="form-select">
+                        <option th:each="reportGroupOpt: ${reportGroups}" th:value="${reportGroupOpt}"
+                                th:text="${reportGroupOpt}" th:selected="${reportGroup == reportGroupOpt}">
+                        </option>
+                    </select>
+                    <button type="button" class="btn" title="Create report group" onclick="addReportGroup()">
+                        <img th:src="@{/img/plus-circle.png}" height="20px" alt="Add"/>
+                    </button>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <label for="reportType">Report Type</label>
+                <div class="input-group">
+                    <select id="reportType" name="reportType" class="form-select"
+                            onchange="changeHighlightMode(this.value)">
+                        <option th:each="reportTypeVal: ${T(se.alipsa.munin.model.ReportType).values()}"
+                                th:value="${reportTypeVal}"
+                                th:text="${reportTypeVal}" th:selected="${reportType == reportTypeVal}">
+                        </option>
+                    </select>
+                    <div class="input-group-append">
+                        <button class="btn" type="button"
+                                data-bs-toggle="modal"
+                                data-bs-target="#reportTypesInfo">
+                            <img th:src="@{/img/question-circle.svg}" alt="help"/>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group row pt-1">
+            <label for="description">Description</label>
+            <div class="col-12">
+                <input id="description" type="text" name="description"
+                       th:value="${reportDescription}" class="form-control"/>
+            </div>
+        </div>
+
+        <nav>
+            <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                <button class="nav-link active" id="nav-param-tab"
+                        data-bs-toggle="tab" data-bs-target="#nav-param" type="button" role="tab"
+                        aria-controls="nav-param" aria-selected="false">Parameters</button>
+                <button class="nav-link" id="nav-pre-processing-tab"
+                        data-bs-toggle="tab" data-bs-target="#nav-pre-processing" type="button" role="tab"
+                        aria-controls="nav-pre-processing" aria-selected="false">Pre-processing</button>
+                <button class="nav-link" id="nav-template-tab"
+                        data-bs-toggle="tab" data-bs-target="#nav-template" type="button" role="tab"
+                        aria-controls="nav-template" aria-selected="true">Template</button>
+            </div>
+        </nav>
+
+        <div class="tab-content" id="nav-tabContent">
+            <div class="tab-pane show active" id="nav-param" role="tabpanel" aria-labelledby="nav-param-tab" tabindex="0">
+                <div class="form-group">
+                    <fieldset class="border">
+                        <legend class="w-auto pb-0"><label for="inputContent">Parameters (Input form html
+                            content)</label></legend>
+                        <textarea class="form-control-file" id="inputContent" name="inputContent"
+                                  th:text="${inputContent}"></textarea>
+                    </fieldset>
+                    <label for="loadInputFile">Load from file</label>
+                    <input type="file" id="loadInputFile"/>
+                </div>
+            </div>
+
+            <div class="tab-pane" id="nav-pre-processing" role="tabpanel" aria-labelledby="nav-pre-processing-tab" tabindex="0">
+                <div class="form-group">
+                    <fieldset class="border">
+                        <legend class="w-auto pb-0"><label id="preProcessingLabel" for="preProcessing">Pre processing
+                            code:</label></legend>
+                        <textarea class="form-control-file" id="preProcessing" name="preProcessing" th:text="${preProcessing}"></textarea>
+                    </fieldset>
+                    <label for="loadPreProcessingFile">Load from file</label>
+                    <input type="file" id="loadPreProcessingFile"/>
+                </div>
+            </div>
+
+            <div class="tab-pane" id="nav-template" role="tabpanel" aria-labelledby="nav-template-tab" tabindex="0">
+                <div class="form-group pt-1">
+                    <fieldset class="border">
+                        <legend class="w-auto pb-0"><label for="template" id="templateLabel"
+                                                           th:text="${reportType + ' Report code:'}"></label></legend>
+                        <textarea class="form-control-file" id="template" name="template"
+                                  th:text="${template}"></textarea>
+                    </fieldset>
+                    <label for="loadTemplateFile">Load from file</label>
+                    <input type="file" id="loadTemplateFile"/>
+                </div>
+            </div>
+
+        </div>
+        <div class="btn-group pt-3" th:switch="${action}">
+            <button th:case="'editReport'" type="submit" class="btn btn-primary">Update report</button>
+            <button th:case="'addReport'" type="submit" class="btn btn-primary">Add report</button>
+        </div>
+    </form>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="reportTypesInfo" tabindex="-1" role="dialog" aria-labelledby="reportTypesInfoTitle"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="reportTypesInfoTitle">Report Types</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>An <b>UNMANAGED report</b> is a report where the R code produces html (as an html character string).
+                    It is unmanaged in the sence that the R code is just executed
+                    and assumed to return HTML which is then displayed. The <a
+                            href="https://github.com/perNyfelt/htmlcreator" target="_blank">html creator</a>
+                    is a package that makes the producing of html from R simple, but you are free to use anything to
+                    produce the html.
+                    When the programming logic is complex and the actual output does not contain a lot of text, an
+                    UNMANAGED
+                    report is probably the more suitable approach.
+                </p>
+                <p>An <b>MDR report</b> is a MANAGED report meaning that Munin set up things for you. Code snippets in
+                    the MDR file
+                    returns markdown rather than html. The mdr support is provided by the <a
+                            href="https://github.com/perNyfelt/mdr" target="_blank">mdr</a> package
+                    and is loaded by munin, so you can focus on the actual report content. If your report has pretty
+                    simple logic
+                    (a few plots and tables based on data that are easy to assemble) and or contains a lot of text, then
+                    an MDR is probably the more suitable approach.
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:insert="~{snippets/header.html :: scripsFragment}"></div>
+
+<script type="text/javascript">
+
+    let templateCodeMirror;
+    let inputCodeMirror;
+    let preProcessingCodeMirror;
+
+    $(window).on('load', function() {
+        templateCodeMirror = CodeMirror.fromTextArea(document.getElementById("template"), {
+            mode: "text/plain",
+            autoRefresh: true,
+            lineNumbers: true
+        });
+        templateCodeMirror.setSize("100%", "100%");
+        let reportType = $("#reportType").val();
+        changeHighlightMode(reportType)
+
+        inputCodeMirror = CodeMirror.fromTextArea(document.getElementById("inputContent"), {
+            mode: "text/html",
+            autoRefresh: true,
+            lineNumbers: true
+        });
+        inputCodeMirror.setSize("100%", "100%");
+
+        preProcessingCodeMirror = CodeMirror.fromTextArea(document.getElementById("preProcessing"), {
+            mode: "groovy",
+            autoRefresh: true,
+            lineNumbers: true
+        });
+        preProcessingCodeMirror.setSize("100%", "100%");
+
+        document.getElementById('loadTemplateFile')
+            .addEventListener('change', function () {
+                let fr = new FileReader();
+                fr.onload = function () {
+                    templateCodeMirror.setValue(fr.result);
+                }
+                fr.readAsText(this.files[0]);
+            });
+
+        document.getElementById('loadInputFile')
+            .addEventListener('change', function () {
+                let fr = new FileReader();
+                fr.onload = function () {
+                    inputCodeMirror.setValue(fr.result);
+                }
+                fr.readAsText(this.files[0]);
+            });
+        // Codemirror requires the tab to active to work, so we refresh when the tab becomes active
+        $('#nav-param-tab').on('shown.bs.tab', function() {
+            inputCodeMirror.refresh();
+        });
+        $('#nav-template-tab').on('shown.bs.tab', function() {
+            templateCodeMirror.refresh();
+        });
+        $('#nav-pre-processing-tab').on('shown.bs.tab', function() {
+            preProcessingCodeMirror.refresh();
+        });
+    });
+
+
+    function changeHighlightMode(mode) {
+        console.log("ReportType =", mode);
+        $("nav-pre-processing-tab").addClass('disabled')
+        if (mode === "MDR") {
+            $("#templateLabel").text("MDR report code:");
+            templateCodeMirror.setOption("mode", "mdr");
+        } else if (mode === "R") {
+            $("#templateLabel").text("R report code:");
+            templateCodeMirror.setOption("mode", "r");
+        } else if (mode === "GROOVY") {
+            $("#templateLabel").text("Groovy report code:");
+            templateCodeMirror.setOption("mode", "groovy");
+        } else if (mode === "GMD") {
+            $("#templateLabel").text("GMD report code:");
+            templateCodeMirror.setOption("mode", "gmd");
+        } else if (mode === "JOURNO") {
+            $("nav-pre-processing-tab").removeClass('disabled')
+            $("#templateLabel").text("Journo (Freemarker) report code:");
+            templateCodeMirror.setOption("mode", "freemarkermixed");
+        }
+
+    }
+
+    function addReportGroup() {
+        const reportGroup = prompt("Name of report group:");
+        const reportGroupCombo = $("#reportGroup");
+        reportGroupCombo.append(new Option(reportGroup, reportGroup));
+        reportGroupCombo.val(reportGroup);
+    }
+
+    function checkForm() {
+        if ($("#reportName").val().length === 0) {
+            alert("Report name cannot be empty");
+            return false;
+        }
+        if (templateCodeMirror.getValue().length === 0) {
+            alert("Template code cannot be empty");
+            return false;
+        }
+        return true;
+    }
+
+</script>
+</body>
+</html>

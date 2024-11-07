@@ -80,7 +80,7 @@ public class ReportSchedulerService implements
       DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
       String html;
       try {
-        html = reportEngine.runReport(report.getDefinition());
+        html = reportEngine.runReport(report);
       } catch (ScriptException | ReportDefinitionException e) {
         LOG.warn("Scheduled report {} failed to run", reportName, e);
         return;

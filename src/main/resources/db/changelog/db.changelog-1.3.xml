@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.29.xsd">
+    <changeSet author="pernyfelt" id="changelog-1.3">
+        <renameColumn tableName="report" oldColumnName="definition" newColumnName="template"/>
+        <addColumn tableName="report">
+            <column type="timestamp" name="inserted_at"/>
+            <column type="timestamp" name="updated_at"/>
+            <column name="pre_processing" type="CLOB"/>
+        </addColumn>
+    </changeSet>
+</databaseChangeLog>

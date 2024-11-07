@@ -22,6 +22,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 import se.alipsa.groovy.gmd.GmdException;
+import se.alipsa.journo.JournoException;
 import se.alipsa.munin.model.Report;
 import se.alipsa.munin.model.ReportSchedule;
 import se.alipsa.munin.model.ReportType;
@@ -80,10 +81,10 @@ public class ReportController {
     model.addAttribute("reportGroup", report.getReportGroup());
     model.addAttribute("reportDescription", report.getDescription());
     if (report.getInputContent() == null || report.getInputContent().trim().isEmpty()){
-      String reportContent = null;
+      String reportContent;
       try {
         reportContent = reportService.runReport(report);
-      } catch (GmdException e) {
+      } catch (GmdException | JournoException e) {
         LOG.warn("Failed to run report", e);
         throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Failed to run report", e);
       }
@@ -111,10 +112,10 @@ public class ReportController {
         params.put(k, v);
       }
     });
-    String reportContent = null;
+    String reportContent;
     try {
       reportContent = reportService.runReport(report, params);
-    } catch (GmdException e) {
+    } catch (GmdException | JournoException e) {
       LOG.warn("Failed to run parameterized report", e);
       throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Failed to run report", e);
     }
@@ -127,22 +128,23 @@ public class ReportController {
   @GetMapping("/manage/addReport")
   public String addReportForm(Model model) {
     model.addAttribute("reportGroups", reportRepo.getReportGroups());
-    return "addReport";
+    model.addAttribute("action", "addReport");
+    return "addOrEditReport";
   }
 
   @PostMapping(path = "/manage/addReport", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
   public RedirectView addReport(@RequestParam String reportName, @RequestParam String description,
-                                @RequestParam String definition, @RequestParam String inputContent,
+                                @RequestParam String template, @RequestParam String inputContent,
                                 @RequestParam ReportType reportType, @RequestParam String reportGroup,
                                 RedirectAttributes redirectAttributes) {
-    if (reportName == null || "".equals(reportName.trim())) {
+    if (reportName == null || reportName.trim().isEmpty()) {
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Report name cannot be empty");
     }
     if (reportRepo.findById(reportName).isPresent()) {
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "There is already a report with that name");
     }
-    if (definition == null || "".equals(definition.trim())) {
-      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Report definition (R code) cannot be empty");
+    if (template == null || template.trim().isEmpty()) {
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Report template (html generating code) cannot be empty");
     }
     if (reportGroup == null || reportGroup.trim().isEmpty()) {
       LOG.warn("Report Group is blank, setting it to None");
@@ -151,7 +153,7 @@ public class ReportController {
     Report report = new Report();
     report.setReportName(reportName);
     report.setDescription(description);
-    report.setDefinition(definition);
+    report.setTemplate(template);
     report.setInputContent(inputContent);
     report.setReportType(reportType);
     report.setReportGroup(reportGroup);
@@ -165,7 +167,23 @@ public class ReportController {
     Report report = reportRepo.loadReport(name);
     model.addAttribute("reportName", name);
     model.addAttribute("reportDescription", report.getDescription());
-    model.addAttribute("definition", report.getDefinition());
+    model.addAttribute("preProcessing", report.getPreProcessing());
+    model.addAttribute("template", report.getTemplate());
+    model.addAttribute("inputContent", report.getInputContent());
+    model.addAttribute("reportType", report.getReportType());
+    model.addAttribute("reportGroup", report.getReportGroup());
+    model.addAttribute("reportGroups", reportRepo.getReportGroups());
+    model.addAttribute("action", "editReport");
+    return "addOrEditReport";
+  }
+
+  @GetMapping(path = "/manage/oldEditReport/{name}")
+  public String oldEditReportForm(@PathVariable String name, Model model) throws ReportNotFoundException {
+    Report report = reportRepo.loadReport(name);
+    model.addAttribute("reportName", name);
+    model.addAttribute("reportDescription", report.getDescription());
+    model.addAttribute("preProcessing", report.getPreProcessing());
+    model.addAttribute("template", report.getTemplate());
     model.addAttribute("inputContent", report.getInputContent());
     model.addAttribute("reportType", report.getReportType());
     model.addAttribute("reportGroup", report.getReportGroup());
@@ -175,14 +193,14 @@ public class ReportController {
 
   @PostMapping(path = "/manage/editReport")
   public RedirectView modifyReport(@RequestParam String reportName, @RequestParam String description,
-                             @RequestParam String definition, @RequestParam String inputContent,
+                             @RequestParam String template, @RequestParam String inputContent,
                              @RequestParam ReportType reportType,  @RequestParam String reportGroup,
                              RedirectAttributes redirectAttributes) throws ReportNotFoundException {
-    if (reportName == null || "".equals(reportName.trim())) {
+    if (reportName == null || reportName.trim().isEmpty()) {
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Report name cannot be empty");
     }
-    if (definition == null || "".equals(definition.trim())) {
-      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Report definition (R code) cannot be empty");
+    if (template == null || template.trim().isEmpty()) {
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Report template (html generating code) cannot be empty");
     }
     if (reportGroup == null || reportGroup.trim().isEmpty()) {
       LOG.warn("Report Group is blank, setting it to None");
@@ -190,7 +208,7 @@ public class ReportController {
     }
     Report report = reportRepo.loadReport(reportName);
     report.setDescription(description);
-    report.setDefinition(definition);
+    report.setTemplate(template);
     report.setInputContent(inputContent);
     report.setReportType(reportType);
     report.setReportGroup(reportGroup);

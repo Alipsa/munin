@@ -6,6 +6,7 @@ import org.codehaus.groovy.jsr223.GroovyScriptEngineImpl;
 import org.springframework.stereotype.Service;
 import se.alipsa.groovy.gmd.Gmd;
 import se.alipsa.groovy.gmd.GmdException;
+import se.alipsa.munin.model.Report;
 
 import java.util.Map;
 import javax.script.ScriptContext;
@@ -26,23 +27,23 @@ public class GroovyReportEngine {
   }
 
   @SafeVarargs
-  public final String runGroovyReport(String definition, Map<String, Object>... params) throws ScriptException {
+  public final String runGroovyReport(Report report, Map<String, Object>... params) throws ScriptException {
     try {
       if (params.length > 0) {
         engine.getBindings(ScriptContext.ENGINE_SCOPE).putAll(params[0]);
       }
-      return String.valueOf(engine.eval(definition));
+      return String.valueOf(engine.eval(report.getTemplate()));
     } finally {
       engine.getBindings(ScriptContext.ENGINE_SCOPE).clear();
     }
   }
 
   @SafeVarargs
-  public final String runGmdReport(String definition, Map<String, Object>... params) throws GmdException {
+  public final String runGmdReport(Report report, Map<String, Object>... params) throws GmdException {
     if (params.length == 0) {
-      return gmd.gmdToHtml(definition);
+      return gmd.gmdToHtml(report.getTemplate());
     } else {
-      return gmd.gmdToHtml(definition, params[0]);
+      return gmd.gmdToHtml(report.getTemplate(), params[0]);
     }
   }
 }

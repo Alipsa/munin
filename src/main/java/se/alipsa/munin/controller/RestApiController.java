@@ -67,7 +67,7 @@ public class RestApiController {
     if (reportRepo.findById(report.getReportName()).isPresent()) {
       throw new ApiException(HttpStatus.BAD_REQUEST, "There is already a report with that name");
     }
-    if (report.getDefinition() == null || "".equals(report.getDefinition().trim())) {
+    if (report.getTemplate() == null || "".equals(report.getTemplate().trim())) {
       throw new ApiException(HttpStatus.BAD_REQUEST, "Report definition (R code) cannot be empty");
     }
     if (report.getReportGroup() == null || report.getReportGroup().trim().isEmpty()) {
@@ -96,7 +96,7 @@ public class RestApiController {
       LOG.warn("updateReport: Report name cannot be empty");
       throw new ApiException(HttpStatus.BAD_REQUEST, "Report name cannot be empty");
     }
-    if (report.getDefinition() == null || "".equals(report.getDefinition().trim())) {
+    if (report.getTemplate() == null || "".equals(report.getTemplate().trim())) {
       LOG.warn("updateReport: Report definition (code) cannot be empty");
       throw new ApiException(HttpStatus.BAD_REQUEST, "Report definition (code) cannot be empty");
     }
@@ -107,7 +107,7 @@ public class RestApiController {
     try {
       Report dbReport = reportRepo.loadReport(report.getReportName());
       dbReport.setDescription(report.getDescription());
-      dbReport.setDefinition(report.getDefinition());
+      dbReport.setTemplate(report.getTemplate());
       dbReport.setInputContent(report.getInputContent());
       dbReport.setReportType(report.getReportType());
       dbReport.setReportGroup(report.getReportGroup());

@@ -1,0 +1,128 @@
+<!doctype html>
+
+<title>CodeMirror: FreeMarker mixed mode</title>
+<meta charset="utf-8"/>
+
+<link rel="stylesheet" href="../../lib/codemirror.css">
+<script src="../../lib/codemirror.js"></script>
+<script src="../../mode/xml/xml.js"></script>
+<script src="../../mode/javascript/javascript.js"></script>
+<script src="../../mode/css/css.js"></script>
+<script src="../../mode/htmlmixed/htmlmixed.js"></script>
+<script src="../../mode/freemarker/freemarker.js"></script>
+<script src="../../mode/freemarkermixed/freemarkermixed.js"></script>
+<style>
+.CodeMirror {border-top: 1px solid black; border-bottom: 1px solid black;}
+#nav h1 {
+  margin-right: 12px;
+  margin-top: 0;
+  margin-bottom: 2px;
+  color: #d30707;
+  letter-spacing: .5px;
+}
+#nav ul {
+  display: block;
+  margin: 0; padding: 0;
+  margin-bottom: 32px;
+}
+
+#nav li {
+  display: block;
+  margin-bottom: 4px;
+  float:left;
+}
+
+#nav ul a {
+  color: black;
+  padding: 0 7px 1px 11px;
+}
+
+#nav ul a.active, #nav ul a:hover {
+  border-bottom: 1px solid #E30808;
+  margin-bottom: -1px;
+  color: #E30808;
+}
+article{clear: both;}
+</style>
+<div id=nav>
+  <a href="http://codemirror.net"><h1>CodeMirror</h1></a>
+  <ul>
+    <li><a href="../../index.html">Home</a>
+    <li><a href="../freemarker/index.html">FreeMarker</a>
+    <li><a class="active" href="../freemarkermixed/index.html">FreeMarker mixed</a>
+  </ul>
+</div>
+
+<article>
+<h2>FreeMarker mixed mode</h2>
+<form><textarea id="code" name="code">
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<title>Public CMS - 永久免费开源JAVA CMS(内容管理系统),最新技术框架</title>
+	<meta name="keywords" content="${(metadata.extendData.keywords)!}"/>
+	<meta name="description" content="${(metadata.extendData.description)!}"/>
+	<@_includePlace path="/index.html/3f9a648b-7360-41b5-86e5-6b4b108268f1.html"/> <#-- 头部Header -->
+</head>
+<body>
+<@_includePlace path="/index.html/2ecdebcc-c087-4ed3-aecd-80f85ce6a6c6.html"/> <#-- 导航 -->
+<main>
+	<div class="container">
+		<@_includePlace path="/index.html/94fe86e5-45b3-4896-823a-37c6d7d6c578.html"/> <#-- 焦点图 -->
+		<div class="data-list left-content">
+<@import path="/ftl/tools.ftl" namespace="t"/>
+<@_modelList>
+	<#list page.list as model>
+		<@_contentList modelId=model.id count=3>
+			<#if page.totalCount gt 0>
+				<h3>最新${model.name!}</h3>
+				<#list page.list as a>
+					<@include path="/ftl/data-list.ftl"/>
+				</#list>
+			</#if>
+		</@_contentList>
+	</#list>
+</@_modelList>
+		</div>
+		<aside>
+			<div>
+				<h3>热门文章</h3>
+				<ul class="rank">
+<@_contentList modelId=1 startPublishDate=(.now?long-1000*3600*24*120)?number_to_datetime orderField='clicks' count=10>
+	<#list page.list as a>
+					<li><a href="${a.url!}" target="_blank">${a.title}</a><span>${a.clicks}</span></li>
+	</#list>
+</@_contentList>
+				</ul>
+			</div>
+			<@_includePlace path="/category/list.html/3435e9a7-565a-4f93-8670-9c272a1d51cc.html"/> <#-- 精彩图集 -->
+            <@_includePlace path="/index.html/2ac8682d-d844-4d95-921d-8c92b89e515c.html"/> <#-- 开源中国 -->
+			<@_includePlace path="/index.html/30ef2211-1197-4725-b253-e5dc12af1b21.html"/> <#-- github -->
+		</aside>
+	</div>
+	<div class="clearfix-before"></div>
+</main>
+<@_includePlace path="/index.html/6369e868-50b9-4245-9d39-fd440384a685.html"/> <#-- 尾部Footer -->
+<script>
+	$("header nav ul li a:contains('首页')").parent().addClass('selected');
+</script>
+</body>
+</html>
+</textarea></form>
+
+    <script type="text/javascript">
+      var myCodeMirror = CodeMirror.fromTextArea(document.getElementById("code"), {
+        mode           : "freemarkermixed",
+        tabSize        : 4,
+        indentUnit     : 4,
+        indentWithTabs : true,
+        lineNumbers    : true
+	});
+    </script>
+
+    <p>FreeMarker混合语法依赖FreeMarker，HTML模块,支持XML,FreeMarker,CSS,JS语法混合高亮显示.</p>
+
+    <p><strong>MIME types defined:</strong> <code>text/freemarker</code>.</p>
+  </article>
+</body>
+</html>

@@ -9,15 +9,15 @@
     <parent>
         <artifactId>spring-boot-starter-parent</artifactId>
         <groupId>org.springframework.boot</groupId>
-        <version>3.1.2</version>
+        <version>3.3.5</version>
     </parent>
 
     <artifactId>munin</artifactId>
     <groupId>se.alipsa</groupId>
     <version>2.0.0-SNAPSHOT</version>
 
-    <name>Munin - a web reporting server for R and Groovy</name>
-    <description>A reporting server for reports created in R or Groovy based on Spring Boot.</description>
+    <name>Munin - a web reporting server for Groovy, Freemarker, and R</name>
+    <description>A reporting server for reports created in Groovy, Freemarker or R based on Spring Boot.</description>
     <url>https://github.com/perNyfelt/munin</url>
     <licenses>
         <license>
@@ -40,17 +40,23 @@
     </scm>
 
     <properties>
-        <bootstrap.version>5.3.1</bootstrap.version>
+        <bootstrap.version>5.3.3</bootstrap.version>
         <codemirror.version>5.62.2</codemirror.version>
-        <commons-io.version>2.14.0</commons-io.version>
+        <commons-io.version>2.17.0</commons-io.version>
         <commons-collections4.version>4.4</commons-collections4.version>
         <cron-utils.version>9.2.1</cron-utils.version>
-        <h2.version>2.2.220</h2.version>
+        <gmd.version>1.0.8-SNAPSHOT</gmd.version>
+        <groovy-version>4.0.23</groovy-version>
+        <h2.version>2.3.232</h2.version>
         <htmlcreator.version>1.4.1</htmlcreator.version>
-        <jquery.version>3.7.0</jquery.version>
-        <junit-jupiter.version>5.10.0</junit-jupiter.version>
-        <junit-platform.version>1.10.0</junit-platform.version>
-        <liquibase-core.version>4.23.1</liquibase-core.version>
+        <javafx.version>20.0.2</javafx.version>
+        <journo.version>0.7.0-SNAPSHOT</journo.version>
+        <jquery.version>3.7.1</jquery.version>
+        <junit-jupiter.version>5.11.3</junit-jupiter.version>
+        <junit-platform.version>1.11.3</junit-platform.version>
+        <liquibase-core.version>4.29.2</liquibase-core.version>
+        <matrix-charts.version>1.0.0-SNAPSHOT</matrix-charts.version>
+        <matrix-core.version>2.1.0-SNAPSHOT</matrix-core.version>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <mdr.version>1.5.2</mdr.version>
@@ -58,11 +64,11 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <renjin.version>3.5-beta76</renjin.version>
         <renjin-spring-boot-starter.version>1.0.0</renjin-spring-boot-starter.version>
-        <spotbugs-annotations.version>4.7.3</spotbugs-annotations.version>
+        <spotbugs-annotations.version>4.8.6</spotbugs-annotations.version>
         <!-- note that parent has the version hard coded so must duplicate the setting there as well -->
-        <spring.boot.version>3.1.2</spring.boot.version>
+        <spring.boot.version>3.3.5</spring.boot.version>
         <thymeleaf-extras-springsecurity6.version>3.1.2.RELEASE</thymeleaf-extras-springsecurity6.version>
-        <webjars-locator.version>0.47</webjars-locator.version>
+        <webjars-locator.version>0.52</webjars-locator.version>
     </properties>
 
     <dependencies>
@@ -126,28 +132,38 @@
         <dependency>
             <groupId>org.apache.groovy</groupId>
             <artifactId>groovy-all</artifactId>
-            <version>4.0.13</version>
+            <version>${groovy-version}</version>
             <type>pom</type>
         </dependency>
         <dependency>
             <groupId>se.alipsa.groovy</groupId>
             <artifactId>gmd</artifactId>
-            <version>1.0.8-SNAPSHOT</version>
+            <version>${gmd.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>se.alipsa.groovy</groupId>
+            <artifactId>matrix-core</artifactId>
+            <version>${matrix-core.version}</version>
         </dependency>
         <dependency>
             <groupId>se.alipsa.groovy</groupId>
             <artifactId>matrix-charts</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
+            <version>${matrix-charts.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>se.alipsa</groupId>
+            <artifactId>journo-runtime</artifactId>
+            <version>${journo.version}</version>
         </dependency>
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
-            <version>20</version>
+            <version>${javafx.version}</version>
         </dependency>
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-swing</artifactId>
-            <version>20</version>
+            <version>${javafx.version}</version>
         </dependency>
         <dependency>
             <groupId>commons-io</groupId>
@@ -345,7 +361,7 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>versions-maven-plugin</artifactId>
-                <version>2.16.0</version>
+                <version>2.17.1</version>
                 <configuration>
                     <rulesUri>file://${basedir}/version-plugin-rules.xml</rulesUri>
                 </configuration>
@@ -353,7 +369,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-enforcer-plugin</artifactId>
-                <version>3.3.0</version>
+                <version>3.5.0</version>
                 <executions>
                     <execution>
                         <id>enforce-releases-maven-java</id>
@@ -380,7 +396,7 @@
             <plugin>
                 <groupId>com.github.spotbugs</groupId>
                 <artifactId>spotbugs-maven-plugin</artifactId>
-                <version>4.7.3.5</version>
+                <version>4.8.6.5</version>
                 <executions>
                     <execution>
                         <goals>
@@ -392,7 +408,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-pmd-plugin</artifactId>
-                <version>3.21.0</version>
+                <version>3.26.0</version>
                 <configuration>
                     <targetJdk>1.8</targetJdk>
                     <printFailingErrors>true</printFailingErrors>
@@ -410,7 +426,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.1.2</version>
+                <version>3.5.2</version>
                 <configuration>
                     <skipTests>true</skipTests>
                 </configuration>
@@ -419,7 +435,7 @@
                 <!-- Note: Weird class not found errors are likely due to the schema.sql being out of sync with liquibase/entity definitions -->
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-failsafe-plugin</artifactId>
-                <version>3.1.2</version>
+                <version>3.5.2</version>
                 <executions>
                     <execution>
                         <goals>
@@ -432,36 +448,17 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-project-info-reports-plugin</artifactId>
-                <version>3.4.5</version>
+                <version>3.8.0</version>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-site-plugin</artifactId>
-                <version>3.12.1</version>
+                <version>3.21.0</version>
             </plugin>
-            <!--plugin>
-                <groupId>org.jacoco</groupId>
-                <artifactId>jacoco-maven-plugin</artifactId>
-                <version>0.8.10</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>prepare-agent</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>report</id>
-                        <phase>prepare-package</phase>
-                        <goals>
-                            <goal>report</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
-                <version>3.3.0</version>
+                <version>3.3.1</version>
                 <executions>
                     <execution>
                         <id>attach-sources</id>
@@ -474,7 +471,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <version>3.5.0</version>
+                <version>3.11.1</version>
                 <executions>
                     <execution>
                         <id>attach-javadocs</id>
@@ -492,7 +489,7 @@
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
-                <version>0.8.10</version>
+                <version>0.8.12</version>
             </plugin>
         </plugins>
     </reporting>
@@ -516,7 +513,7 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-gpg-plugin</artifactId>
-                        <version>3.1.0</version>
+                        <version>3.2.7</version>
                         <executions>
                             <execution>
                                 <id>sign-artifacts</id>
@@ -530,7 +527,7 @@
                     <plugin>
                         <groupId>org.sonatype.plugins</groupId>
                         <artifactId>nexus-staging-maven-plugin</artifactId>
-                        <version>1.6.13</version>
+                        <version>1.7.0</version>
                         <extensions>true</extensions>
                         <configuration>
                             <serverId>ossrh</serverId>

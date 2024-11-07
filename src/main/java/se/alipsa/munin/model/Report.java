@@ -1,7 +1,11 @@
 package se.alipsa.munin.model;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
 import java.io.Serializable;
+import java.sql.Timestamp;
 
 @Entity
 public class Report implements Serializable {
@@ -15,7 +19,11 @@ public class Report implements Serializable {
 
   @Lob
   @Column(length = 15000)
-  private String definition;
+  private String preProcessing;
+
+  @Lob
+  @Column(length = 15000)
+  private String template;
 
   @Lob
   @Column(length = 9000)
@@ -26,6 +34,14 @@ public class Report implements Serializable {
 
   @Column(length = 50)
   private String reportGroup;
+
+  @CreationTimestamp
+  @Column
+  private Timestamp insertedAt;
+
+  @UpdateTimestamp
+  @Column
+  private Timestamp updatedAt;
 
   /**
    * @return the name of the report
@@ -59,22 +75,6 @@ public class Report implements Serializable {
   }
 
   /**
-   *
-   * @return the reporting code logic (the code to execute)
-   */
-  public String getDefinition() {
-    return definition;
-  }
-
-  /**
-   *
-   * @param reportContent, the reporting code logic (the code to execute)
-   */
-  public void setDefinition(String reportContent) {
-    this.definition = reportContent;
-  }
-
-  /**
    * @return the input html content used as parameters for the report
    */
   public String getInputContent() {
@@ -87,6 +87,40 @@ public class Report implements Serializable {
    */
   public void setInputContent(String inputContent) {
     this.inputContent = inputContent;
+  }
+
+  /**
+   * Preprocessing code, it takes the parameters as input and serves the template
+   * with the data required to run the report
+   * @return the preProcessing code
+   */
+  public String getPreProcessing() {
+    return preProcessing;
+  }
+
+  /**
+   *
+   * @param preProcessing Preprocessing code, it takes the parameters as input and serves the template
+   * with the data required to run the report
+   */
+  public void setPreProcessing(String preProcessing) {
+    this.preProcessing = preProcessing;
+  }
+
+  /**
+   *
+   * @return the reporting code logic (the code to execute)
+   */
+  public String getTemplate() {
+    return template;
+  }
+
+  /**
+   *
+   * @param reportContent, the reporting code logic (the code to execute)
+   */
+  public void setTemplate(String reportContent) {
+    this.template = reportContent;
   }
 
   public ReportType getReportType() {
@@ -103,6 +137,22 @@ public class Report implements Serializable {
 
   public void setReportGroup(String reportGroup) {
     this.reportGroup = reportGroup;
+  }
+
+  public Timestamp getInsertedAt() {
+    return insertedAt;
+  }
+
+  public void setInsertedAt(Timestamp insertedAt) {
+    this.insertedAt = insertedAt;
+  }
+
+  public Timestamp getUpdatedAt() {
+    return updatedAt;
+  }
+
+  public void setUpdatedAt(Timestamp updatedAt) {
+    this.updatedAt = updatedAt;
   }
 
   @Override
