@@ -1,29 +1,60 @@
 package se.alipsa.munin.service;
 
+import groovy.lang.GroovyClassLoader;
+import org.codehaus.groovy.jsr223.GroovyScriptEngineImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import se.alipsa.journo.JournoEngine;
 import se.alipsa.journo.JournoException;
-import se.alipsa.journo.ReportEngine;
 import se.alipsa.munin.model.Report;
 
+import javax.script.ScriptContext;
+import javax.script.ScriptException;
+import java.util.HashMap;
 import java.util.Map;
 
 @Service
 public class JournoReportEngine {
 
-  ReportEngine engine;
+  private static Logger LOG = LoggerFactory.getLogger(JournoReportEngine.class);
+  JournoEngine journoEngine;
+  GroovyScriptEngineImpl groovyEngine;
+
 
   @Autowired
   JournoReportEngine(JournoTemplateLoader journoTemplateLoader) {
-    engine = new ReportEngine(journoTemplateLoader);
+    journoEngine = new JournoEngine(journoTemplateLoader);
+    var classLoader = new GroovyClassLoader();
+    groovyEngine = new GroovyScriptEngineImpl(classLoader);
   }
 
-  public String runJournoReport(Report report, Map<String, Object>... params) throws JournoException {
-    if (params.length > 0) {
-      return engine.renderHtml(report.getReportName(), params[0]);
-    } else {
-      return engine.renderHtml(report.getReportName(), null);
-    }
+  public String runJournoReport(Report report, Map<String, Object>... params) throws ScriptException, JournoException {
+    Map<String, Object> p = runPreprocessingCode(report, params);
+    //LOG.info("Journo report: {}", report);
+    return journoEngine.renderHtml(report.getReportName(), p);
+  }
 
+  Map<String, Object> runPreprocessingCode(Report report, Map<String, Object>... params) throws ScriptException {
+    try {
+      if (params.length > 0) {
+        groovyEngine.getBindings(ScriptContext.ENGINE_SCOPE).putAll(params[0]);
+      }
+      String ppCode = report.getPreProcessing();
+      if (ppCode == null || ppCode.isBlank() ) {
+        return params.length > 0 ? params[0] : new HashMap<>();
+      }
+      Object result = groovyEngine.eval(ppCode);
+      if (result instanceof Map) {
+        return (Map<String, Object>) result;
+      } else {
+        var type = result == null ? "null" : result.getClass().getName();
+        LOG.warn("Unexpected return type {}, was expecting a Map<String, Object>", type);
+        throw new ScriptException("The preprocessing script does not return a Map but a " + type + ", cannot continue");
+      }
+    } finally {
+      groovyEngine.getBindings(ScriptContext.ENGINE_SCOPE).clear();
+    }
   }
 }

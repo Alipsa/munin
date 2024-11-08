@@ -2,6 +2,8 @@ package se.alipsa.munin.service;
 
 import freemarker.cache.TemplateCache;
 import freemarker.cache.TemplateLoader;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import se.alipsa.munin.controller.ReportNotFoundException;
@@ -11,10 +13,12 @@ import se.alipsa.munin.repo.ReportRepo;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
+import java.util.Optional;
 
 @Service
 public class JournoTemplateLoader implements TemplateLoader {
 
+  private static final Logger LOG = LoggerFactory.getLogger(JournoTemplateLoader.class);
   ReportRepo reportRepo;
 
   @Autowired
@@ -63,10 +67,24 @@ public class JournoTemplateLoader implements TemplateLoader {
    */
   @Override
   public Object findTemplateSource(String name) throws IOException {
+    //LOG.info("Finding template source {}", name);
     try {
-      return reportRepo.loadReport(name);
+      Optional<Report> report = reportRepo.findById(name);
+      if (report.isPresent()) {
+        return report.get();
+      }
+      // The template engine is doing some localization attempts, appending _en_US, and _en in subsequent attempts
+      // This is dependent on config, so should not be needed for Journo as it is taken care of there
+      LOG.warn("Could not find template source {}, trying to find a similar one", name);
+      for (String r : reportRepo.getJournoReports()) {
+        if (name.startsWith(r)) {
+          LOG.info("Found template source {}", name);
+          return reportRepo.loadReport(r);
+        }
+      }
+      return null;
     } catch (ReportNotFoundException e) {
-      throw new IOException(e);
+      return null;
     }
   }
 

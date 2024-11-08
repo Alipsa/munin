@@ -76,6 +76,7 @@ public class ReportController {
 
   @GetMapping("/viewReport/{name}")
   public String viewReport(@PathVariable String name, Model model) throws ReportNotFoundException, ScriptException, ReportDefinitionException {
+    LOG.debug("Running report '{}'", name);
     Report report = reportRepo.loadReport(name);
     model.addAttribute("reportName", name);
     model.addAttribute("reportGroup", report.getReportGroup());
@@ -134,7 +135,8 @@ public class ReportController {
 
   @PostMapping(path = "/manage/addReport", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
   public RedirectView addReport(@RequestParam String reportName, @RequestParam String description,
-                                @RequestParam String template, @RequestParam String inputContent,
+                                @RequestParam String inputContent, @RequestParam String preProcessing,
+                                @RequestParam String template,
                                 @RequestParam ReportType reportType, @RequestParam String reportGroup,
                                 RedirectAttributes redirectAttributes) {
     if (reportName == null || reportName.trim().isEmpty()) {
@@ -153,8 +155,10 @@ public class ReportController {
     Report report = new Report();
     report.setReportName(reportName);
     report.setDescription(description);
-    report.setTemplate(template);
     report.setInputContent(inputContent);
+    report.setPreProcessing(preProcessing);
+    report.setTemplate(template);
+
     report.setReportType(reportType);
     report.setReportGroup(reportGroup);
     reportRepo.save(report);
@@ -193,9 +197,10 @@ public class ReportController {
 
   @PostMapping(path = "/manage/editReport")
   public RedirectView modifyReport(@RequestParam String reportName, @RequestParam String description,
-                             @RequestParam String template, @RequestParam String inputContent,
-                             @RequestParam ReportType reportType,  @RequestParam String reportGroup,
-                             RedirectAttributes redirectAttributes) throws ReportNotFoundException {
+                                   @RequestParam String inputContent, @RequestParam String preProcessing,
+                                   @RequestParam String template, @RequestParam ReportType reportType,
+                                   @RequestParam String reportGroup,
+                                   RedirectAttributes redirectAttributes) throws ReportNotFoundException {
     if (reportName == null || reportName.trim().isEmpty()) {
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Report name cannot be empty");
     }
@@ -208,8 +213,9 @@ public class ReportController {
     }
     Report report = reportRepo.loadReport(reportName);
     report.setDescription(description);
-    report.setTemplate(template);
     report.setInputContent(inputContent);
+    report.setPreProcessing(preProcessing);
+    report.setTemplate(template);
     report.setReportType(reportType);
     report.setReportGroup(reportGroup);
     reportRepo.save(report);

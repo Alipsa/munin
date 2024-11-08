@@ -69,19 +69,23 @@
             </div>
         </div>
 
-        <nav>
-            <div class="nav nav-tabs" id="nav-tab" role="tablist">
+        <ul class="nav nav-tabs" id="codeTabs" role="tablist">
+            <li class="nav-item" role="presentation">
                 <button class="nav-link active" id="nav-param-tab"
                         data-bs-toggle="tab" data-bs-target="#nav-param" type="button" role="tab"
-                        aria-controls="nav-param" aria-selected="false">Parameters</button>
+                        aria-controls="nav-param" aria-selected="true">Parameters</button>
+            </li>
+            <li class="nav-item" role="presentation">
                 <button class="nav-link" id="nav-pre-processing-tab"
                         data-bs-toggle="tab" data-bs-target="#nav-pre-processing" type="button" role="tab"
                         aria-controls="nav-pre-processing" aria-selected="false">Pre-processing</button>
+            </li>
+            <li class="nav-item" role="presentation">
                 <button class="nav-link" id="nav-template-tab"
                         data-bs-toggle="tab" data-bs-target="#nav-template" type="button" role="tab"
-                        aria-controls="nav-template" aria-selected="true">Template</button>
-            </div>
-        </nav>
+                        aria-controls="nav-template" aria-selected="false">Template</button>
+            </li>
+        </ul>
 
         <div class="tab-content" id="nav-tabContent">
             <div class="tab-pane show active" id="nav-param" role="tabpanel" aria-labelledby="nav-param-tab" tabindex="0">
@@ -97,7 +101,7 @@
                 </div>
             </div>
 
-            <div class="tab-pane" id="nav-pre-processing" role="tabpanel" aria-labelledby="nav-pre-processing-tab" tabindex="0">
+            <div class="tab-pane" id="nav-pre-processing" role="tabpanel" aria-labelledby="nav-pre-processing-tab" tabindex="1">
                 <div class="form-group">
                     <fieldset class="border">
                         <legend class="w-auto pb-0"><label id="preProcessingLabel" for="preProcessing">Pre processing
@@ -109,7 +113,7 @@
                 </div>
             </div>
 
-            <div class="tab-pane" id="nav-template" role="tabpanel" aria-labelledby="nav-template-tab" tabindex="0">
+            <div class="tab-pane" id="nav-template" role="tabpanel" aria-labelledby="nav-template-tab" tabindex="2">
                 <div class="form-group pt-1">
                     <fieldset class="border">
                         <legend class="w-auto pb-0"><label for="template" id="templateLabel"
@@ -182,8 +186,6 @@
             lineNumbers: true
         });
         templateCodeMirror.setSize("100%", "100%");
-        let reportType = $("#reportType").val();
-        changeHighlightMode(reportType)
 
         inputCodeMirror = CodeMirror.fromTextArea(document.getElementById("inputContent"), {
             mode: "text/html",
@@ -226,12 +228,15 @@
         $('#nav-pre-processing-tab').on('shown.bs.tab', function() {
             preProcessingCodeMirror.refresh();
         });
+
+        changeHighlightMode($("#reportType").val())
     });
 
 
     function changeHighlightMode(mode) {
         console.log("ReportType =", mode);
-        $("nav-pre-processing-tab").addClass('disabled')
+        const navPreprocessingTab = $("#nav-pre-processing-tab");
+        navPreprocessingTab.prop('disabled', true);
         if (mode === "MDR") {
             $("#templateLabel").text("MDR report code:");
             templateCodeMirror.setOption("mode", "mdr");
@@ -245,7 +250,7 @@
             $("#templateLabel").text("GMD report code:");
             templateCodeMirror.setOption("mode", "gmd");
         } else if (mode === "JOURNO") {
-            $("nav-pre-processing-tab").removeClass('disabled')
+            navPreprocessingTab.prop('disabled', false);
             $("#templateLabel").text("Journo (Freemarker) report code:");
             templateCodeMirror.setOption("mode", "freemarkermixed");
         }
