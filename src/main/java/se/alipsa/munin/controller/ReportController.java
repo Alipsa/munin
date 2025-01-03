@@ -168,21 +168,18 @@ public class ReportController {
 
   @GetMapping(path = "/manage/editReport/{name}")
   public String editReportForm(@PathVariable String name, Model model) throws ReportNotFoundException {
-    Report report = reportRepo.loadReport(name);
-    model.addAttribute("reportName", name);
-    model.addAttribute("reportDescription", report.getDescription());
-    model.addAttribute("preProcessing", report.getPreProcessing());
-    model.addAttribute("template", report.getTemplate());
-    model.addAttribute("inputContent", report.getInputContent());
-    model.addAttribute("reportType", report.getReportType());
-    model.addAttribute("reportGroup", report.getReportGroup());
-    model.addAttribute("reportGroups", reportRepo.getReportGroups());
+    populateEditReportModel(name, model);
     model.addAttribute("action", "editReport");
     return "addOrEditReport";
   }
 
   @GetMapping(path = "/manage/oldEditReport/{name}")
   public String oldEditReportForm(@PathVariable String name, Model model) throws ReportNotFoundException {
+    populateEditReportModel(name, model);
+    return "editReport";
+  }
+
+  private void populateEditReportModel(String name, Model model) throws ReportNotFoundException {
     Report report = reportRepo.loadReport(name);
     model.addAttribute("reportName", name);
     model.addAttribute("reportDescription", report.getDescription());
@@ -192,7 +189,6 @@ public class ReportController {
     model.addAttribute("reportType", report.getReportType());
     model.addAttribute("reportGroup", report.getReportGroup());
     model.addAttribute("reportGroups", reportRepo.getReportGroups());
-    return "editReport";
   }
 
   @PostMapping(path = "/manage/editReport")

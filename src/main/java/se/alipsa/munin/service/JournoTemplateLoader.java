@@ -13,6 +13,8 @@ import se.alipsa.munin.repo.ReportRepo;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.util.Optional;
 
 @Service
@@ -109,7 +111,7 @@ public class JournoTemplateLoader implements TemplateLoader {
       throw new IllegalArgumentException("templateSource cannot be null");
     }
     if (templateSource instanceof Report report) {
-      return report.getUpdatedAt().toInstant().toEpochMilli();
+      return report.getUpdatedAt().toEpochSecond(ZoneOffset.ofTotalSeconds(0));
     }
     throw new IllegalArgumentException("templateSource is not a Report but a " + templateSource.getClass());
   }

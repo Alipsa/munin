@@ -1,6 +1,7 @@
 package se.alipsa.munin.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,7 @@ public class RestApiController {
 
   private final ObjectMapper mapper;
 
+  @SuppressFBWarnings("EI_EXPOSE_REP2")
   @Autowired
   public RestApiController(ReportRepo reportRepo, ObjectMapper mapper) {
     this.reportRepo = reportRepo;

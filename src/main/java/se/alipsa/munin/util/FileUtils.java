@@ -1,5 +1,6 @@
 package se.alipsa.munin.util;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 
@@ -285,6 +286,7 @@ public class FileUtils {
     return IOUtils.toString(url, charset);
   }
 
+  @SuppressFBWarnings("ENV_USE_PROPERTY_INSTEAD_OF_ENV")
   public static File getUserHome() {
     String userHome = System.getProperty("user.home");
     if (userHome == null) {

@@ -1,6 +1,5 @@
 package se.alipsa.munin.service;
 
-import groovy.lang.GroovyClassLoader;
 import org.codehaus.groovy.jsr223.GroovyScriptEngineImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,8 +25,7 @@ public class JournoReportEngine {
   @Autowired
   JournoReportEngine(JournoTemplateLoader journoTemplateLoader) {
     journoEngine = new JournoEngine(journoTemplateLoader);
-    var classLoader = new GroovyClassLoader();
-    groovyEngine = new GroovyScriptEngineImpl(classLoader);
+    groovyEngine = new GroovyScriptEngineImpl();
   }
 
   public String runJournoReport(Report report, Map<String, Object>... params) throws ScriptException, JournoException {

@@ -5,7 +5,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @Entity
 public class Report implements Serializable {
@@ -37,11 +37,11 @@ public class Report implements Serializable {
 
   @CreationTimestamp
   @Column
-  private Timestamp insertedAt;
+  private LocalDateTime insertedAt;
 
   @UpdateTimestamp
   @Column
-  private Timestamp updatedAt;
+  private LocalDateTime updatedAt;
 
   /**
    * @return the name of the report
@@ -139,19 +139,19 @@ public class Report implements Serializable {
     this.reportGroup = reportGroup;
   }
 
-  public Timestamp getInsertedAt() {
+  public LocalDateTime getInsertedAt() {
     return insertedAt;
   }
 
-  public void setInsertedAt(Timestamp insertedAt) {
+  public void setInsertedAt(LocalDateTime insertedAt) {
     this.insertedAt = insertedAt;
   }
 
-  public Timestamp getUpdatedAt() {
+  public LocalDateTime getUpdatedAt() {
     return updatedAt;
   }
 
-  public void setUpdatedAt(Timestamp updatedAt) {
+  public void setUpdatedAt(LocalDateTime updatedAt) {
     this.updatedAt = updatedAt;
   }
 
