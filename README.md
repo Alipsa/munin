@@ -1,21 +1,16 @@
 # Munin
-This is a report server for reports created in either R based on [Renjin](https://www.renjin.org/) or [Groovy](https://groovy-lang.org/) 
+This is a report server for reports created in either Journo based on [Freemarker](https://freemarker.apache.org/) or [Groovy](https://groovy-lang.org/) 
 . It is an application on [Spring Boot](https://spring.io/projects/spring-boot).
 The name comes from the one of Odin's ravens who he sent out every day to scout the world and bring him back reports. 
 
 ![example report](docs/viewSampleReport.png)
 # Overview
-Munin is a reporting server that can run and display reports, created in Renjin R or Groovy, on the web.
+Munin is a reporting server that can run and display reports, created in Freemarker or Groovy, on the web.
 
 Currently, it supports:
-- [R reports](docs/r-reports.md) where the R code returns html
-- [mdr Reports](docs/mdr-reports.md) (markdown with support for r code, similar to rmd - more on that further down).
 - [Groovy reports](docs/groovy-reports.md) where the Groovy code returns html
 - [gmd reports](docs/gmd-reports.md) (markdown with support for groovy code - more on that further down)
 - [Journo (Freemarker) reports](docs/journo-reports.md) Groovy code handles the parameters to a Freemarker template
-
-[Ride](https://github.com/Alipsa/ride) supports the Munin R and mdr report formats natively, 
-so you can use Ride to create and edit Munin reports.
 
 [Gade](https://github.com/Alipsa/gade) support the Munin Groovy and gmd report formats natively,
 so you can use Gade to create and edit Munin reports.
@@ -52,15 +47,9 @@ e.g. by using `exists()`. Let's say the parameter is the name of the dataset to 
 </div>
 ```
 Then you can provide a default value for it as follows:
-```r
-if (!exists("dataSet")) {
-  dataSet <- "iris"
-}
-```
-or the equivalent for groovy:
 ```groovy
 if (binding.hasVariable('dataSet')) {
-  dataSet = se.alipsa.groovy.datasets.Dataset.iris()
+  dataSet = se.alipsa.matrix.datasets.Dataset.iris()
 }
 ```
 
@@ -68,51 +57,42 @@ if (binding.hasVariable('dataSet')) {
 Bootstrap is available, so you can use bootstrap classes to style the form.
 If you are using the htmlcreator package, the html.add() functions takes a list of attributes as 
 an optional parameter. This way you can add attributes such as id and class like this:
-```r
-html.add(mtcars, htmlattr=list(id = "mtcars-table", class="table table-striped"))
-```
-for groovy (using the gmd library) it is
 ```groovy
 html = new se.alipsa.groovy.gmd.Html()
-html.add(se.alipsa.groovy.datasets.Dataset.mtcars(), ["id":"mtcars-table", "class": "table table-striped"])
+html.add(se.alipsa.matrix.datasets.Dataset.mtcars(), ["id":"mtcars-table", "class": "table table-striped"])
 ```
 
 You can either upload a common stylesheet (using the "common resources" button) that you can reference in your reports e.g.
-```r
-# import the uploaded stylesheet mystyle.css
+```groovy
+// import the uploaded stylesheet mystyle.css
 html.add("<link rel='stylesheet' href='/common/resources/mystyle.css' />")
 ```
 
 or, to put it in the head section ([should only be needed](https://html.spec.whatwg.org/multipage/links.html#link-type-stylesheet) if your viewers have very old browsers):
-```r
-# import the uploaded stylesheet mystyle.css
-html.add('
+```groovy
+// import the uploaded stylesheet mystyle.css
+html.add('''
   <script>   
     const cssLink = document.createElement("link");
     cssLink.href = "/common/resources/mystyle.css";
     cssLink.rel="stylesheet";
     document.head.appendChild(cssLink);
   </script>
-')
+''')
 ```
 
 ...and you can of course also add stylesheets inline, e.g.
-```r
-# add a style class to adjust the font size of table text:
-html.add("
+```groovy
+// add a style class to adjust the font size of table text:
+html.add("""
   <style>
     .table-font-size {
       font-size: 14px;
     }
   </style>
-")
+""")
 ```
-then for R:
-```r
-# reference the class together with some bootstrap classes when rendering a table:
-html.add(mtcars, htmlattr=list(class="table table-striped table-font-size"))
-```
-... and for groovy
+then 
 ```groovy
 // reference the class together with some bootstrap classes when rendering a table:
 html.add(mtcars, ["class": "table table-striped table-font-size"])
@@ -136,7 +116,7 @@ There are a few different ways to install Munin.
    <parent>
        <artifactId>munin</artifactId>
        <groupId>se.alipsa</groupId>
-       <version>1.2.1</version>
+       <version>2.0.0</version>
    </parent>
    ```
 3. Customized alternative:
@@ -181,12 +161,6 @@ This report requires you to upload an external css (another typical us of common
   and upload the content using the "common resources" as described above. You can then create the report
   based on the [tableWithExternalCss.R](https://github.com/perNyfelt/munin/blob/main/src/test/resources/tableWithExternalCss.R)
   script.
-  
-- [Example mdr report](https://github.com/perNyfelt/munin/blob/main/src/test/resources/research.mdr)
-This report is an example of a mdr report, which is the other report format supported in Munin and described briefly above.
-  
-- [MDR code snippets](https://github.com/perNyfelt/munin/blob/main/src/test/resources/codeSnippets.mdr)
-Another very simple mdr report that show the mixing of formatted blocks styled for a specific language and the r code blocks which will be executed
 
 # Production config 
 You can do any customization by adding an application-prod.properties file next to the jar.
@@ -274,11 +248,12 @@ Munin provides a REST api for integration with other applications. It is describ
 
 # Reusing code
 You might notice that you have code snippets that you want to centralize and reuse. The standard approach
-to that is to formulate those code snippets into functions that you include in a package.
+to that is to formulate those code snippets into classes that you include in a library that you publish to a Nexus 
+server and include in your script using @Grab.
 
-An alternative way is to upload the R code into the common resource area and source it from the report e.g.
-```r
-source(paste0(muninBaseUrl, "/common/resources/utils.R"))
+An alternative way is to upload the groovy code into the common resource area and source it from the report e.g.
+```groovy
+def utils = evaluate("$muninBaseUrl/common/resources/utils.groovy".toURL().text)
 ```
 
 # Version history
@@ -290,13 +265,13 @@ source(paste0(muninBaseUrl, "/common/resources/utils.R"))
 - Upgrade boostrap (5.2.0 -> 5.3.3)
 - Upgrade jQuery (3.6.0 -> 3.7.1)
 - Upgrade liquibase (4.15.0 -> 4.29.2)
-- Upgrade mdr (1.5.1 -> 1.5.2)
 - Upgrade webjars (0.45 -> 0.52)
 - Upgrade h2 (2.1.214 -> 2.3.232)
 - Upgrade cron-utils (9.2.1 -> 9.2.1)
 - Require Java 17
 - Add parameters to the Preprocessor so that e.g. `= ` expressions works
 - Add support for Journo (Freemarker) reports
+- Remove support for R and mdr reports
 
 ### 1.2.1 (2022-Aug-16)
 - Upgrade dependencies for bootstrap (5.1.3 -> 5.2.0), cron-utils (9.1.6 -> 9.2.0),
