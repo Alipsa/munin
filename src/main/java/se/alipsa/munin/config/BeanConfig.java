@@ -6,10 +6,8 @@ import com.cronutils.parser.CronParser;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-import se.alipsa.renjin.starter.RenjinStarterAutoConfig;
 
 @Configuration
-@Import(RenjinStarterAutoConfig.class)
 public class BeanConfig {
 
   @Bean("springCronParser")

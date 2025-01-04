@@ -28,6 +28,14 @@ public class JournoReportEngine {
     groovyEngine = new GroovyScriptEngineImpl();
   }
 
+  /**
+   *
+   * @param report the report to run
+   * @param params a Map of String and Object with the parameters for the report (optional)
+   * @return the html result
+   * @throws ScriptException if groovy code failed
+   * @throws JournoException if some other part of running the report failed
+   */
   public String runJournoReport(Report report, Map<String, Object>... params) throws ScriptException, JournoException {
     Map<String, Object> p = runPreprocessingCode(report, params);
     //LOG.info("Journo report: {}", report);

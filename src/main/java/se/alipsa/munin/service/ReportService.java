@@ -12,24 +12,21 @@ import javax.script.ScriptException;
 @Service
 public class ReportService {
 
-  private final RenjinReportEngine renjinReportEngine;
   private final GroovyReportEngine groovyReportEngine;
   private final JournoReportEngine journoReportEngine;
 
   @Autowired
-  public ReportService(RenjinReportEngine renjinReportEngine, GroovyReportEngine groovyReportEngine, JournoReportEngine journoReportEngine) {
-    this.renjinReportEngine = renjinReportEngine;
+  public ReportService(GroovyReportEngine groovyReportEngine, JournoReportEngine journoReportEngine) {
     this.groovyReportEngine = groovyReportEngine;
     this.journoReportEngine = journoReportEngine;
   }
   @SafeVarargs
-  public final String runReport(Report report, Map<String, Object>... params) throws ScriptException, ReportDefinitionException, GmdException, JournoException {
+  public final String runReport(Report report, Map<String, Object>... params) throws ScriptException, GmdException, JournoException {
     return switch (report.getReportType()) {
-      case R, UNMANAGED -> renjinReportEngine.runReport(report, params);
-      case MDR -> renjinReportEngine.runMdrReport(report, params);
-      case GROOVY -> groovyReportEngine.runGroovyReport(report, params);
+      case GROOVY, UNMANAGED -> groovyReportEngine.runGroovyReport(report, params);
       case GMD -> groovyReportEngine.runGmdReport(report, params);
       case JOURNO -> journoReportEngine.runJournoReport(report, params);
+      case R -> throw new UnsupportedOperationException("R is no longer a supported report type: ");
     };
   }
 }

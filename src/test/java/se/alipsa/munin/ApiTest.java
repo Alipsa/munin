@@ -16,7 +16,6 @@ import se.alipsa.munin.model.Report;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static se.alipsa.munin.model.ReportType.GROOVY;
-import static se.alipsa.munin.model.ReportType.R;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = Application.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -38,12 +37,13 @@ public class ApiTest {
     Report report = new Report();
     report.setReportName("Hello Example");
     report.setDescription("Hello World");
-    report.setTemplate("\"library(\"se.alipsa:htmlcreator\")\n" +
-        "html.clear()\n" +
+    report.setTemplate("import se.alipsa.groovy.gmd.Html\n" +
+        "html = new Html()\n" +
+        "html.add('<html><body>')" +
         "html.add(\"<h1>Hello World</h1>\")\n" +
-        "html.content()\"");
+        "html.toString()\"");
     report.setInputContent("");
-    report.setReportType(R);
+    report.setReportType(GROOVY);
     report.setReportGroup("Examples");
     String json = objectMapper.writeValueAsString(report);
     HttpEntity<String> request = new HttpEntity<>(json, headers);

@@ -154,14 +154,14 @@
                     UNMANAGED
                     report is probably the more suitable approach.
                 </p>
-                <p>An <b>MDR report</b> is a MANAGED report meaning that Munin set up things for you. Code snippets in
-                    the MDR file
-                    returns markdown rather than html. The mdr support is provided by the <a
-                            href="https://github.com/perNyfelt/mdr" target="_blank">mdr</a> package
+                <p>An <b>GMD report</b> is a MANAGED report meaning that Munin set up things for you. Code snippets in
+                    the GMD file
+                    returns markdown rather than html. The gmd support is provided by the
+                    <a href="https://github.com/Alipsa/gmd" target="_blank">gmd</a> package
                     and is loaded by munin, so you can focus on the actual report content. If your report has pretty
                     simple logic
                     (a few plots and tables based on data that are easy to assemble) and or contains a lot of text, then
-                    an MDR is probably the more suitable approach.
+                    an GMD is probably the more suitable approach.
                 </p>
             </div>
             <div class="modal-footer">
@@ -237,13 +237,7 @@
         console.log("ReportType =", mode);
         const navPreprocessingTab = $("#nav-pre-processing-tab");
         navPreprocessingTab.prop('disabled', true);
-        if (mode === "MDR") {
-            $("#templateLabel").text("MDR report code:");
-            templateCodeMirror.setOption("mode", "mdr");
-        } else if (mode === "R") {
-            $("#templateLabel").text("R report code:");
-            templateCodeMirror.setOption("mode", "r");
-        } else if (mode === "GROOVY") {
+         if (mode === "GROOVY") {
             $("#templateLabel").text("Groovy report code:");
             templateCodeMirror.setOption("mode", "groovy");
         } else if (mode === "GMD") {

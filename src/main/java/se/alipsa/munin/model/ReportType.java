@@ -1,7 +1,12 @@
 package se.alipsa.munin.model;
 
 public enum ReportType {
-  R, MDR, GROOVY, GMD, JOURNO,
-  @Deprecated
-  UNMANAGED
+  GROOVY, GMD, JOURNO,
+  @Deprecated R,
+  @Deprecated UNMANAGED;
+
+
+  public static ReportType[] activeValues() {
+    return new ReportType[]{GROOVY, GMD, JOURNO};
+  }
 }

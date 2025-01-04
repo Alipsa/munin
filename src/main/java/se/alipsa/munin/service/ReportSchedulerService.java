@@ -32,14 +32,14 @@ public class ReportSchedulerService implements
   private final TaskScheduler executor;
   private final ReportRepo reportRepo;
   private final ReportScheduleRepo reportScheduleRepo;
-  private final RenjinReportEngine reportEngine;
+  private final GroovyReportEngine reportEngine;
   private final EmailService emailService;
   private final Map<Long, ScheduledFuture<?>> currentSchedules = new HashMap<>();
 
   private final static Logger LOG = LoggerFactory.getLogger(ReportSchedulerService.class);
 
   @Autowired
-  public ReportSchedulerService(TaskScheduler executor, ReportRepo reportRepo, ReportScheduleRepo reportScheduleRepo, RenjinReportEngine reportEngine,
+  public ReportSchedulerService(TaskScheduler executor, ReportRepo reportRepo, ReportScheduleRepo reportScheduleRepo, GroovyReportEngine reportEngine,
                                 EmailService emailService) {
     this.executor = executor;
     this.reportRepo = reportRepo;
@@ -71,7 +71,7 @@ public class ReportSchedulerService implements
 
     Runnable reportTask = () -> {
       Optional<Report> reportOpt = reportRepo.findById(reportName);
-      if (!reportOpt.isPresent()) {
+      if (reportOpt.isEmpty()) {
         LOG.warn("Report {} does not exists, schedule report failed", reportName);
         return;
       }
@@ -80,8 +80,8 @@ public class ReportSchedulerService implements
       DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
       String html;
       try {
-        html = reportEngine.runReport(report);
-      } catch (ScriptException | ReportDefinitionException e) {
+        html = reportEngine.runGroovyReport(report);
+      } catch (ScriptException e) {
         LOG.warn("Scheduled report {} failed to run", reportName, e);
         return;
       }

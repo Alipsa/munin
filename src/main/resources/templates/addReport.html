@@ -35,7 +35,7 @@
          <div class="col-md-3 row">
             <label for="reportType">Report Type</label>
             <select id="reportType" name="reportType" class="form-select" onchange="handleReportTypeChange(this.value)">
-               <option th:each="reportType: ${T(se.alipsa.munin.model.ReportType).values()}" th:value="${reportType}"
+               <option th:each="reportType: ${T(se.alipsa.munin.model.ReportType).activeValues()}" th:value="${reportType}"
                        th:text="${reportType}">
                </option>
             </select>
@@ -50,7 +50,7 @@
 
       <div class="form-group">
          <fieldset class="border">
-            <legend class="w-auto pb-0"><label id="definitionLabel" for="definition">R report code:</label></legend>
+            <legend class="w-auto pb-0"><label id="definitionLabel" for="definition">Report code:</label></legend>
             <textarea class="form-control-file" id="definition" name="definition"></textarea>
          </fieldset>
          <label for="loadRFile">Load from file</label>
@@ -125,13 +125,7 @@
 
    function handleReportTypeChange(reportType) {
       console.log("ReportType =", reportType);
-      if (reportType === "MDR") {
-         $("#definitionLabel").text("MDR report code:");
-         rCodeMirror.setOption("mode", "mdr");
-      } else if (reportType === "R") {
-         $("#definitionLabel").text("R report code:");
-         rCodeMirror.setOption("mode", "r");
-      } else if (reportType === "GROOVY") {
+      if (reportType === "GROOVY") {
          $("#definitionLabel").text("Groovy report code:");
          rCodeMirror.setOption("mode", "groovy");
       } else if (reportType === "GMD") {

@@ -50,20 +50,17 @@
         <h2.version>2.3.232</h2.version>
         <htmlcreator.version>1.4.1</htmlcreator.version>
         <javafx.version>21.0.5</javafx.version>
-        <journo.version>0.7.0</journo.version>
+        <journo.version>0.7.1-SNAPSHOT</journo.version>
         <jquery.version>3.7.1</jquery.version>
         <junit-jupiter.version>5.11.4</junit-jupiter.version>
         <junit-platform.version>1.11.4</junit-platform.version>
         <liquibase-core.version>4.30.0</liquibase-core.version>
         <matrix-charts.version>1.0.0-SNAPSHOT</matrix-charts.version>
-        <matrix-core.version>2.1.1</matrix-core.version>
+        <matrix-core.version>2.2.0-SNAPSHOT</matrix-core.version>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
-        <mdr.version>1.5.2</mdr.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <renjin.version>3.5-beta76</renjin.version>
-        <renjin-spring-boot-starter.version>1.0.0</renjin-spring-boot-starter.version>
         <spotbugs-annotations.version>4.8.6</spotbugs-annotations.version>
         <!-- note that parent has the version hard coded so must duplicate the setting there as well -->
         <spring.boot.version>3.4.1</spring.boot.version>
@@ -91,43 +88,9 @@
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.renjin</groupId>
-            <artifactId>renjin-aether-package-loader</artifactId>
-            <version>${renjin.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.renjin</groupId>
-            <artifactId>renjin-script-engine</artifactId>
-            <version>${renjin.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>se.alipsa</groupId>
-            <artifactId>renjin-spring-boot-starter</artifactId>
-            <version>${renjin-spring-boot-starter.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.renjin</groupId>
-                    <artifactId>renjin-aether-package-loader</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.renjin</groupId>
-                    <artifactId>renjin-script-engine</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.renjin.cran</groupId>
-                    <artifactId>testthat</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
             <groupId>se.alipsa</groupId>
             <artifactId>htmlcreator</artifactId>
             <version>${htmlcreator.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>se.alipsa</groupId>
-            <artifactId>mdr</artifactId>
-            <version>${mdr.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.groovy</groupId>
@@ -141,17 +104,17 @@
             <version>${gmd.version}</version>
         </dependency>
         <dependency>
-            <groupId>se.alipsa.groovy</groupId>
+            <groupId>se.alipsa.matrix</groupId>
             <artifactId>matrix-core</artifactId>
             <version>${matrix-core.version}</version>
         </dependency>
         <dependency>
-            <groupId>se.alipsa.groovy</groupId>
+            <groupId>se.alipsa.matrix</groupId>
             <artifactId>matrix-charts</artifactId>
             <version>${matrix-charts.version}</version>
         </dependency>
         <dependency>
-            <groupId>se.alipsa</groupId>
+            <groupId>se.alipsa.journo</groupId>
             <artifactId>journo-runtime</artifactId>
             <version>${journo.version}</version>
         </dependency>
@@ -325,19 +288,6 @@
         </repository>
     </repositories>
 
-    <pluginRepositories>
-        <pluginRepository>
-            <id>bedatadriven</id>
-            <name>bedatadriven public repo</name>
-            <url>https://nexus.bedatadriven.com/content/groups/public/</url>
-        </pluginRepository>
-        <pluginRepository>
-            <id>mavencentral</id>
-            <name>central</name>
-            <url>https://repo1.maven.org/maven2/</url>
-        </pluginRepository>
-    </pluginRepositories>
-
     <build>
         <plugins>
             <plugin>
@@ -384,9 +334,9 @@
                                     <message>Please use maven version 3.6.3 or higher</message>
                                 </requireMavenVersion>
                                 <requireJavaVersion>
-                                    <version>17</version>
+                                    <version>21</version>
                                     <level>ERROR</level>
-                                    <message>Please use Java 17</message>
+                                    <message>Please use Java 21 or later</message>
                                 </requireJavaVersion>
                             </rules>
                         </configuration>

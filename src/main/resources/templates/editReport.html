@@ -94,17 +94,12 @@
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
          </div>
          <div class="modal-body">
-            <p>An <b>UNMANAGED report</b> is a report where the R code produces html (as an html character string). It is unmanaged in the sence that the R code is just executed
-               and assumed to return HTML which is then displayed. The <a href="https://github.com/perNyfelt/htmlcreator" target="_blank">html creator</a>
-               is a package that makes the producing of html from R simple, but you are free to use anything to produce the html.
+            <p>An <b>UNMANAGED report</b> is a report where the Groovy code produces html (as an html character string).
+               It is unmanaged in the sense that the Groovy code is just executed
+               and assumed to return HTML which is then displayed. The <a href="https://github.com/Alipsa/gmdr" target="_blank">gmd html creator</a>
+               is a package that makes the producing of html from Groovy simple, but you are free to use anything to produce the html.
                When the programming logic is complex and the actual output does not contain a lot of text, an UNMANAGED
                report is probably the more suitable approach.
-            </p>
-            <p>An <b>MDR report</b> is a MANAGED report meaning that Munin set up things for you. Code snippets in the MDR file
-               returns markdown rather than html. The mdr support is provided by the <a href="https://github.com/perNyfelt/mdr" target="_blank">mdr</a> package
-               and is loaded by munin, so you can focus on the actual report content. If your report has pretty simple logic
-               (a few plots and tables based on data that are easy to assemble) and or contains a lot of text, then
-               an MDR is probably the more suitable approach.
             </p>
          </div>
          <div class="modal-footer">
@@ -125,10 +120,7 @@
    });
    rCodeMirror.setSize("100%", "100%");
    let reportType = $("#reportType").val();
-   if (reportType === "MDR") {
-      //console.log("Setting rCodeMirror to mdr mode");
-      rCodeMirror.setOption("mode", "mdr");
-   } else if (reportType === "GMD") {
+   if (reportType === "GMD") {
       //console.log("Setting rCodeMirror to gmd mode");
       rCodeMirror.setOption("mode", "gmd");
    }
@@ -144,10 +136,7 @@
       .addEventListener('change', function () {
          let fr = new FileReader();
          fr.onload = function () {
-            if ($("#reportType").val() == "MDR") {
-               console.log("Setting rCodeMirror to mdr mode");
-               rCodeMirror.setOption("mode", "mdr");
-            } else if ($("#reportType").val() == "GMD") {
+            if ($("#reportType").val() == "GMD") {
                console.log("Setting rCodeMirror to gmd mode");
                rCodeMirror.setOption("mode", "gmd");
             }
@@ -166,9 +155,7 @@
       })
 
    function changeHighligtMode(mode) {
-      if ("MDR" === mode) {
-         rCodeMirror.setOption("mode", "mdr");
-      } else if ("GMD" === mode) {
+      if ("GMD" === mode) {
          rCodeMirror.setOption("mode", "gmd");
       }
    }
