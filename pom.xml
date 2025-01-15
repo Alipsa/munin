@@ -49,7 +49,7 @@
         <groovy-version>4.0.24</groovy-version>
         <h2.version>2.3.232</h2.version>
         <htmlcreator.version>1.4.1</htmlcreator.version>
-        <javafx.version>21.0.5</javafx.version>
+        <javafx.version>23.0.1</javafx.version>
         <journo.version>0.7.1-SNAPSHOT</journo.version>
         <jquery.version>3.7.1</jquery.version>
         <junit-jupiter.version>5.11.4</junit-jupiter.version>
@@ -57,8 +57,8 @@
         <liquibase-core.version>4.30.0</liquibase-core.version>
         <matrix-charts.version>1.0.0-SNAPSHOT</matrix-charts.version>
         <matrix-core.version>2.2.0</matrix-core.version>
-        <maven.compiler.source>17</maven.compiler.source>
-        <maven.compiler.target>17</maven.compiler.target>
+        <maven.compiler.source>21</maven.compiler.source>
+        <maven.compiler.target>21</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <spotbugs-annotations.version>4.8.6</spotbugs-annotations.version>
