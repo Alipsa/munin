@@ -260,15 +260,16 @@ def utils = evaluate("$muninBaseUrl/common/resources/utils.groovy".toURL().text)
 
 ### 2.0.0, in progress
 - Add support for Groovy and GMD reports.
-- Upgrade spring boot (2.7.2 -> 3.3.5)
+- Upgrade spring boot (2.7.2 -> 3.4.2)
 - Upgrade thymeleaf (5 to 6)
 - Upgrade boostrap (5.2.0 -> 5.3.3)
 - Upgrade jQuery (3.6.0 -> 3.7.1)
-- Upgrade liquibase (4.15.0 -> 4.29.2)
+- Upgrade liquibase (4.15.0 -> 4.31.0)
 - Upgrade webjars (0.45 -> 0.52)
 - Upgrade h2 (2.1.214 -> 2.3.232)
 - Upgrade cron-utils (9.2.1 -> 9.2.1)
-- Require Java 17
+- upgrade javafx (21.0.5 -> 23.0.2)
+- Require Java 21
 - Add parameters to the Preprocessor so that e.g. `= ` expressions works
 - Add support for Journo (Freemarker) reports
 - Remove support for R and mdr reports
