@@ -16,8 +16,8 @@
     <groupId>se.alipsa</groupId>
     <version>2.0.0-SNAPSHOT</version>
 
-    <name>Munin - a web reporting server for Groovy, Freemarker, and R</name>
-    <description>A reporting server for reports created in Groovy, Freemarker or R based on Spring Boot.</description>
+    <name>Munin - a web reporting server for Groovy or Freemarker reports</name>
+    <description>A reporting server for reports created in Groovy or Freemarker based on Spring Boot.</description>
     <url>https://github.com/perNyfelt/munin</url>
     <licenses>
         <license>
@@ -96,11 +96,6 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>se.alipsa</groupId>
-            <artifactId>htmlcreator</artifactId>
-            <version>${htmlcreator.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.groovy</groupId>
@@ -286,11 +281,6 @@
             <id>mavencentral</id>
             <name>central</name>
             <url>https://repo1.maven.org/maven2/</url>
-        </repository>
-        <repository>
-            <id>bedatadriven</id>
-            <name>bedatadriven public repo</name>
-            <url>https://nexus.bedatadriven.com/content/groups/public/</url>
         </repository>
         <repository>
             <id>snapshots-repo</id>
