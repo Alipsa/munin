@@ -36,8 +36,8 @@ html form content, e.g:
 If you want numeric values, you need to convert the parameter to a number.
 
 
-Note that, in order to be able to schedule a parameterized report, you must provide default parameters in the R code
-e.g. by using `exists()`. Let's say the parameter is the name of the dataset to use i.e.  
+Note that, in order to be able to schedule a parameterized report, you must provide default parameters in the groovy code
+e.g. by using `binding,hasVariable()`. Let's say the parameter is the name of the dataset to use i.e.  
 ```html
 <div class="form-group">
 <select name="dataSet">
