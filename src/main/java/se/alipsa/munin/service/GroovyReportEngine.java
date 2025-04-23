@@ -1,11 +1,10 @@
 package se.alipsa.munin.service;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import groovy.lang.GroovyClassLoader;
 import org.codehaus.groovy.jsr223.GroovyScriptEngineImpl;
 import org.springframework.stereotype.Service;
-import se.alipsa.groovy.gmd.Gmd;
-import se.alipsa.groovy.gmd.GmdException;
+import se.alipsa.gmd.core.Gmd;
+import se.alipsa.gmd.core.GmdException;
 import se.alipsa.munin.model.Report;
 
 import java.util.Map;
@@ -18,8 +17,6 @@ public class GroovyReportEngine {
   GroovyScriptEngineImpl engine;
   Gmd gmd;
 
-  // spotbugs wants us to do this in a doPrivileged block but SecurityManager is deprecated, so we suppress the warning
-  @SuppressFBWarnings("DP_CREATE_CLASSLOADER_INSIDE_DO_PRIVILEGED")
   public GroovyReportEngine() {
     var classLoader = new GroovyClassLoader();
     engine = new GroovyScriptEngineImpl(classLoader);

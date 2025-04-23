@@ -2,7 +2,7 @@ package se.alipsa.munin.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import se.alipsa.groovy.gmd.GmdException;
+import se.alipsa.gmd.core.GmdException;
 import se.alipsa.journo.JournoException;
 import se.alipsa.munin.model.Report;
 

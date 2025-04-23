@@ -16,7 +16,6 @@ public class AuthoritiesPk implements Serializable {
   @JoinColumn(name = "username")
   private User user;
 
-  @SuppressFBWarnings("EI_EXPOSE_REP2")
   @Column(length = 50)
   private String authority;
 

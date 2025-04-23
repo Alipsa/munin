@@ -21,7 +21,7 @@ import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
-import se.alipsa.groovy.gmd.GmdException;
+import se.alipsa.gmd.core.GmdException;
 import se.alipsa.journo.JournoException;
 import se.alipsa.munin.model.Report;
 import se.alipsa.munin.model.ReportSchedule;
