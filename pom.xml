@@ -9,7 +9,7 @@
     <parent>
         <artifactId>spring-boot-starter-parent</artifactId>
         <groupId>org.springframework.boot</groupId>
-        <version>3.4.4</version>
+        <version>3.4.5</version>
     </parent>
 
     <artifactId>munin</artifactId>
@@ -45,7 +45,7 @@
         <commons-collections4.version>4.5.0</commons-collections4.version>
         <commons-io.version>2.19.0</commons-io.version>
         <cron-utils.version>9.2.1</cron-utils.version>
-        <gmd.version>3.0.0-SNAPSHOT</gmd.version>
+        <gmd.version>3.0.0</gmd.version>
         <groovy-version>4.0.26</groovy-version>
         <h2.version>2.3.232</h2.version>
         <htmlcreator.version>1.4.1</htmlcreator.version>
@@ -55,13 +55,12 @@
         <junit-jupiter.version>5.12.2</junit-jupiter.version>
         <junit-platform.version>1.12.2</junit-platform.version>
         <liquibase-core.version>4.31.1</liquibase-core.version>
-        <maven.compiler.source>21</maven.compiler.source>
-        <maven.compiler.target>21</maven.compiler.target>
+        <maven.compiler.release>21</maven.compiler.release>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <spotbugs-annotations.version>4.9.3</spotbugs-annotations.version>
         <!-- note that parent has the version hard coded so must duplicate the setting there as well -->
-        <spring.boot.version>3.4.4</spring.boot.version>
+        <spring.boot.version>3.4.5</spring.boot.version>
         <thymeleaf-extras-springsecurity6.version>3.1.3.RELEASE</thymeleaf-extras-springsecurity6.version>
         <webjars-locator.version>0.52</webjars-locator.version>
     </properties>
