@@ -30,12 +30,23 @@ public class CommonStorageController {
 
   private final FileStorageService fileStorageService;
 
+  /**
+   * Constructor with autowired dependencies.
+   *
+   * @param fileStorageService the file storage service
+   */
   @SuppressFBWarnings("EI_EXPOSE_REP2")
   @Autowired
   public CommonStorageController(FileStorageService fileStorageService) {
     this.fileStorageService = fileStorageService;
   }
 
+  /**
+   * Displays the common resources page with a list of uploaded files.
+   *
+   * @param message an optional message to display on the page
+   * @return a ModelAndView object for the common resources page
+   */
   @GetMapping("/common/resources")
   public ModelAndView commonIndex(@RequestParam Optional<String> message) {
     ModelAndView mav = new ModelAndView();
@@ -51,6 +62,12 @@ public class CommonStorageController {
     return mav;
   }
 
+  /**
+   * Retrieves a file by its name and returns it as a downloadable resource.
+   *
+   * @param fileName the name of the file to retrieve
+   * @return a ResponseEntity containing the file resource
+   */
   @GetMapping("/common/resources/{fileName}")
   public ResponseEntity<Resource> getFile(@PathVariable String fileName) {
     Resource file = fileStorageService.load(fileName);
@@ -58,6 +75,13 @@ public class CommonStorageController {
         .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFilename() + "\"").body(file);
   }
 
+  /**
+   * Handles file upload and stores the uploaded file.
+   *
+   * @param file the uploaded file
+   * @param redirectAttributes attributes for flash messages
+   * @return a redirect to the common resources page
+   */
   @PostMapping("/common/resources/upload")
   public String uploadFile(@RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes) {
     try {
@@ -70,6 +94,12 @@ public class CommonStorageController {
     return "redirect:/common/resources";
   }
 
+  /**
+   * Deletes a file by its name.
+   *
+   * @param fileName the name of the file to delete
+   * @return a message indicating the result of the deletion
+   */
   @DeleteMapping(value = "/common/resources/{fileName}", produces = MediaType.TEXT_PLAIN_VALUE)
   public @ResponseBody String deleteFile(@PathVariable String fileName) {
     try {

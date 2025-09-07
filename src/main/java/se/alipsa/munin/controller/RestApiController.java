@@ -15,6 +15,10 @@ import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 
+/**
+ * REST API controller for managing reports.
+ * Provides endpoints to get, add, and update reports.
+ */
 @RestController
 public class RestApiController {
 
@@ -24,6 +28,12 @@ public class RestApiController {
 
   private final ObjectMapper mapper;
 
+  /**
+   * Constructor with autowired dependencies.
+   *
+   * @param reportRepo the report repository
+   * @param mapper     the object mapper for JSON serialization/deserialization
+   */
   @SuppressFBWarnings("EI_EXPOSE_REP2")
   @Autowired
   public RestApiController(ReportRepo reportRepo, ObjectMapper mapper) {
@@ -31,16 +41,32 @@ public class RestApiController {
     this.mapper = mapper;
   }
 
+  /**
+   * Get a list of report groups.
+   *
+   * @return a list of report group names
+   */
   @GetMapping(value = "/api/getReportGroups", produces = MediaType.APPLICATION_JSON_VALUE)
   public List<String> getReportGroups() {
     return reportRepo.getReportGroups();
   }
 
+  /**
+   * Get a list of reports for a specific group.
+   *
+   * @param groupName the name of the report group
+   * @return a list of reports in the specified group
+   */
   @GetMapping(value = "/api/getReports", produces = MediaType.APPLICATION_JSON_VALUE)
   public List<Report> getReports(@RequestParam String groupName) {
     return reportRepo.findByReportGroupOrderByReportName(groupName);
   }
 
+  /**
+   * Get a map of report groups to their respective report names.
+   *
+   * @return a map where keys are report group names and values are lists of report names
+   */
   @GetMapping(value = "/api/getReportInfo", produces = MediaType.APPLICATION_JSON_VALUE)
   public Map<String, List<String>> getReportInfo() {
     Map<String, List<String>> map = new HashMap<>();
@@ -51,6 +77,13 @@ public class RestApiController {
     return map;
   }
 
+  /**
+   * Get a specific report by its name.
+   *
+   * @param name the name of the report
+   * @return the requested report
+   * @throws ApiException if the report is not found
+   */
   @GetMapping(value = "/api/getReport", produces = MediaType.APPLICATION_JSON_VALUE)
   public @ResponseBody Report getReport(@RequestParam String name) {
     var decoded = URLDecoder.decode(name, StandardCharsets.UTF_8);
@@ -61,6 +94,12 @@ public class RestApiController {
     }
   }
 
+  /**
+   * Add a new report.
+   *
+   * @param report the report to add
+   * @throws ApiException if the report name is empty, already exists, or if the template is empty
+   */
   @PostMapping(value = "/api/addReport", consumes = MediaType.APPLICATION_JSON_VALUE)
   public void addReport(@RequestBody Report report) {
     if (report.getReportName() == null || "".equals(report.getReportName().trim())) {
@@ -91,6 +130,12 @@ public class RestApiController {
     }
   }*/
 
+  /**
+   * Update an existing report.
+   *
+   * @param report the report to update
+   * @throws ApiException if the report name is empty, not found, or if the template is empty
+   */
   @PutMapping(value = "/api/updateReport", consumes = MediaType.APPLICATION_JSON_VALUE)
   public void updateReport(@RequestBody Report report) {
     LOG.info("Updating report: {}", report);

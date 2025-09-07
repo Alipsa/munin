@@ -19,6 +19,14 @@ public final class PasswordGenerator {
     // utility class
   }
 
+  /**
+   * Generates a random password of specified length containing lower case, upper case, numbers,
+   * and special characters.
+   *
+   * @param length the desired length of the password
+   * @return the generated password
+   * @throws IllegalArgumentException if length is less than 1
+   */
   public static String generateRandomPassword(int length) {
     if (length < 1) throw new IllegalArgumentException();
 
@@ -40,6 +48,12 @@ public final class PasswordGenerator {
     return String.join("", letters);
   }
 
+  /**
+   * Encrypts a password using BCrypt.
+   *
+   * @param passwd the password to encrypt
+   * @return the encrypted password
+   */
   public static String encrypt(String passwd) {
     return new BCryptPasswordEncoder().encode(String.valueOf(passwd));
   }

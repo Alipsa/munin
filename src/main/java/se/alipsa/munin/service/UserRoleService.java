@@ -22,6 +22,9 @@ import static se.alipsa.munin.config.Role.ROLE_ADMIN;
 import static se.alipsa.munin.config.Role.ROLE_ANALYST;
 import static se.alipsa.munin.config.Role.ROLE_VIEWER;
 
+/**
+ * Service for managing user roles and user accounts.
+ */
 @Service
 public class UserRoleService {
 
@@ -34,6 +37,13 @@ public class UserRoleService {
 
   private static final Logger LOG = LoggerFactory.getLogger(UserRoleService.class);
 
+  /**
+   * Constructor with autowired dependencies.
+   *
+   * @param userRepo        the user repository
+   * @param authoritiesRepo the authorities repository
+   * @param emailService    the email service
+   */
   @SuppressFBWarnings("EI_EXPOSE_REP2")
   @Autowired
   public UserRoleService(UserRepo userRepo, AuthoritiesRepo authoritiesRepo, EmailService emailService) {
@@ -42,6 +52,11 @@ public class UserRoleService {
     this.emailService = emailService;
   }
 
+  /**
+   * Fetches all users and maps them to UserUpdate objects.
+   *
+   * @return a list of UserUpdate objects representing all users
+   */
   @Transactional
   public List<UserUpdate> fetchUserUpdates() {
     List<UserUpdate> users = new ArrayList<>();
@@ -60,6 +75,11 @@ public class UserRoleService {
     return users;
   }
 
+  /**
+   * Updates users based on the provided list of UserUpdate objects.
+   *
+   * @param updateList a list of UserUpdate objects containing updated user information
+   */
   @Transactional
   public void updateUsers(List<UserUpdate> updateList) {
     Map<String, User> map = new HashMap<>();
@@ -67,7 +87,7 @@ public class UserRoleService {
     updateList.forEach(update -> {
       User u = map.get(update.getUsername());
       if (u != null) {
-        LOG.debug("Updating user " + update.getUsername() + " with email " + update.getEmail());
+        LOG.debug("Updating user {} with email {}", update.getUsername(), update.getEmail());
         u.setEnabled(update.isEnabled());
         u.setEmail(update.getEmail());
         authoritiesRepo.deleteByUser(u);
@@ -80,24 +100,31 @@ public class UserRoleService {
     List<Authorities> authToUpdate = new ArrayList<>();
     if (update.isAdmin()) {
       Authorities auth = new Authorities(new AuthoritiesPk(u, ROLE_ADMIN.name()));
-      LOG.trace("Add ROLE_ADMIN to " + u.getUsername());
+      LOG.trace("Add ROLE_ADMIN to {}", u.getUsername());
       authToUpdate.add(auth);
     }
     if (update.isAnalyst()) {
       Authorities auth = new Authorities(new AuthoritiesPk(u, ROLE_ANALYST.name()));
-      LOG.trace("Add ROLE_ANALYST to " + u.getUsername());
+      LOG.trace("Add ROLE_ANALYST to {}", u.getUsername());
       authToUpdate.add(auth);
     }
     if (update.isViewer()) {
       Authorities auth = new Authorities(new AuthoritiesPk(u, ROLE_VIEWER.name()));
-      LOG.trace("Add ROLE_VIEWER to " + u.getUsername());
+      LOG.trace("Add ROLE_VIEWER to {}", u.getUsername());
       authToUpdate.add(auth);
     }
-    if (authToUpdate.size() > 0) {
+    if (!authToUpdate.isEmpty()) {
       authoritiesRepo.saveAll(authToUpdate);
     }
   }
 
+  /**
+   * Adds a new user to the system with the specified details.
+   *
+   * @param userUpdate the user details
+   * @param encodedPwd the encoded password for the user
+   * @throws AddUserException if a user with the same username already exists
+   */
   @Transactional
   public void addUser(UserUpdate userUpdate, String encodedPwd) throws AddUserException {
     Optional<User> userOpt = userRepo.findById(userUpdate.getUsername());
@@ -115,6 +142,13 @@ public class UserRoleService {
     addRoles(userUpdate, dbUser);
   }
 
+  /**
+   * Verify that the email matches the one stored for the user (case insensitive, null and blank treated as equal)
+   *
+   * @param username the user name
+   * @param email    the email to verify
+   * @return true if the email matches the one stored for the user
+   */
   @Transactional
   public boolean verify(String username, String email) {
     Optional<User> userOpt = userRepo.findById(username);
@@ -130,6 +164,12 @@ public class UserRoleService {
     return val.toLowerCase();
   }
 
+  /**
+   * Resets the password for the given user and sends an email with the new password.
+   *
+   * @param username the user name
+   * @throws IllegalArgumentException if the user does not exist
+   */
   @Transactional
   public void resetPassword(String username) {
     Optional<User> userOpt = userRepo.findById(username);
@@ -146,6 +186,12 @@ public class UserRoleService {
         "Welcome back to Munin Web reports\n Your new password is password is " + passwd, user.getEmail());
   }
 
+  /**
+   * Deletes the user with the given username.
+   *
+   * @param userName the user name
+   * @throws IllegalArgumentException if the user does not exist
+   */
   @Transactional
   public void deleteUser(String userName) {
     Optional<User> userOpt = userRepo.findById(userName);

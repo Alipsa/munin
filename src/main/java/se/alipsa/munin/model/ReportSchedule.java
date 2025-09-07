@@ -6,6 +6,9 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.SequenceGenerator;
 
+/**
+ * Entity representing a scheduled report with its associated cron expression and email recipients.
+ */
 @Entity
 public class ReportSchedule {
 
@@ -18,10 +21,20 @@ public class ReportSchedule {
   private String cron;
   private String emails;
 
+  /**
+   * Default constructor for JPA.
+   */
   public ReportSchedule() {
     // Default
   }
 
+  /**
+   * Constructs a ReportSchedule with the specified report name, cron expression, and email recipients.
+   *
+   * @param reportName the name of the report to be scheduled
+   * @param cron       the cron expression defining the schedule
+   * @param emails     the email addresses to send the report to
+   */
   public ReportSchedule(String reportName, String cron, String emails) {
     this.reportName = reportName;
     this.cron = cron;
@@ -44,6 +57,10 @@ public class ReportSchedule {
     this.reportName = reportName;
   }
 
+  /**
+   * Gets the cron expression for scheduling the report.
+   * @return the cron expression
+   */
   public String getCron() {
     return cron;
   }

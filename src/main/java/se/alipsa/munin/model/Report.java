@@ -7,8 +7,19 @@ import org.hibernate.annotations.UpdateTimestamp;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
+/**
+ * Entity representing a report in the system.
+ * Contains details such as name, description, type, group, and content.
+ */
 @Entity
 public class Report implements Serializable {
+
+  /**
+   * Default constructor for JPA.
+   */
+  public Report() {
+    // default constructor for JPA
+  }
 
   @Id
   @Column(length = 50)
@@ -123,34 +134,68 @@ public class Report implements Serializable {
     this.template = reportContent;
   }
 
+  /**
+   * @return the type of report, e.g. Groovy, GMD or Journo
+   */
   public ReportType getReportType() {
     return reportType;
   }
 
+  /**
+   * Set the type of report, e.g. Groovy, GMD or Journo
+   * @param reportType the type of report
+   */
   public void setReportType(ReportType reportType) {
     this.reportType = reportType;
   }
 
+  /**
+   * @return the report group, used to group reports in the UI
+   */
   public String getReportGroup() {
     return reportGroup;
   }
 
+  /**
+   * Set the report group, used to group reports in the UI
+   * @param reportGroup the report group
+   */
   public void setReportGroup(String reportGroup) {
     this.reportGroup = reportGroup;
   }
 
+  /**
+   * The time the report was inserted into the database.
+   *
+   * @return the time the report was inserted
+   */
   public LocalDateTime getInsertedAt() {
     return insertedAt;
   }
 
+  /**
+   * Set the time the report was inserted into the database.
+   *
+   * @param insertedAt the time the report was inserted
+   */
   public void setInsertedAt(LocalDateTime insertedAt) {
     this.insertedAt = insertedAt;
   }
 
+  /**
+   * The last time the report was updated.
+   *
+   * @return the last time the report was updated
+   */
   public LocalDateTime getUpdatedAt() {
     return updatedAt;
   }
 
+  /**
+   * Set the last time the report was updated.
+   *
+   * @param updatedAt the last time the report was updated
+   */
   public void setUpdatedAt(LocalDateTime updatedAt) {
     this.updatedAt = updatedAt;
   }

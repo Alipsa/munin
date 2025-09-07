@@ -1,5 +1,8 @@
 package se.alipsa.munin.model.web;
 
+/**
+ * A simple data class representing a report group and its associated count.
+ */
 public class ReportGroupInfo {
 
   private String reportGroup;
@@ -9,6 +12,7 @@ public class ReportGroupInfo {
     this.reportGroup = groupName;
     this.count = count;
   }
+
   public String getReportGroup() {
     return reportGroup;
   }

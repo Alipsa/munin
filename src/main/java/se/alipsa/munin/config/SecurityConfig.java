@@ -1,5 +1,6 @@
 package se.alipsa.munin.config;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
@@ -8,6 +9,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -16,18 +18,33 @@ import org.springframework.security.web.SecurityFilterChain;
 
 import javax.sql.DataSource;
 
-import static org.springframework.security.web.util.matcher.AntPathRequestMatcher.antMatcher;
 import static se.alipsa.munin.config.Role.*;
 
+/**
+ * Security configuration class for setting up authentication and authorization.
+ */
 @Configuration
 @EnableWebSecurity
 @ConditionalOnBean(WebConfig.class)
 @AutoConfigureAfter(WebConfig.class)
 public class SecurityConfig {
 
-  @Autowired
-  private DataSource dataSource;
+  private final DataSource dataSource;
 
+  @SuppressFBWarnings(
+      value = "EI_EXPOSE_REP2",
+      justification = "Dependency injection: storing DataSource reference is intentional and safe")
+  @Autowired
+  public SecurityConfig(DataSource dataSource) {
+    this.dataSource = dataSource;
+  }
+
+  /**
+   * Configures global authentication using JDBC with a data source.
+   *
+   * @return the UserDetailsService for authentication
+   * @throws ConfigurationException if an error occurs during configuration
+   */
   @SuppressWarnings("PMD.AvoidCatchingGenericException")
   @Bean
   public UserDetailsService configureGlobal() throws ConfigurationException {
@@ -41,33 +58,39 @@ public class SecurityConfig {
     }
   }
 
+  /**
+   * Configures the security filter chain for HTTP requests.
+   *
+   * @param http the HttpSecurity object to configure
+   * @return the configured SecurityFilterChain
+   * @throws Exception if an error occurs during configuration
+   */
   @Bean
   protected SecurityFilterChain configure(HttpSecurity http) throws Exception {
     http
         .cors(Customizer.withDefaults())
-        .csrf(c -> c.disable())
+        .csrf(AbstractHttpConfigurer::disable)
         .headers(h -> h.frameOptions(o -> o.sameOrigin()))
         .authorizeHttpRequests( req ->
           req.requestMatchers(
-              antMatcher("/resetPassword"),
-              antMatcher("/webjars/**"),
-              antMatcher("/js/**"),
-              antMatcher("/css/**"),
-              antMatcher("/favicon.ico") ,
-              antMatcher("/img/**"),
-              antMatcher("/actuator/health"),
-              antMatcher("/h2-console/**"),
-              antMatcher("/common/**")
+              "/resetPassword",
+              "/webjars/**",
+              "/js/**",
+              "/css/**",
+              "/favicon.ico" ,
+              "/img/**",
+              "/actuator/health",
+              "/h2-console/**",
+              "/common/**"
               )
             .permitAll()
-          .requestMatchers(antMatcher("/reports/**"))
-            .authenticated()
+          .requestMatchers("/reports/**").authenticated()
           .requestMatchers(
-              antMatcher("/manage/**"),
-              antMatcher("/api/**")
+              "/manage/**",
+              "/api/**"
           )
             .hasRole(ROLE_ANALYST.getShortName())
-          .requestMatchers( antMatcher("/admin/**"))
+          .requestMatchers( "/admin/**")
             .hasRole(ROLE_ADMIN.getShortName())
           .anyRequest()
             .authenticated()

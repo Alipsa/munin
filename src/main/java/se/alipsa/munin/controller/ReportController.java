@@ -37,6 +37,10 @@ import se.alipsa.munin.service.ReportService;
 import javax.script.ScriptException;
 import java.util.*;
 
+/**
+ * Controller for handling report-related requests such as viewing, adding, editing,
+ * deleting, and scheduling reports.
+ */
 @Controller
 public class ReportController {
 
@@ -51,6 +55,16 @@ public class ReportController {
   private final CronDescriptor descriptor = CronDescriptor.instance();
   private final CronParser cronParser;
 
+  /**
+   * Constructor with autowired dependencies.
+   *
+   * @param reportRepo            the report repository
+   * @param reportScheduleRepo    the report schedule repository
+   * @param reportService         the report service
+   * @param reportSchedulerService the report scheduler service
+   * @param reportScheduleWebFactory the factory for creating web representations of report schedules
+   * @param cronParser            the cron expression parser
+   */
   @SuppressFBWarnings("EI_EXPOSE_REP2")
   @Autowired
   public ReportController(ReportRepo reportRepo, ReportScheduleRepo reportScheduleRepo, ReportService reportService,
@@ -64,6 +78,12 @@ public class ReportController {
     this.cronParser = cronParser;
   }
 
+  /**
+   * Show the reports in a specific group.
+   *
+   * @param group the name of the report group
+   * @return the model and view for the reports in the group
+   */
   @GetMapping(path = "/reports/{group}")
   public ModelAndView reportsInGroup(@PathVariable String group) {
     ModelAndView mav = new ModelAndView();
@@ -74,6 +94,16 @@ public class ReportController {
     return mav;
   }
 
+  /**
+   * View a report. If the report requires parameters an input form is shown first.
+   *
+   * @param name  the name of the report
+   * @param model the model to populate
+   * @return the name of the view for displaying the report or the input form
+   * @throws ReportNotFoundException  if the report with the given name was not found
+   * @throws ScriptException         if the script engine failed
+   * @throws ReportDefinitionException if the report is not well defined
+   */
   @GetMapping("/viewReport/{name}")
   public String viewReport(@PathVariable String name, Model model) throws ReportNotFoundException, ScriptException, ReportDefinitionException {
     LOG.debug("Running report '{}'", name);
@@ -97,6 +127,16 @@ public class ReportController {
     return "reportInputForm";
   }
 
+  /**
+   * View a report that requires parameters.
+   *
+   * @param name     the name of the report
+   * @param paramMap the parameters from the input form
+   * @return the model and view for the report
+   * @throws ScriptException         if the script engine failed
+   * @throws ReportDefinitionException if the report is not well defined
+   * @throws ReportNotFoundException  if the report with the given name was not found
+   */
   @PostMapping(path = "/viewReport/{name}", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
   public ModelAndView viewReport(@PathVariable String name, @RequestParam MultiValueMap<String, List<?>> paramMap) throws ScriptException, ReportDefinitionException, ReportNotFoundException {
     ModelAndView mav = new ModelAndView();
@@ -126,6 +166,12 @@ public class ReportController {
     return mav;
   }
 
+  /**
+   * Show the form for adding a new report.
+   *
+   * @param model the model to populate
+   * @return the name of the view for adding or editing a report
+   */
   @GetMapping("/manage/addReport")
   public String addReportForm(Model model) {
     model.addAttribute("reportGroups", reportRepo.getReportGroups());
@@ -133,6 +179,19 @@ public class ReportController {
     return "addOrEditReport";
   }
 
+  /**
+   * Add a new report based on the submitted form data.
+   *
+   * @param reportName        the name of the report
+   * @param description       the description of the report
+   * @param inputContent     the input content for the report
+   * @param preProcessing    the pre-processing code for the report
+   * @param template          the template code for generating the report
+   * @param reportType       the type of the report
+   * @param reportGroup      the group to which the report belongs
+   * @param redirectAttributes attributes for redirecting with messages
+   * @return a redirect view to the home page
+   */
   @PostMapping(path = "/manage/addReport", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
   public RedirectView addReport(@RequestParam String reportName, @RequestParam String description,
                                 @RequestParam String inputContent, @RequestParam String preProcessing,
@@ -166,6 +225,14 @@ public class ReportController {
     return new RedirectView("/");
   }
 
+  /**
+   * Show the form for editing an existing report.
+   *
+   * @param name  the name of the report to edit
+   * @param model the model to populate
+   * @return the name of the view for adding or editing a report
+   * @throws ReportNotFoundException if the report with the given name was not found
+   */
   @GetMapping(path = "/manage/editReport/{name}")
   public String editReportForm(@PathVariable String name, Model model) throws ReportNotFoundException {
     populateEditReportModel(name, model);
@@ -173,12 +240,27 @@ public class ReportController {
     return "addOrEditReport";
   }
 
+  /**
+   * This mapping is kept for backward compatibility with old links/bookmarks
+   *
+   * @param name  the name of the report to edit
+   * @param model the model to populate
+   * @return the name of the view for editing a report
+   * @throws ReportNotFoundException if the report with the given name was not found
+   */
   @GetMapping(path = "/manage/oldEditReport/{name}")
   public String oldEditReportForm(@PathVariable String name, Model model) throws ReportNotFoundException {
     populateEditReportModel(name, model);
     return "editReport";
   }
 
+  /**
+   * Populate the model with the report details for editing.
+   *
+   * @param name  the name of the report to edit
+   * @param model the model to populate
+   * @throws ReportNotFoundException if the report with the given name was not found
+   */
   private void populateEditReportModel(String name, Model model) throws ReportNotFoundException {
     Report report = reportRepo.loadReport(name);
     model.addAttribute("reportName", name);
@@ -191,6 +273,20 @@ public class ReportController {
     model.addAttribute("reportGroups", reportRepo.getReportGroups());
   }
 
+  /**
+   * Modify an existing report based on the submitted form data.
+   *
+   * @param reportName        the name of the report
+   * @param description       the description of the report
+   * @param inputContent     the input content for the report
+   * @param preProcessing    the pre-processing code for the report
+   * @param template          the template code for generating the report
+   * @param reportType       the type of the report
+   * @param reportGroup      the group to which the report belongs
+   * @param redirectAttributes attributes for redirecting with messages
+   * @return a redirect view to the reports in the same group
+   * @throws ReportNotFoundException if the report with the given name was not found
+   */
   @PostMapping(path = "/manage/editReport")
   public RedirectView modifyReport(@RequestParam String reportName, @RequestParam String description,
                                    @RequestParam String inputContent, @RequestParam String preProcessing,
@@ -219,6 +315,14 @@ public class ReportController {
     return new RedirectView("/reports/" + reportGroup);
   }
 
+  /**
+   * Delete an existing report.
+   *
+   * @param name  the name of the report to delete
+   * @param redirectAttributes attributes for redirecting with messages
+   * @return a redirect view to the home page
+   * @throws ReportNotFoundException if the report with the given name was not found
+   */
   @GetMapping(path = "/manage/deleteReport/{name}")
   public RedirectView deleteReport(@PathVariable String name, RedirectAttributes redirectAttributes) throws ReportNotFoundException {
     Report report = reportRepo.loadReport(name);
@@ -227,6 +331,11 @@ public class ReportController {
     return new RedirectView("/");
   }
 
+  /**
+   * Show the form for scheduling reports.
+   *
+   * @return the model and view for scheduling reports
+   */
   @GetMapping("/manage/schedule")
   public ModelAndView scheduleReportForm() {
     ModelAndView mav = new ModelAndView();
@@ -242,6 +351,16 @@ public class ReportController {
     return mav;
   }
 
+  /**
+   * Schedule a new report or update an existing report schedule.
+   *
+   * @param id          the id of the report schedule to update (null for new schedules)
+   * @param reportName  the name of the report to schedule
+   * @param cronVal     the cron expression for scheduling
+   * @param emails      the email addresses to send the report to
+   * @param redirectAttributes attributes for redirecting with messages
+   * @return a redirect view to the schedule management page
+   */
   @PostMapping(path = "/manage/schedule", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
   public RedirectView scheduleReport(@RequestParam(required = false) Long id,
                                      @RequestParam(required = false) String reportName, @RequestParam String cronVal,
@@ -261,6 +380,13 @@ public class ReportController {
     return new RedirectView("/manage/schedule");
   }
 
+  /**
+   * Delete an existing report schedule.
+   *
+   * @param id the id of the report schedule to delete
+   * @param redirectAttributes attributes for redirecting with messages
+   * @return a redirect view to the schedule management page
+   */
   @GetMapping(path = "/manage/schedule/delete/{id}")
   public RedirectView deleteSchedule(@PathVariable Long id, RedirectAttributes redirectAttributes) {
     ReportSchedule schedule = reportSchedulerService.deleteReportSchedule(id);

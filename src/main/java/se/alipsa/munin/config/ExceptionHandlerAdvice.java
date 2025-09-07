@@ -7,8 +7,19 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import se.alipsa.munin.controller.ApiException;
 
+/**
+ * Global exception handler for the application.
+ * Catches specific exceptions and returns appropriate HTTP responses.
+ */
 @ControllerAdvice
 public class ExceptionHandlerAdvice extends ResponseEntityExceptionHandler {
+
+  /**
+   * Default constructor.
+   */
+  public ExceptionHandlerAdvice() {
+    // Default constructor
+  }
 
   /*
   @ExceptionHandler(Exception.class)
@@ -26,6 +37,13 @@ public class ExceptionHandlerAdvice extends ResponseEntityExceptionHandler {
     return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
   }
 
+   */
+  /**
+   * Handles ApiException and returns a ResponseEntity with the exception message and status.
+   *
+   * @param ex      the ApiException to handle
+   * @param request the current web request
+   * @return a ResponseEntity containing the exception message and status
    */
   @ExceptionHandler(ApiException.class)
   public final ResponseEntity<Object> handleAllExceptions(ApiException ex, WebRequest request) {

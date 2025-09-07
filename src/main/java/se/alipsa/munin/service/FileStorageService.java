@@ -20,6 +20,10 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.stream.Stream;
 
+/**
+ * Service for storing files on the file system.
+ * It provides methods to store, load, delete, and list files in a specified root location.
+ */
 @Service
 public class FileStorageService {
 
@@ -27,11 +31,22 @@ public class FileStorageService {
 
   private static final Logger LOG = LoggerFactory.getLogger(FileStorageService.class);
 
+  /**
+   * Constructor with autowired dependencies.
+   *
+   * @param properties the file storage properties
+   */
   @Autowired
   public FileStorageService(FileStorageProperties properties) {
     this.rootLocation = Paths.get(properties.getLocation());
   }
 
+  /**
+   * Stores a file in the root location.
+   *
+   * @param file the file to store
+   * @throws FileStorageException if an error occurs during storage
+   */
   public void store(MultipartFile file) throws FileStorageException {
     if (file == null) {
       LOG.warn("File is null, nothing to store");
@@ -81,6 +96,13 @@ public class FileStorageService {
   }
    */
 
+  /**
+   * Provides an OutputStream to write to a file with the given name.
+   *
+   * @param name the name of the file
+   * @return an OutputStream to write to the file
+   * @throws FileStorageException if an error occurs while creating the OutputStream
+   */
   public OutputStream getOutputStream(String name) throws FileStorageException {
     try {
       if (name.isEmpty()) {
@@ -98,6 +120,12 @@ public class FileStorageService {
     }
   }
 
+  /**
+   * Loads all files in the root location.
+   *
+   * @return a Stream of Paths representing the files
+   * @throws FileStorageException if an error occurs while reading the files
+   */
   public Stream<Path> loadAll() throws FileStorageException {
     try {
       LOG.debug("Listing files in {}", rootLocation.toAbsolutePath());
@@ -109,12 +137,25 @@ public class FileStorageService {
     }
   }
 
+  /**
+   * Gets the Path for a given filename in the root location.
+   *
+   * @param filename the name of the file
+   * @return the Path to the file
+   */
   public Path getPath(String filename) {
     Path path = rootLocation.resolve(filename);
     LOG.debug("File resolved to path {}",  path.toAbsolutePath());
     return path;
   }
 
+  /**
+   * Loads a file as a Resource.
+   *
+   * @param filename the name of the file to load
+   * @return the Resource representing the file
+   * @throws RuntimeException if the file cannot be read
+   */
   public Resource load(String filename) {
     try {
       Path file = rootLocation.resolve(filename);
@@ -130,6 +171,13 @@ public class FileStorageService {
     }
   }
 
+  /**
+   * Provides an InputStream to read from a file with the given name.
+   *
+   * @param name the name of the file
+   * @return an InputStream to read from the file
+   * @throws FileStorageException if an error occurs while creating the InputStream
+   */
   public InputStream getInputStream(String name) throws FileStorageException {
     try {
       return Files.newInputStream(getPath(name));
@@ -138,10 +186,19 @@ public class FileStorageService {
     }
   }
 
+  /**
+   * Deletes all files in the root location.
+   */
   public void deleteAll() {
     FileSystemUtils.deleteRecursively(rootLocation.toFile());
   }
 
+  /**
+   * Deletes a file with the given name.
+   *
+   * @param fileName the name of the file to delete
+   * @throws FileStorageException if an error occurs during deletion
+   */
   public void delete(String fileName) throws FileStorageException {
     try {
       Files.delete(rootLocation.resolve(fileName));
@@ -150,6 +207,13 @@ public class FileStorageService {
     }
   }
 
+  /**
+   * Deletes a file with the given name in a subdirectory named after the class type.
+   *
+   * @param fileName the name of the file to delete
+   * @param type the class type used to determine the subdirectory
+   * @throws FileStorageException if an error occurs during deletion
+   */
   public void delete(String fileName,  Class<?> type) throws FileStorageException {
     try {
       Files.delete(rootLocation.resolve(toPath(type)).resolve(fileName));
@@ -162,6 +226,11 @@ public class FileStorageService {
     return clazz.getSimpleName() + "/";
   }
 
+  /**
+   * Initializes the storage by creating the root directory if it does not exist.
+   *
+   * @throws FileStorageException if an error occurs during initialization
+   */
   public void init() throws FileStorageException {
     try {
       Path path = Files.createDirectories(rootLocation.toAbsolutePath());

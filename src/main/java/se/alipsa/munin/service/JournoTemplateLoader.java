@@ -13,16 +13,24 @@ import se.alipsa.munin.repo.ReportRepo;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
-import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.util.Optional;
 
+/**
+ * A TemplateLoader implementation that loads templates from a Report repository.
+ * This class integrates with FreeMarker to provide dynamic template loading capabilities.
+ */
 @Service
 public class JournoTemplateLoader implements TemplateLoader {
 
   private static final Logger LOG = LoggerFactory.getLogger(JournoTemplateLoader.class);
   ReportRepo reportRepo;
 
+  /**
+   * Constructor with autowired dependencies.
+   *
+   * @param reportRepo the report repository
+   */
   @Autowired
   JournoTemplateLoader(ReportRepo reportRepo) {
     this.reportRepo = reportRepo;

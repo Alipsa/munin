@@ -8,9 +8,18 @@ import se.alipsa.munin.model.Authorities;
 import se.alipsa.munin.model.AuthoritiesPk;
 import se.alipsa.munin.model.User;
 
+/**
+ * Repository interface for managing Authorities entities.
+ * Extends CrudRepository to provide basic CRUD operations.
+ */
 @Repository
 public interface AuthoritiesRepo extends CrudRepository<Authorities, AuthoritiesPk> {
 
+  /**
+   * Deletes all authorities associated with the specified user.
+   *
+   * @param u the user whose authorities are to be deleted
+   */
   @Modifying
   @Query("DELETE from Authorities a where a.pk.user = ?1")
   void deleteByUser(User u);

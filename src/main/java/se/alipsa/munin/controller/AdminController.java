@@ -20,6 +20,9 @@ import jakarta.mail.internet.AddressException;
 import jakarta.mail.internet.InternetAddress;
 import java.util.List;
 
+/**
+ * Controller for handling admin-related requests such as user management.
+ */
 @Controller
 public class AdminController {
 
@@ -29,6 +32,12 @@ public class AdminController {
   private final UserRoleService userRoleService;
   private final EmailService emailService;
 
+  /**
+   * Constructor with autowired dependencies.
+   *
+   * @param userRoleService the user role service
+   * @param emailService the email service
+   */
   @SuppressFBWarnings("EI_EXPOSE_REP2")
   @Autowired
   public AdminController(UserRoleService userRoleService, EmailService emailService) {
@@ -36,6 +45,12 @@ public class AdminController {
     this.emailService = emailService;
   }
 
+  /**
+   * Displays the admin index page with a list of users and their roles.
+   *
+   * @param model the model to add attributes to
+   * @return the name of the admin index view
+   */
   @GetMapping("/admin/index")
   public String adminIndex(Model model) {
     List<UserUpdate> users = userRoleService.fetchUserUpdates();
@@ -43,6 +58,13 @@ public class AdminController {
     return "adminIndex";
   }
 
+  /**
+   * Updates the roles of multiple users based on the provided UserUpdates object.
+   *
+   * @param userUpdates the UserUpdates object containing the list of user updates
+   * @param redirectAttributes attributes for flash messages
+   * @return redirect to the admin index page
+   */
   @PostMapping("/admin/updateUsers")
   public String updateUsers(@ModelAttribute UserUpdates userUpdates, RedirectAttributes redirectAttributes) {
     userRoleService.updateUsers(userUpdates.getUpdateList());
@@ -50,6 +72,13 @@ public class AdminController {
     return "redirect:/admin/index";
   }
 
+  /**
+   * Adds a new user with a randomly generated password and sends an email with the credentials.
+   *
+   * @param userUpdate the user details to add
+   * @param redirectAttributes attributes for flash messages
+   * @return redirect to the admin index page
+   */
   @PostMapping("/admin/addUser")
   public String addUser(@ModelAttribute UserUpdate userUpdate, RedirectAttributes redirectAttributes) {
     if (userUpdate == null) {
@@ -75,6 +104,14 @@ public class AdminController {
     return "redirect:/admin/index";
   }
 
+  /**
+   * Deletes a user by username.
+   * Note that an admin cannot delete himself/herself.
+   *
+   * @param userName the username of the user to delete
+   * @param redirectAttributes attributes for flash messages
+   * @return redirect to the admin index page
+   */
   @GetMapping("/admin/deleteUser/{username}")
   public String deleteUser(@PathVariable("username") String userName, RedirectAttributes redirectAttributes) {
     userRoleService.deleteUser(userName);
@@ -82,7 +119,13 @@ public class AdminController {
     return "redirect:/admin/index";
   }
 
-
+  /**
+   * Validate the syntax of an email address.
+   * Note that this does not check if the address really exists, just that it is a valid format.
+   *
+   * @param email the email address to validate
+   * @return true if the email address is valid, false otherwise
+   */
   public static boolean isValidEmail(String email) {
     boolean result = true;
     try {

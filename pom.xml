@@ -9,7 +9,7 @@
     <parent>
         <artifactId>spring-boot-starter-parent</artifactId>
         <groupId>org.springframework.boot</groupId>
-        <version>3.4.5</version>
+        <version>3.5.5</version>
     </parent>
 
     <artifactId>munin</artifactId>
@@ -40,27 +40,27 @@
     </scm>
 
     <properties>
-        <bootstrap.version>5.3.5</bootstrap.version>
+        <bootstrap.version>5.3.8</bootstrap.version>
         <codemirror.version>5.62.2</codemirror.version>
         <commons-collections4.version>4.5.0</commons-collections4.version>
-        <commons-io.version>2.19.0</commons-io.version>
+        <commons-io.version>2.20.0</commons-io.version>
         <cron-utils.version>9.2.1</cron-utils.version>
         <gmd.version>3.0.0</gmd.version>
-        <groovy-version>4.0.26</groovy-version>
+        <groovy-version>5.0.0</groovy-version>
         <h2.version>2.3.232</h2.version>
         <htmlcreator.version>1.4.1</htmlcreator.version>
         <javafx.version>23.0.2</javafx.version>
-        <journo.version>0.7.1</journo.version>
+        <journo.version>0.7.2</journo.version>
         <jquery.version>3.7.1</jquery.version>
-        <junit-jupiter.version>5.12.2</junit-jupiter.version>
-        <junit-platform.version>1.12.2</junit-platform.version>
-        <liquibase-core.version>4.31.1</liquibase-core.version>
+        <junit-jupiter.version>5.13.4</junit-jupiter.version>
+        <junit-platform.version>1.13.4</junit-platform.version>
+        <liquibase-core.version>4.33.0</liquibase-core.version>
         <maven.compiler.release>21</maven.compiler.release>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <spotbugs-annotations.version>4.9.3</spotbugs-annotations.version>
+        <spotbugs-annotations.version>4.9.4</spotbugs-annotations.version>
         <!-- note that parent has the version hard coded so must duplicate the setting there as well -->
-        <spring.boot.version>3.4.5</spring.boot.version>
+        <spring.boot.version>3.5.5</spring.boot.version>
         <thymeleaf-extras-springsecurity6.version>3.1.3.RELEASE</thymeleaf-extras-springsecurity6.version>
         <webjars-locator.version>0.52</webjars-locator.version>
     </properties>
@@ -291,6 +291,25 @@
 
     <build>
         <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <version>3.13.0</version>
+            <configuration>
+              <release>${maven.compiler.release}</release>
+
+              <!-- Show deprecation & other warnings -->
+              <showDeprecation>true</showDeprecation>
+              <showWarnings>true</showWarnings>
+
+              <!-- Print detailed sites of usage (and other hints) -->
+              <compilerArgs>
+                <arg>-Xlint:deprecation</arg>
+                <arg>-Xlint:unchecked</arg>
+                <!-- or: <arg>-Xlint:all</arg> -->
+              </compilerArgs>
+            </configuration>
+          </plugin>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
@@ -312,7 +331,7 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>versions-maven-plugin</artifactId>
-                <version>2.18.0</version>
+                <version>2.19.0</version>
                 <configuration>
                     <rulesUri>file://${basedir}/version-plugin-rules.xml</rulesUri>
                 </configuration>
@@ -320,7 +339,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-enforcer-plugin</artifactId>
-                <version>3.5.0</version>
+                <version>3.6.1</version>
                 <executions>
                     <execution>
                         <id>enforce-releases-maven-java</id>
@@ -330,9 +349,9 @@
                         <configuration>
                             <rules>
                                 <requireMavenVersion>
-                                    <version>[3.6.3,)</version>
+                                    <version>[3.9.9,)</version>
                                     <level>ERROR</level>
-                                    <message>Please use maven version 3.6.3 or higher</message>
+                                    <message>Please use maven version 3.9.9 or higher</message>
                                 </requireMavenVersion>
                                 <requireJavaVersion>
                                     <version>21</version>
@@ -342,12 +361,31 @@
                             </rules>
                         </configuration>
                     </execution>
+                  <execution>
+                    <id>enforce-bytecode</id>
+                    <goals><goal>enforce</goal></goals>
+                    <configuration>
+                      <rules>
+                        <enforceBytecodeVersion>
+                          <maxJdkVersion>21</maxJdkVersion>
+                        </enforceBytecodeVersion>
+                      </rules>
+                      <fail>true</fail>
+                    </configuration>
+                  </execution>
                 </executions>
+              <dependencies>
+                <dependency>
+                  <groupId>org.codehaus.mojo</groupId>
+                  <artifactId>extra-enforcer-rules</artifactId>
+                  <version>1.10.0</version>
+                </dependency>
+              </dependencies>
             </plugin>
             <plugin>
                 <groupId>com.github.spotbugs</groupId>
                 <artifactId>spotbugs-maven-plugin</artifactId>
-                <version>4.9.3.0</version>
+                <version>4.9.4.1</version>
                 <executions>
                     <execution>
                         <goals>
@@ -359,9 +397,9 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-pmd-plugin</artifactId>
-                <version>3.26.0</version>
+                <version>3.27.0</version>
                 <configuration>
-                    <targetJdk>1.8</targetJdk>
+                  <targetJdk>${maven.compiler.release}</targetJdk>
                     <printFailingErrors>true</printFailingErrors>
                     <linkXRef>false</linkXRef>
                 </configuration>
@@ -422,7 +460,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <version>3.11.2</version>
+                <version>3.11.3</version>
                 <executions>
                     <execution>
                         <id>attach-javadocs</id>
@@ -431,6 +469,13 @@
                         </goals>
                     </execution>
                 </executions>
+              <configuration>
+                <release>${maven.compiler.release}</release>
+                <show>public</show> <!-- only public classes/members -->
+                <!-- optional: keep doclint on, or relax it -->
+                <!-- <doclint>all</doclint> -->
+                <doclint>all,-missing</doclint>  <!--to ignore “no comment” warnings -->
+              </configuration>
             </plugin>
         </plugins>
     </build>
@@ -464,7 +509,7 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-gpg-plugin</artifactId>
-                        <version>3.2.7</version>
+                        <version>3.2.8</version>
                         <executions>
                             <execution>
                                 <id>sign-artifacts</id>

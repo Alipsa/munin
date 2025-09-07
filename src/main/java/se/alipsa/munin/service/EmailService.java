@@ -12,6 +12,11 @@ import org.springframework.stereotype.Service;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 
+/**
+ * Service for sending emails, both plain text and HTML.
+ * It uses JavaMailSender to send emails and can be configured to disable email sending
+ * by setting the mail server host to "fakehost".
+ */
 @Service
 public class EmailService {
 
@@ -24,13 +29,24 @@ public class EmailService {
   @Value("${munin.email.from:admin@localhost}")
   String fromAddress;
 
+  /**
+   * Constructor with autowired dependencies.
+   *
+   * @param emailSender the JavaMailSender to use for sending emails
+   */
   @Autowired
   public EmailService(JavaMailSender emailSender) {
     this.emailSender = emailSender;
   }
 
 
-
+  /**
+   * Sends a plain text email.
+   *
+   * @param subject the subject of the email
+   * @param message the body of the email
+   * @param to      the recipient email addresses
+   */
   public void sendText(String subject, String message, String... to) {
     if (checkAndHandleFakehost(subject, message, to)) return;
     SimpleMailMessage msg = new SimpleMailMessage();
@@ -41,6 +57,14 @@ public class EmailService {
     emailSender.send(msg);
   }
 
+  /**
+   * Sends an HTML email.
+   *
+   * @param subject the subject of the email
+   * @param message the body of the email in HTML format
+   * @param to      the recipient email addresses
+   * @throws MessagingException if there is an error creating or sending the email
+   */
   public void sendHtml(String subject, String message, String... to) throws MessagingException {
     if (checkAndHandleFakehost(subject, message, to)) return;
     MimeMessage mimeMsg = emailSender.createMimeMessage();
@@ -52,6 +76,15 @@ public class EmailService {
     emailSender.send(mimeMsg);
   }
 
+  /**
+   * Checks if the mail server host is set to "fakehost" and handles the email accordingly.
+   * If it is "fakehost", it logs the email details instead of sending it.
+   *
+   * @param subject the subject of the email
+   * @param message the body of the email
+   * @param to      the recipient email addresses
+   * @return true if the email sending is disabled (i.e., mail server host is "fakehost"), false otherwise
+   */
   private boolean checkAndHandleFakehost(String subject, String message, String[] to) {
     if ("fakehost".equals(mailServerHost)) {
       LOG.info("email disabled, printing message instead of sending it");

@@ -14,6 +14,9 @@ import javax.script.ScriptException;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Service for running reports written in Journo with optional Groovy preprocessing.
+ */
 @Service
 public class JournoReportEngine {
 
@@ -21,7 +24,11 @@ public class JournoReportEngine {
   JournoEngine journoEngine;
   GroovyScriptEngineImpl groovyEngine;
 
-
+  /**
+   * Constructor with autowired dependencies.
+   *
+   * @param journoTemplateLoader the Journo template loader
+   */
   @Autowired
   JournoReportEngine(JournoTemplateLoader journoTemplateLoader) {
     journoEngine = new JournoEngine(journoTemplateLoader);
@@ -29,6 +36,7 @@ public class JournoReportEngine {
   }
 
   /**
+   * Run a Journo report and return the html result.
    *
    * @param report the report to run
    * @param params a Map of String and Object with the parameters for the report (optional)
@@ -42,7 +50,7 @@ public class JournoReportEngine {
     return journoEngine.renderHtml(report.getReportName(), p);
   }
 
-  Map<String, Object> runPreprocessingCode(Report report, Map<String, Object>... params) throws ScriptException {
+  private Map<String, Object> runPreprocessingCode(Report report, Map<String, Object>... params) throws ScriptException {
     try {
       if (params.length > 0) {
         groovyEngine.getBindings(ScriptContext.ENGINE_SCOPE).putAll(params[0]);

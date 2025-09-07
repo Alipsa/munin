@@ -18,7 +18,14 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+/**
+ * Utility class for file operations such as reading, writing, copying, and deleting files.
+ */
 public class FileUtils {
+
+  private FileUtils() {
+    // prevent instantiation
+  }
 
   /**
    * Gets a reference to a file or folder in the classpath. Useful for getting test resources and
@@ -41,9 +48,23 @@ public class FileUtils {
     return file;
   }
 
-  public static String getResourcePath(String name, String... encodingOpt) throws UnsupportedEncodingException {
+  /**
+   * Gets the path to a resource using available class loaders.
+   * It will also load resources/files from the
+   * absolute path of the file system (not only the classpath's).
+   * @param name the name of the resource, use / to separate path entities.
+   *             Do NOT lead with a "/" unless you know what you are doing.
+   * @param encodingOpt optional encoding if something other than UTF-8 is needed.
+   * @return the path to the resource
+   * @throws UnsupportedEncodingException if the JVM does not support the given encoding
+   * @throws FileNotFoundException if the resource cannot be found.
+   */
+  public static String getResourcePath(String name, String... encodingOpt) throws UnsupportedEncodingException, FileNotFoundException {
     String encoding = encodingOpt.length > 0 ? encodingOpt[0] : "UTF-8";
     URL url = getResourceUrl(name);
+    if (url == null) {
+      throw new FileNotFoundException("Failed to find resource " + name);
+    }
     return URLDecoder.decode(url.getFile(), encoding);
   }
 
@@ -193,6 +214,7 @@ public class FileUtils {
 
   /**
    * recursive delete on exit.
+   *
    * @param dir the folder to delete
    * @throws IOException if some problem occurred when deleting the content
    */
@@ -218,6 +240,8 @@ public class FileUtils {
   }
 
   /**
+   * Write content to a file, using UTF-8.
+   *
    * @param file    the file to write to
    * @param content the content to write
    * @throws FileNotFoundException If the given file object does not denote an existing, writable regular file
@@ -233,6 +257,8 @@ public class FileUtils {
 
 
   /**
+   * Write a list of lines to a file, using UTF-8 and \n as line ending.
+   *
    * @param file    the file to write to
    * @param lines the content to write
    * @throws IOException If the given file object does not denote an existing, writable regular file
@@ -244,6 +270,8 @@ public class FileUtils {
   }
 
   /**
+   * Write a list of lines to a file.
+   *
    * @param file    the file to write to
    * @param lines the content to write
    * @param lineEnding the character to use at the end of each line.
@@ -260,6 +288,13 @@ public class FileUtils {
     }
   }
 
+  /**
+   * Append content to a file, if the file does not exist it will be created.
+   *
+   * @param file    the file to write to
+   * @param content the content to write
+   * @throws IOException if some IO issue occurred
+   */
   public static void appendToOrCreateFile(File file, String content) throws IOException {
     if (!file.exists() && !file.createNewFile()) {
       throw new IOException("Failed to create file " + file);
@@ -269,6 +304,14 @@ public class FileUtils {
     }
   }
 
+  /**
+   * Read the content of a file.
+   *
+   * @param file       the file to read
+   * @param charsetOpt optional charset, default UTF-8
+   * @return the content of the file
+   * @throws IOException if some IO issue occurred
+   */
   public static String readContent(File file, Charset... charsetOpt) throws IOException {
     Charset charset = charsetOpt.length > 0 ? charsetOpt[0] : StandardCharsets.UTF_8;
     StringBuilder str = new StringBuilder();
@@ -277,6 +320,14 @@ public class FileUtils {
     return str.toString();
   }
 
+  /**
+   * Read the content of a resource file.
+   *
+   * @param resource   the resource to read
+   * @param charsetOpt optional charset, default UTF-8
+   * @return the content of the resource
+   * @throws IOException if some IO issue occurred
+   */
   public static String readContent(String resource, Charset... charsetOpt) throws IOException {
     URL url = getResourceUrl(resource);
     if (url == null) {
@@ -286,6 +337,11 @@ public class FileUtils {
     return IOUtils.toString(url, charset);
   }
 
+  /**
+   * Get the user home directory in a platform independent way.
+   *
+   * @return the user home directory
+   */
   @SuppressFBWarnings("ENV_USE_PROPERTY_INSTEAD_OF_ENV")
   public static File getUserHome() {
     String userHome = System.getProperty("user.home");

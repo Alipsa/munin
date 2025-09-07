@@ -22,10 +22,20 @@ import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * Web configuration class for setting up view resolvers, resource handlers, and CORS mappings.
+ */
 @Configuration
 @EnableWebMvc
 @ComponentScan
 public class WebConfig implements WebMvcConfigurer {
+
+  /**
+   * Default constructor.
+   */
+  public WebConfig() {
+    // Default constructor
+  }
 
   @Override
   public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
@@ -37,6 +47,9 @@ public class WebConfig implements WebMvcConfigurer {
     registry.viewResolver(viewResolver());
   }
 
+  /**
+   * Create Thymeleaf view resolver
+   */
   public ViewResolver viewResolver() {
 
     ThymeleafViewResolver viewResolver = new ThymeleafViewResolver();
@@ -47,6 +60,9 @@ public class WebConfig implements WebMvcConfigurer {
     return viewResolver;
   }
 
+  /**
+   * Create Thymeleaf template engine
+   */
   public SpringTemplateEngine templateEngine() {
 
     SpringTemplateEngine templateEngine = new SpringTemplateEngine();
@@ -55,6 +71,9 @@ public class WebConfig implements WebMvcConfigurer {
     return templateEngine;
   }
 
+  /**
+   * Create Thymeleaf template resolver
+   */
   public ClassLoaderTemplateResolver templateResolver() {
 
     ClassLoaderTemplateResolver templateResolver = new ClassLoaderTemplateResolver();
@@ -92,6 +111,10 @@ public class WebConfig implements WebMvcConfigurer {
         .resourceChain(false);
   }
 
+  /**
+   * Map requests for /favicon.ico to the faviconRequestHandler
+   * which will look for the favicon in the static resources
+   */
   @Bean
   public SimpleUrlHandlerMapping customFaviconHandlerMapping() {
     SimpleUrlHandlerMapping mapping = new SimpleUrlHandlerMapping();
@@ -100,6 +123,9 @@ public class WebConfig implements WebMvcConfigurer {
     return mapping;
   }
 
+  /**
+   * A request handler that looks for the favicon in the static resources
+   */
   @Bean
   protected ResourceHttpRequestHandler faviconRequestHandler() {
     ResourceHttpRequestHandler requestHandler = new ResourceHttpRequestHandler();
