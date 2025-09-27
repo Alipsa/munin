@@ -14,7 +14,7 @@
 
     <artifactId>munin</artifactId>
     <groupId>se.alipsa</groupId>
-    <version>2.0.0</version>
+    <version>2.0.1-SNAPSHOT</version>
 
     <name>Munin - a web reporting server for Groovy or Freemarker reports</name>
     <description>A reporting server for reports created in Groovy or Freemarker based on Spring Boot.</description>

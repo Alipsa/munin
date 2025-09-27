@@ -1,6 +1,6 @@
 # Release history
 
-### 2.0.0, in progress
+### 2.0.0, 2025-09-27
 - Add support for Groovy and GMD reports.
 - Upgrade spring boot (2.7.2 -> 3.5.6)
 - Upgrade thymeleaf (5 to 6)
