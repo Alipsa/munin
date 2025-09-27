@@ -22,6 +22,7 @@
     <ignoreVersion type="regex">.*jre22</ignoreVersion>
     <ignoreVersion type="regex">.*jre23</ignoreVersion>
     <ignoreVersion type="regex">.*jre24</ignoreVersion>
+    <ignoreVersion type="regex">.*jre25</ignoreVersion>
   </ignoreVersions>
   <!-- Block JavaFX 24+ so you only see 23.x suggestions on JDK 21 -->
   <rules>

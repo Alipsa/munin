@@ -2,13 +2,13 @@
 
 ### 2.0.0, in progress
 - Add support for Groovy and GMD reports.
-- Upgrade spring boot (2.7.2 -> 3.5.5)
+- Upgrade spring boot (2.7.2 -> 3.5.6)
 - Upgrade thymeleaf (5 to 6)
 - Upgrade boostrap (5.2.0 -> 5.3.8)
 - Upgrade jQuery (3.6.0 -> 3.7.1)
 - Upgrade liquibase (4.15.0 -> 4.33.0)
 - Upgrade webjars (0.45 -> 0.52)
-- Upgrade h2 (2.1.214 -> 2.3.232)
+- Upgrade h2 (2.1.214 -> 2.4.240)
 - Upgrade cron-utils (9.2.1 -> 9.2.1)
 - upgrade javafx (21.0.5 -> 23.0.2)
 - upgrade commons-io (2.19.0 -> 2.20.0)

@@ -22,7 +22,7 @@ import java.util.*;
 @RestController
 public class RestApiController {
 
-  private static final Logger LOG = LogManager.getLogger();
+  private static final Logger LOG = LogManager.getLogger(RestApiController.class);
 
   private final ReportRepo reportRepo;
 
